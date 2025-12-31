@@ -238,21 +238,25 @@ describe('public API', () => {
     document.documentElement.className = '';
     mockThemeLoading();
     await initTheme(document, window);
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-mocha');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-mocha'
+    );
   });
 
   it('initTheme uses saved theme from localStorage', async () => {
     mockLocalStorage.getItem.mockReturnValue('catppuccin-frappe');
     mockThemeLoading();
     await initTheme(document, window);
-    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('bulma-theme-flavor');
+    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('turbo-theme');
   });
 
   it('initTheme uses default theme when localStorage is empty', async () => {
     mockLocalStorage.getItem.mockReturnValue(null);
     mockThemeLoading();
     await initTheme(document, window);
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-mocha');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-mocha'
+    );
   });
 
   it('wireFlavorSelector returns early when elements are missing', () => {
@@ -332,7 +336,7 @@ describe('public API', () => {
 
       // Verify localStorage was set and applyTheme was called
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'bulma-theme-flavor',
+        'turbo-theme',
         'catppuccin-latte'
       );
     }
@@ -355,10 +359,14 @@ describe('public API', () => {
 
     // Verify document-level event listeners for outside clicks and escape
     expect(
-      (document.addEventListener as any).mock.calls.some((call: any[]) => call[0] === 'click')
+      (document.addEventListener as any).mock.calls.some(
+        (call: any[]) => call[0] === 'click'
+      )
     ).toBe(true);
     expect(
-      (document.addEventListener as any).mock.calls.some((call: any[]) => call[0] === 'keydown')
+      (document.addEventListener as any).mock.calls.some(
+        (call: any[]) => call[0] === 'keydown'
+      )
     ).toBe(true);
   });
 
@@ -642,7 +650,9 @@ describe('public API', () => {
     await initTheme(document, window);
     wireFlavorSelector(document, window);
     // Verify baseUrl is used in theme application
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-mocha');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-mocha'
+    );
   });
 
   it('handles invalid baseUrl gracefully (catch path)', async () => {
@@ -662,7 +672,9 @@ describe('public API', () => {
     });
     await initTheme(document, window);
     // no throw means catch branch executed safely
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-mocha');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-mocha'
+    );
   });
 
   it('toggles dropdown on trigger click', () => {
@@ -693,7 +705,9 @@ describe('public API', () => {
 
     wireFlavorSelector(document, window);
 
-    const triggerClick = mockTrigger.addEventListener.mock.calls.find((c) => c[0] === 'click')?.[1];
+    const triggerClick = mockTrigger.addEventListener.mock.calls.find(
+      (c) => c[0] === 'click'
+    )?.[1];
     if (triggerClick) {
       triggerClick({ preventDefault: vi.fn() } as any);
     }
@@ -766,7 +780,9 @@ describe('public API', () => {
     mockLocalStorage.getItem.mockReturnValue('catppuccin-frappe');
     await initTheme(document, window);
     // Theme class is still applied despite invalid baseUrl
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-frappe');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-frappe'
+    );
   });
 
   it('handles missing flavor link gracefully (no throw, no href set)', async () => {
@@ -808,7 +824,9 @@ describe('public API', () => {
 
     await initTheme(document as any, window as any);
     // Theme class is applied regardless of icon handling
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-latte');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-latte'
+    );
   });
 
   it('applyTheme skips trigger icon update when trigger element is missing', async () => {
@@ -816,7 +834,8 @@ describe('public API', () => {
     Object.defineProperty(document, 'getElementById', {
       value: vi.fn((id) => {
         if (id === 'theme-flavor-css') return mockLink;
-        if (id === 'theme-flavor-items' || id === 'theme-flavor-menu') return mockElement;
+        if (id === 'theme-flavor-items' || id === 'theme-flavor-menu')
+          return mockElement;
         return null;
       }),
       writable: true,
@@ -832,7 +851,8 @@ describe('public API', () => {
       value: vi.fn((id) => {
         if (id === 'theme-flavor-css') return mockLink;
         if (id === 'theme-flavor-trigger-icon') return mockElement;
-        if (id === 'theme-flavor-items' || id === 'theme-flavor-menu') return mockElement;
+        if (id === 'theme-flavor-items' || id === 'theme-flavor-menu')
+          return mockElement;
         return null;
       }),
       writable: true,
@@ -860,7 +880,9 @@ describe('public API', () => {
     // Ensure auto-load is set up
     setupThemeLinkAutoLoad();
     await initTheme(document, window);
-    expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-mocha');
+    expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+      'theme-catppuccin-mocha'
+    );
   });
 
   it('wireFlavorSelector sets up event listeners', () => {
@@ -1226,48 +1248,51 @@ describe('public API', () => {
     }
   });
 
-  it.each(['ArrowDown', 'ArrowUp'])('wireFlavorSelector handles %s key navigation', (key) => {
-    const mockDropdown = {
-      ...mockElement,
-      classList: {
-        ...mockElement.classList,
-        add: vi.fn(),
-        contains: vi.fn(() => false),
-      },
-    };
-    const mockTrigger = {
-      ...mockElement,
-      addEventListener: vi.fn(),
-      setAttribute: vi.fn(),
-      closest: vi.fn(() => mockDropdown),
-    };
-    Object.defineProperty(document, 'getElementById', {
-      value: vi.fn((id) => {
-        if (id === 'theme-flavor-menu') return mockElement;
-        if (id === 'theme-flavor-trigger') return mockTrigger;
-        return null;
-      }),
-      writable: true,
-    });
+  it.each(['ArrowDown', 'ArrowUp'])(
+    'wireFlavorSelector handles %s key navigation',
+    (key) => {
+      const mockDropdown = {
+        ...mockElement,
+        classList: {
+          ...mockElement.classList,
+          add: vi.fn(),
+          contains: vi.fn(() => false),
+        },
+      };
+      const mockTrigger = {
+        ...mockElement,
+        addEventListener: vi.fn(),
+        setAttribute: vi.fn(),
+        closest: vi.fn(() => mockDropdown),
+      };
+      Object.defineProperty(document, 'getElementById', {
+        value: vi.fn((id) => {
+          if (id === 'theme-flavor-menu') return mockElement;
+          if (id === 'theme-flavor-trigger') return mockTrigger;
+          return null;
+        }),
+        writable: true,
+      });
 
-    const mockKeyEvent = {
-      key,
-      preventDefault: vi.fn(),
-    };
+      const mockKeyEvent = {
+        key,
+        preventDefault: vi.fn(),
+      };
 
-    wireFlavorSelector(document, window);
+      wireFlavorSelector(document, window);
 
-    const keydownHandler = mockTrigger.addEventListener.mock.calls.find(
-      (call) => call[0] === 'keydown'
-    )?.[1];
+      const keydownHandler = mockTrigger.addEventListener.mock.calls.find(
+        (call) => call[0] === 'keydown'
+      )?.[1];
 
-    if (keydownHandler) {
-      keydownHandler(mockKeyEvent);
-      expect(mockKeyEvent.preventDefault).toHaveBeenCalled();
-      expect(mockDropdown.classList.add).toHaveBeenCalledWith('is-active');
-      expect(mockTrigger.setAttribute).toHaveBeenCalledWith('aria-expanded', 'true');
+      if (keydownHandler) {
+        keydownHandler(mockKeyEvent);
+        expect(mockKeyEvent.preventDefault).toHaveBeenCalled();
+        expect(mockDropdown.classList.add).toHaveBeenCalledWith('is-active');
+        expect(mockTrigger.setAttribute).toHaveBeenCalledWith('aria-expanded', 'true');
+      }
     }
-  });
+  );
 
   it('wireFlavorSelector handles Escape key to close dropdown', () => {
     const mockDropdown = {
@@ -1675,7 +1700,10 @@ describe('public API', () => {
         handler({ preventDefault: vi.fn() });
       },
       verify: (mocks: any) => {
-        expect(mocks.mockTrigger.setAttribute).toHaveBeenCalledWith('aria-expanded', 'false');
+        expect(mocks.mockTrigger.setAttribute).toHaveBeenCalledWith(
+          'aria-expanded',
+          'false'
+        );
       },
       hasMenuItems: false,
     },
@@ -1728,7 +1756,10 @@ describe('public API', () => {
         handler({ preventDefault: vi.fn() });
       },
       verify: (mocks: any) => {
-        expect(mocks.mockTrigger.setAttribute).toHaveBeenCalledWith('aria-expanded', 'false');
+        expect(mocks.mockTrigger.setAttribute).toHaveBeenCalledWith(
+          'aria-expanded',
+          'false'
+        );
       },
       hasMenuItems: true,
     },
@@ -2739,7 +2770,9 @@ describe('public API', () => {
       await initTheme(document as any, window as any);
 
       // Verify theme class is applied
-      expect(document.documentElement.classList.add).toHaveBeenCalledWith('theme-catppuccin-latte');
+      expect(document.documentElement.classList.add).toHaveBeenCalledWith(
+        'theme-catppuccin-latte'
+      );
     });
   });
 
@@ -3030,7 +3063,7 @@ describe('public API', () => {
       mockLocalStorage.getItem.mockReturnValue('catppuccin-latte');
       Object.defineProperty(document.documentElement, 'getAttribute', {
         value: vi.fn((attr) => {
-          if (attr === 'data-baseurl') return '/bulma-turbo-themes';
+          if (attr === 'data-baseurl') return '/turbo-themes';
           return null;
         }),
         writable: true,
@@ -3065,13 +3098,13 @@ describe('public API', () => {
       await initTheme(document, window);
 
       // Verify theme link was created with correct href
-      expect(mockThemeLink.href).toContain('/bulma-turbo-themes/assets/css/themes/');
+      expect(mockThemeLink.href).toContain('/turbo-themes/assets/css/themes/');
     });
 
     it('correctly creates theme selector elements in wireFlavorSelector', () => {
       Object.defineProperty(document.documentElement, 'getAttribute', {
         value: vi.fn((attr) => {
-          if (attr === 'data-baseurl') return '/bulma-turbo-themes';
+          if (attr === 'data-baseurl') return '/turbo-themes';
           return null;
         }),
         writable: true,

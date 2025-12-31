@@ -45,7 +45,13 @@ export default [
     },
   },
   {
-    files: ['test/**/*.ts', 'e2e/**/*.ts', 'vitest.config.ts', 'playwright.config.ts', '**/*.mjs'],
+    files: [
+      'test/**/*.ts',
+      'e2e/**/*.ts',
+      'vitest.config.ts',
+      'playwright.config.ts',
+      '**/*.mjs',
+    ],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -75,6 +81,12 @@ export default [
         requestAnimationFrame: 'readonly',
         URL: 'readonly',
         HTMLLinkElement: 'readonly',
+        Window: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLSelectElement: 'readonly',
       },
     },
     plugins: {
@@ -95,7 +107,12 @@ export default [
     },
   },
   {
-    files: ['**/*.config.js', 'vite.config.js', 'postcss.config.js', 'purgecss.config.js'],
+    files: [
+      '**/*.config.js',
+      'vite.config.js',
+      'postcss.config.js',
+      'purgecss.config.js',
+    ],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 2021,
