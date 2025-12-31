@@ -1,18 +1,18 @@
 {
-  "name": "@turbocoder13/bulma-turbo-themes",
+  "name": "@turbocoder13/turbo-themes",
   "version": "0.10.8",
-  "description": "Bulma theme packs and an accessible theme selector.",
+  "description": "Universal theme packs and an accessible theme selector.",
   "license": "MIT",
   "type": "module",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TurboCoder13/bulma-turbo-themes.git"
+    "url": "git+https://github.com/TurboCoder13/turbo-themes.git"
   },
   "bugs": {
-    "url": "https://github.com/TurboCoder13/bulma-turbo-themes/issues"
+    "url": "https://github.com/TurboCoder13/turbo-themes/issues"
   },
-  "homepage": "https://turbocoder13.github.io/bulma-turbo-themes/",
+  "homepage": "https://turbocoder13.github.io/turbo-themes/",
   "author": "Turbo Coder",
   "keywords": [
     "bulma",
@@ -20,9 +20,7 @@
     "css",
     "design-system",
     "accessibility",
-    "design-tokens",
-    "react-native",
-    "cross-platform"
+    "design-tokens"
   ],
   "sideEffects": false,
   "exports": {
@@ -34,31 +32,36 @@
       "types": "./dist/tokens/index.d.ts",
       "import": "./dist/tokens/index.js"
     },
-    "./tokens/react-native": {
-      "types": "./dist/tokens/react-native/index.d.ts",
-      "import": "./dist/tokens/react-native/index.js"
-    },
     "./tokens.json": "./dist/tokens.json",
-    "./css/*": "./assets/css/themes/*"
+    "./css/*": "./assets/css/themes/*",
+    "./adapters/tailwind/preset": "./dist/adapters/tailwind/preset.js",
+    "./adapters/bootstrap/_variables.scss": "./dist/adapters/bootstrap/_variables.scss",
+    "./adapters/bootstrap/_utilities.scss": "./dist/adapters/bootstrap/_utilities.scss",
+    "./core/turbo.css": "./assets/css/turbo-core.css",
+    "./adapters/bulma.css": "./assets/css/adapters/bulma.css"
   },
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**",
-    "assets/css/themes/*.css"
+    "assets/css/themes/*.css",
+    "assets/css/turbo-core.css",
+    "assets/css/adapters/*.css"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node scripts/generate-tokens-json.mjs",
+    "build": "tsc -p tsconfig.json && node scripts/generate-tokens-json.mjs && node scripts/copy-adapters.mjs",
     "build:css": "vite build --mode css",
     "build:themes": "node scripts/generate-themes-sass.mjs && node scripts/build-themes.mjs",
     "build:js": "bunx esbuild assets/js/theme-selector.js --minify --outfile=assets/js/theme-selector.min.js --target=es2020",
     "build:dev": "./scripts/local/build.sh --dev",
     "build:prod": "./scripts/local/build.sh --prod",
+    "build:tokens:swift": "bun run build && node scripts/prepare-style-dictionary.mjs && bunx style-dictionary build --config config/style-dictionary.swift.js && node scripts/copy-swift-dist.mjs",
+    "build:tokens:all": "bun run build:tokens:css && bun run build:tokens:python && bun run build:tokens:swift",
+    "build:platforms": "node scripts/build-all-platforms.mjs",
     "serve": "bun run build && bun run build:themes && bundle exec jekyll serve --livereload --incremental",
     "build:ci:jekyll": "./scripts/ci/build-jekyll.sh",
     "build:gem": "./scripts/build-gem.sh",
     "build:all": "bun run build && bun run build:gem",
     "test": "vitest run --coverage",
-    "lint": "eslint . --ext .ts --max-warnings=0",
     "format": "uv run lintro check",
     "format:write": "uv run lintro fmt",
     "mdlint": "markdownlint '**/*.md' --ignore node_modules --ignore-path .markdownlintignore",
@@ -66,7 +69,8 @@
     "coverage:badges": "node scripts/ci/coverage-badges.mjs",
     "css:budget": "node scripts/ci/css-budget.mjs",
     "theme:sync": "node scripts/sync-catppuccin.mjs",
-    "e2e:prep": "bun run build && bun run build:themes && bundle exec jekyll build --config _config.yml",
+    "examples:prep": "node scripts/prepare-examples.mjs",
+    "e2e:prep": "bun run build && bun run build:themes && bundle exec jekyll build --config _config.yml && bun run examples:prep",
     "e2e:start": "node scripts/e2e-serve.mjs",
     "e2e": "playwright test",
     "e2e:ci": "playwright test",
@@ -85,37 +89,26 @@
     "test:workflows": "./scripts/local/test-workflows-act.sh",
     "test:workflows:quick": "./scripts/local/test-workflows-act.sh --quick",
     "test:workflows:single": "./scripts/local/test-workflows-act.sh --single",
-    "prepare": "[ -z \"$npm_config_omit\" ] && husky || true",
-    "prepublishOnly": "bun run build && bun run build:themes && bun run test"
+    "prepare": "husky || true",
+    "prepublishOnly": "bun run build && bun run build:themes && bun run test",
+    "build:tokens:css": "node scripts/generate-turbo-css.mjs",
+    "build:tokens:python": "node scripts/generate-python.mjs"
   },
   "lint-staged": {
     "*.{json,md,yml,yaml,css,html}": [
       "uv run lintro fmt"
     ]
   },
-  "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-native": ">=0.70.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-native": {
-      "optional": true
-    }
-  },
+  "peerDependencies": {},
   "devDependencies": {
-    "react": "^19.0.0",
-    "@types/react": "^19.0.0",
-    "@testing-library/react": "^16.0.1",
-    "react-dom": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
     "@axe-core/playwright": "^4.11.0",
     "@catppuccin/palette": "^1.7.1",
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "@playwright/test": "^1.56.1",
     "@primer/primitives": "^11.3.1",
+    "@testing-library/react": "^16.0.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
     "@typescript-eslint/parser": "^8.46.3",
     "@vitest/coverage-v8": "^4.0.8",
@@ -128,7 +121,10 @@
     "lightningcss": "^1.30.2",
     "lint-staged": "^16.2.6",
     "markdownlint-cli": "^0.45.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sass": "^1.94.0",
+    "style-dictionary": "^5.1.1",
     "stylelint": "^16.25.0",
     "stylelint-config-standard": "^39.0.1",
     "typescript": "^5.9.3",
