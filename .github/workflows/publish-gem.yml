@@ -81,7 +81,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
         with:
-          ruby-version: '3.3.6'
+          ruby-version: '3.4.8'
           bundler-cache: true
 
       - name: Install dependencies
@@ -166,7 +166,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
         with:
-          ruby-version: '3.3.6'
+          ruby-version: '3.4.8'
 
       - name: Configure RubyGems credentials
         uses: rubygems/configure-rubygems-credentials@bc6dd217f8a4f919d6835fcfefd470ef821f5c44 # v1.0.0
