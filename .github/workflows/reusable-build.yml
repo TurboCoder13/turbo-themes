@@ -32,24 +32,14 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            uploads.github.com:443
+            github.com:443 api.github.com:443 uploads.github.com:443
             pipelines.actions.githubusercontent.com:443
-            objects.githubusercontent.com:443
-            codeload.github.com:443
+            objects.githubusercontent.com:443 codeload.github.com:443
             github-releases.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
-            registry.npmjs.org:443
-            npmjs.org:443
-            bun.sh:443
-            rubygems.org:443
-            api.rubygems.org:443
-            index.rubygems.org:443
-            bundler.rubygems.org:443
-            rubygems.global.ssl.fastly.net:443
-            cache.ruby-lang.org:443
-            pypi.org:443
+            release-assets.githubusercontent.com:443 registry.npmjs.org:443
+            npmjs.org:443 bun.sh:443 rubygems.org:443 api.rubygems.org:443
+            index.rubygems.org:443 bundler.rubygems.org:443
+            rubygems.global.ssl.fastly.net:443 cache.ruby-lang.org:443 pypi.org:443
             files.pythonhosted.org:443
 
       - name: Checkout
@@ -66,6 +56,15 @@ jobs:
 
       - name: Build CSS Themes
         run: bun run build:themes
+
+      - name: Generate tokens (css/python/swift)
+        run: bun run build:tokens:all
+
+      - name: Verify generated tokens are committed
+        shell: bash
+        run: |
+          git status --porcelain
+          git diff --quiet --exit-code
 
       - name: Jekyll build
         run: bun run build:ci:jekyll

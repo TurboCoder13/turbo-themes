@@ -1,6 +1,7 @@
 # Workflow Triggers Documentation
 
-This document provides a comprehensive overview of all GitHub Actions workflows in bulma-turbo-themes, their triggers, and purposes.
+This document provides a comprehensive overview of all GitHub Actions workflows in
+turbo-themes, their triggers, and purposes.
 
 ## Trigger Matrix
 
@@ -108,7 +109,8 @@ This document provides a comprehensive overview of all GitHub Actions workflows 
 
 #### deploy-pages.yml
 
-**Triggers:** workflow_run (after Quality Check - CI Pipeline), Manual (workflow_dispatch)  
+**Triggers:** workflow_run (after Quality Check - CI Pipeline), Manual
+(workflow_dispatch)  
 **Purpose:** Deploys Jekyll site to GitHub Pages with test reports
 
 **What it does:**
@@ -127,8 +129,8 @@ This document provides a comprehensive overview of all GitHub Actions workflows 
 
 #### release-version-pr.yml
 
-**Triggers:** Push to main, Manual (workflow_dispatch)
-**Purpose:** Create a version bump PR with CHANGELOG updates
+**Triggers:** Push to main, Manual (workflow_dispatch) **Purpose:** Create a version
+bump PR with CHANGELOG updates
 
 **What it does:**
 
@@ -163,15 +165,16 @@ This document provides a comprehensive overview of all GitHub Actions workflows 
 - Creates and pushes git tag (e.g., v1.2.3) if missing
 - Triggers release-publish-pr workflow for npm publishing
 
-**Optimization:** Skips all quality gates (trust-and-skip pattern)
-**Speed:** Tag creation completes in < 2 minutes (was 15-20 minutes before optimization)
+**Optimization:** Skips all quality gates (trust-and-skip pattern) **Speed:** Tag
+creation completes in < 2 minutes (was 15-20 minutes before optimization)
 
-**Use case:** Completes the release automation pipeline; manual trigger available for emergencies
+**Use case:** Completes the release automation pipeline; manual trigger available for
+emergencies
 
 #### release-publish-pr.yml
 
-**Triggers:** Push tags matching `v*.*.*`, Manual (workflow_dispatch)
-**Purpose:** Publish to npm and create GitHub release
+**Triggers:** Push tags matching `v*.*.*`, Manual (workflow_dispatch) **Purpose:**
+Publish to npm and create GitHub release
 
 **What it does:**
 
@@ -183,26 +186,27 @@ This document provides a comprehensive overview of all GitHub Actions workflows 
   - CycloneDX JSON/XML (with signatures)
   - SPDX JSON (with signature)
 
-**Optimization:** Skips redundant quality gates (trust-and-skip pattern)
-**Fresh Build:** Ensures published package matches exact tagged code
+**Optimization:** Skips redundant quality gates (trust-and-skip pattern) **Fresh
+Build:** Ensures published package matches exact tagged code
 
 **Requirements:**
 
 - NPM_TOKEN secret must be configured (with "Authorization only" 2FA level)
-- Valid npm credentials for @turbocoder13/bulma-turbo-themes
+- Valid npm credentials for @turbocoder13/turbo-themes
 
 **Example:** Tag `v1.2.3` triggers full publish and release
 
 #### publish-npm-test.yml
 
-**Triggers:** Manual (workflow_dispatch)
-**Purpose:** Test npm publish with custom dist-tag
+**Triggers:** Manual (workflow_dispatch) **Purpose:** Test npm publish with custom
+dist-tag
 
 **Inputs:**
 
 - `tag` - npm dist-tag (e.g., beta, next, canary)
 
-**Optimization:** Skips quality and build jobs (trust-and-skip pattern), keeps SBOM for publish testing
+**Optimization:** Skips quality and build jobs (trust-and-skip pattern), keeps SBOM for
+publish testing
 
 **Use case:** Testing publish process with pre-release tags
 
@@ -285,7 +289,8 @@ quality-ci-main, quality-e2e, reporting-lighthouse-ci
   └── deploy-pages (via workflow_run, downloads artifacts from all 3)
 ```
 
-**Note:** Release workflows use the **trust-and-skip pattern** to avoid duplicate quality checks. All validation happens in PR workflows before code reaches main.
+**Note:** Release workflows use the **trust-and-skip pattern** to avoid duplicate
+quality checks. All validation happens in PR workflows before code reaches main.
 
 ## Manual Workflows
 
@@ -314,7 +319,8 @@ Workflows use concurrency groups to prevent multiple runs:
 - `publish-${{ github.ref }}` - Publish per tag
 - `semantic-release` - One semantic release at a time
 
-**cancel-in-progress:** Most workflows cancel in-progress runs when new commits arrive, except:
+**cancel-in-progress:** Most workflows cancel in-progress runs when new commits arrive,
+except:
 
 - Publishing workflows (never cancel)
 - Release workflows (never cancel)

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-description: Create a report to help us improve bulma-turbo-themes
+description: Create a report to help us improve turbo-themes
 labels: [bug, needs-triage]
 title: '[Bug]: '
 body:
@@ -26,7 +26,7 @@ body:
       label: Steps to reproduce
       description: Exact commands and outputs that reproduce the issue
       placeholder: |
-        1. Install package with `npm install @turbocoder13/bulma-turbo-themes`
+        1. Install package with `npm install @turbocoder13/turbo-themes`
         2. Import theme selector
         3. Click on dropdown
         4. See error in console
@@ -73,7 +73,7 @@ body:
     id: env-package
     attributes:
       label: Package version
-      description: What version of @turbocoder13/bulma-turbo-themes are you using?
+      description: What version of @turbocoder13/turbo-themes are you using?
       placeholder: 'Example: 0.1.0 (check package.json or npm list)'
 
   - type: textarea

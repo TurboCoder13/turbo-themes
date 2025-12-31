@@ -1,0 +1,90 @@
+---
+name: Publish Python Package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  publish-python:
+    name: 📦 Publish to PyPI
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Harden Runner
+        if: ${{ !env.ACT }}
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443 api.github.com:443 uploads.github.com:443
+            pipelines.actions.githubusercontent.com:443
+            objects.githubusercontent.com:443 codeload.github.com:443
+            github-releases.githubusercontent.com:443
+            release-assets.githubusercontent.com:443 pypi.org:443
+            files.pythonhosted.org:443
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
+        with:
+          node-version: 22
+          ruby-version: 3.3
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Build JS + tokens
+        run: |
+          bun run build
+          bun run build:tokens:all
+
+      - name: Test Python package
+        working-directory: python
+        run: |
+          python3 -c "
+          import sys
+          sys.path.insert(0, 'src')
+
+          # Run tests manually since pytest may not be available
+          try:
+              from turbo_themes.manager import ThemeManager
+              manager = ThemeManager()
+              print('✅ ThemeManager creation')
+
+              manager.set_theme('github-light')
+              print('✅ Theme switching')
+
+              variables = manager.apply_theme_to_css_variables()
+              print(f'✅ CSS variables generation ({len(variables)} vars)')
+
+              json_data = manager.export_theme_json('catppuccin-latte')
+              print('✅ JSON export')
+
+              print('✅ All Python tests passed!')
+
+          except Exception as e:
+              print(f'❌ Python test failed: {e}')
+              import traceback
+              traceback.print_exc()
+              sys.exit(1)
+          "
+
+      - name: Build Python package
+        working-directory: python
+        run: |
+          uv build
+
+      - name: Publish to PyPI (trusted publishing)
+        working-directory: python
+        run: |
+          uv publish

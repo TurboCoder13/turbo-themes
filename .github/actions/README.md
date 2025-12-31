@@ -1,6 +1,6 @@
 # Composite Actions
 
-This directory contains reusable composite actions for the bulma-turbo-themes project.
+This directory contains reusable composite actions for the turbo-themes project.
 
 ## 📋 Available Actions
 
@@ -8,7 +8,8 @@ This directory contains reusable composite actions for the bulma-turbo-themes pr
 
 Set up Node.js and Ruby with dependency caching.
 
-**Purpose:** Reduce duplication across workflows by providing a standardized environment setup.
+**Purpose:** Reduce duplication across workflows by providing a standardized environment
+setup.
 
 **Inputs:**
 
@@ -37,7 +38,8 @@ Set up Node.js and Ruby with dependency caching.
 
 Post or update a comment on a pull request.
 
-**Purpose:** Provide consistent PR commenting with merge-update support to avoid comment spam.
+**Purpose:** Provide consistent PR commenting with merge-update support to avoid comment
+spam.
 
 **Inputs:**
 
@@ -73,7 +75,8 @@ Post or update a comment on a pull request.
 
 ### Reduces Duplication
 
-Instead of repeating 10+ lines of setup code in every workflow, use a single action call.
+Instead of repeating 10+ lines of setup code in every workflow, use a single action
+call.
 
 **Before:**
 

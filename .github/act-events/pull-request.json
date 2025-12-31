@@ -1,0 +1,24 @@
+{
+  "action": "opened",
+  "number": 1,
+  "pull_request": {
+    "head": {
+      "ref": "feature/act-test",
+      "sha": "2222222222222222222222222222222222222222"
+    },
+    "base": {
+      "ref": "main",
+      "sha": "1111111111111111111111111111111111111111"
+    },
+    "title": "chore: act test",
+    "body": "Test PR event for ACT"
+  },
+  "repository": {
+    "full_name": "turbocoder13/turbo-themes",
+    "default_branch": "main"
+  },
+  "sender": {
+    "login": "act-runner"
+  }
+}
+

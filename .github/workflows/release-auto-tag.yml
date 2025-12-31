@@ -38,17 +38,15 @@ jobs:
       actions: write
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            objects.githubusercontent.com:443
+            github.com:443 api.github.com:443 objects.githubusercontent.com:443
             github-releases.githubusercontent.com:443
             release-assets.githubusercontent.com:443
-            pipelines.actions.githubusercontent.com:443
-            bun.sh:443
+            pipelines.actions.githubusercontent.com:443 bun.sh:443
             registry.npmjs.org:443
 
       - name: Checkout
@@ -84,16 +82,15 @@ jobs:
       - name: Check version change
         id: version-check
         run: >
-          ./scripts/ci/check-version-change.sh
-          "${{ github.event.inputs.version }}"
+          ./scripts/ci/check-version-change.sh "${{ github.event.inputs.version }}"
 
       - name: Configure git authentication with app token
         if: >
           steps.version-check.outputs.version_changed == 'true' &&
           steps.version-check.outputs.tag_exists == 'false'
         run: |
-          git config --global user.name "bulma-turbo-themes-release-bot[bot]"
-          git config --global user.email "bulma-turbo-themes-release-bot[bot]@users.noreply.github.com"
+          git config --global user.name "turbo-themes-release-bot[bot]"
+          git config --global user.email "turbo-themes-release-bot[bot]@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git"
 
       - name: Create and push release tag
@@ -101,9 +98,9 @@ jobs:
           steps.version-check.outputs.version_changed == 'true' &&
           steps.version-check.outputs.tag_exists == 'false'
         run: >
-          ./scripts/ci/create-release-tag.sh
-          "${{ steps.version-check.outputs.current_version }}"
-          "${{ github.event.inputs.prerelease }}"
+          ./scripts/ci/create-release-tag.sh "${{
+          steps.version-check.outputs.current_version }}" "${{
+          github.event.inputs.prerelease }}"
 
       - name: Generate Auto Tag Summary
         if: always()
