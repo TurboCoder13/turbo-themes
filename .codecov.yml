@@ -1,10 +1,11 @@
+---
 # Codecov Configuration
 # Documentation: https://docs.codecov.com/docs/codecov-yaml
 
 codecov:
-  require_ci_to_pass: yes
+  require_ci_to_pass: true
   notify:
-    wait_for_ci: yes
+    wait_for_ci: true
 
 coverage:
   precision: 2
@@ -28,8 +29,8 @@ comment:
   layout: 'reach,diff,flags,tree,reach'
   behavior: default
   require_changes: false
-  require_base: no
-  require_head: yes
+  require_base: false
+  require_head: true
 
 ignore:
   - '_site/**/*'

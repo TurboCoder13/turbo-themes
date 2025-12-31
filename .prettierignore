@@ -3,11 +3,4 @@ build
 dist
 node_modules
 .venv
-
-# Ignore generated CSS and SCSS files (they're build artifacts)
-assets/css/themes/*.css
-src/scss/_themes.scss
-src/scss/theme-*.scss
-
-# Let stylelint handle CSS formatting (prevent prettier/stylelint conflicts)
-assets/css/*.css
+.lintro

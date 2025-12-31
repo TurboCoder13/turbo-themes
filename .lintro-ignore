@@ -15,12 +15,16 @@ node_modules/**
 dist/**
 coverage/**
 
+# Generated Python theme files (long font-family strings)
+python/src/turbo_themes/themes.py
+
 # Cache directories
 .jekyll-cache/**
 .sass-cache/**
 .jekyll-metadata
 playwright/.cache/**
 .lintro/**
+**/.mypy_cache/**
 
 # Test and report artifacts
 test-results/**
@@ -30,3 +34,7 @@ e2e/snapshots/**
 
 # Generated badges
 assets/static/badges/**
+
+# GitHub metadata and policies handled externally
+.github/**
+.allstar/**

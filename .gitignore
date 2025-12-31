@@ -55,3 +55,8 @@ assets/css/themes/*.css
 src/scss/_themes.scss
 IMPLEMENTATION-PLAN-PERFORMANCE.md
 plan-performance-improvements.md
+
+# Local ACT tooling
+.secrets.act
+.act/
+

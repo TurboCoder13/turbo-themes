@@ -3,12 +3,11 @@ set -e
 # Run quick CI checks before commit
 echo "🔍 Running pre-commit CI checks..."
 
-# Run linting and formatting
-npm run lint
-npm run format
+# Run linting and formatting via lintro
+uv run lintro check
 
 # Run theme sync to ensure deterministic generation
-npm run theme:sync
+bun run theme:sync
 
 # Check for non-deterministic changes in generated files only
 GENERATED_PATHS="src/themes/packs/catppuccin.synced.ts"
@@ -20,9 +19,9 @@ if ! git diff --quiet -- "$GENERATED_PATHS" || [ -n "$(git ls-files --others --e
 fi
 
 # Run TypeScript build
-npm run build
+bun run build
 
 # Run tests
-npm test --silent || exit 1
+bun run test --silent || exit 1
 
 echo "✅ Pre-commit checks passed!"

@@ -1,5 +1,6 @@
+---
 # Production configuration for GitHub Pages
-baseurl: '/bulma-turbo-themes'
+baseurl: '/turbo-themes'
 
 # Set environment to production for minified assets
 environment: production
