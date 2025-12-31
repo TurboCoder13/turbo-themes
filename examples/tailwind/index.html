@@ -1,0 +1,96 @@
+<!doctype html>
+<html data-theme="catppuccin-mocha" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turbo Themes - Tailwind</title>
+    <link rel="stylesheet" href="../../dist/core/all-themes.css" />
+    <link rel="stylesheet" href="./dist/output.css" />
+  </head>
+  <body class="bg-background text-foreground p-8">
+    <header
+      class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-6"
+    >
+      <div>
+        <h1 class="text-3xl font-semibold text-primary">Tailwind + Turbo Themes</h1>
+        <p class="text-muted">
+          Uses the Tailwind preset from the Turbo Themes distribution.
+        </p>
+      </div>
+      <label class="text-sm text-muted">
+        Theme
+        <select
+          id="theme-selector"
+          class="ml-2 rounded border border-default bg-surface text-foreground px-2 py-1"
+        >
+          <option value="catppuccin-mocha">Catppuccin Mocha</option>
+          <option value="catppuccin-latte">Catppuccin Latte</option>
+          <option value="dracula">Dracula</option>
+          <option value="github-dark">GitHub Dark</option>
+          <option value="github-light">GitHub Light</option>
+          <option value="bulma-light">Bulma Light</option>
+          <option value="bulma-dark">Bulma Dark</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="bg-surface border border-default rounded-lg p-4 mb-4 shadow-sm">
+      <h2 class="text-xl font-semibold mb-2">Buttons</h2>
+      <div class="flex gap-2 flex-wrap">
+        <button class="bg-primary text-inverse px-4 py-2 rounded">Primary</button>
+        <button class="bg-success text-inverse px-4 py-2 rounded">Success</button>
+        <button class="bg-danger text-inverse px-4 py-2 rounded">Danger</button>
+      </div>
+    </section>
+
+    <section class="bg-surface border border-default rounded-lg p-4 mb-4 shadow-sm">
+      <h2 class="text-xl font-semibold mb-2">Card</h2>
+      <p class="text-muted mb-3">
+        Utility classes come from the Tailwind preset; colors resolve from the active
+        Turbo theme.
+      </p>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="bg-surface-alt border border-strong rounded-lg p-4">
+          <h3 class="font-semibold text-foreground mb-1">Surface</h3>
+          <p class="text-muted text-sm">Uses surface and border tokens.</p>
+        </div>
+        <div class="bg-surface-alt border border-strong rounded-lg p-4">
+          <h3 class="font-semibold text-foreground mb-1">Typography</h3>
+          <p class="text-muted text-sm">Text colors map to tokenized palette.</p>
+        </div>
+        <div class="bg-surface-alt border border-strong rounded-lg p-4">
+          <h3 class="font-semibold text-foreground mb-1">State</h3>
+          <p class="text-muted text-sm">Buttons pick up brand/state colors.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface border border-default rounded-lg p-4 shadow-sm">
+      <h2 class="text-xl font-semibold mb-2">Alerts</h2>
+      <div class="flex flex-col gap-2">
+        <div
+          class="rounded border-l-4 border-primary bg-primary/10 text-foreground px-3 py-2"
+        >
+          Primary alert
+        </div>
+        <div
+          class="rounded border-l-4 border-success bg-success/10 text-foreground px-3 py-2"
+        >
+          Success alert
+        </div>
+        <div
+          class="rounded border-l-4 border-danger bg-danger/10 text-foreground px-3 py-2"
+        >
+          Danger alert
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const selector = document.getElementById('theme-selector');
+      selector.addEventListener('change', (e) => {
+        document.documentElement.dataset.theme = e.target.value;
+      });
+    </script>
+  </body>
+</html>

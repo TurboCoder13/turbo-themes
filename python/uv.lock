@@ -1,0 +1,8 @@
+version = 1
+revision = 3
+requires-python = ">=3.10"
+
+[[package]]
+name = "turbo-themes"
+version = "0.10.8"
+source = { editable = "." }

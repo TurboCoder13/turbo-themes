@@ -32,7 +32,9 @@ export class BasePage {
 
     // Wait for the script module to load and initNavbar to be available
     await this.page.waitForFunction(
-      () => typeof window !== 'undefined' && typeof (window as Window).initNavbar === 'function',
+      () =>
+        typeof window !== 'undefined' &&
+        typeof (window as Window).initNavbar === 'function',
       { timeout: 5000 }
     );
 
@@ -45,9 +47,11 @@ export class BasePage {
     });
 
     // Wait for navbar to be initialized (check for active link if on a page with nav)
-    await this.page.waitForSelector('nav .navbar-item.is-active', { timeout: 2000 }).catch(() => {
-      // If no active link found, that's okay - might be on a page without matching nav
-    });
+    await this.page
+      .waitForSelector('nav .navbar-item.is-active', { timeout: 2000 })
+      .catch(() => {
+        // If no active link found, that's okay - might be on a page without matching nav
+      });
   }
 
   /**
@@ -97,7 +101,8 @@ export class BasePage {
     }
 
     // Normalize path: remove trailing slashes for comparison (except root)
-    const normalizedExpectedPath = expectedPath === '/' ? '/' : expectedPath.replace(/\/$/, '');
+    const normalizedExpectedPath =
+      expectedPath === '/' ? '/' : expectedPath.replace(/\/$/, '');
 
     // Click the link
     await link.click();
@@ -107,7 +112,8 @@ export class BasePage {
     try {
       await this.page.waitForURL(
         (url) => {
-          const currentPath = url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
+          const currentPath =
+            url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
           return currentPath === normalizedExpectedPath;
         },
         { timeout }
@@ -170,7 +176,9 @@ export class BasePage {
       );
 
       // Filter out null values and ensure we have valid names
-      names = namesWithNulls.filter((name): name is string => name !== null && name.length > 0);
+      names = namesWithNulls.filter(
+        (name): name is string => name !== null && name.length > 0
+      );
     }
 
     // Map each name to its Locator using getNavLink
@@ -241,7 +249,7 @@ export class BasePage {
     await expect
       .poll(
         async () => {
-          return await this.page.evaluate(() => localStorage.getItem('bulma-theme-flavor'));
+          return await this.page.evaluate(() => localStorage.getItem('turbo-theme'));
         },
         { timeout: 5000 }
       )
@@ -252,7 +260,10 @@ export class BasePage {
     const themeCss = this.page.locator(
       `link[data-theme-id="${escapeCssAttributeSelector(themeId)}"]`
     );
-    await expect(themeCss).toHaveAttribute('href', new RegExp(`${escapedThemeIdForCss}\\.css`));
+    await expect(themeCss).toHaveAttribute(
+      'href',
+      new RegExp(`${escapedThemeIdForCss}\\.css`)
+    );
   }
 
   /**

@@ -1,0 +1,209 @@
+<!doctype html>
+<html data-theme="catppuccin-mocha" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turbo Themes - Vanilla HTML</title>
+    <link rel="stylesheet" href="../../assets/css/themes/base.css" />
+    <link
+      id="theme-css"
+      rel="stylesheet"
+      href="../../assets/css/themes/catppuccin-mocha.css"
+    />
+    <style>
+      :root {
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        line-height: 1.4;
+      }
+      body {
+        background: var(--turbo-bg-base);
+        color: var(--turbo-text-primary);
+        padding: 2rem;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      select,
+      button {
+        font: inherit;
+      }
+      .card {
+        background: var(--turbo-bg-surface);
+        border: 1px solid var(--turbo-border-default);
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 20px
+          color-mix(in srgb, var(--turbo-shadow-200) 60%, transparent);
+      }
+      .card h2 {
+        margin-top: 0;
+        color: var(--turbo-text-primary);
+      }
+      .muted {
+        color: var(--turbo-text-muted);
+      }
+      .buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        border: none;
+        border-radius: 6px;
+        padding: 0.5rem 0.9rem;
+        cursor: pointer;
+        color: var(--turbo-text-inverse);
+      }
+      .btn-primary {
+        background: var(--turbo-brand-primary);
+      }
+      .btn-success {
+        background: var(--turbo-state-success);
+      }
+      .btn-danger {
+        background: var(--turbo-state-danger);
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0.75rem;
+      }
+      .metric {
+        padding: 0.75rem;
+        border-radius: 8px;
+        background: var(--turbo-bg-surface-alt);
+        border: 1px solid var(--turbo-border-strong);
+      }
+      code {
+        background: var(--turbo-bg-surface-alt);
+        padding: 0.1rem 0.3rem;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Turbo Themes - Vanilla HTML</h1>
+        <p class="muted">Switch themes to preview tokens in a simple HTML page.</p>
+      </div>
+      <label>
+        <span class="muted">Theme</span><br />
+        <select id="theme-selector">
+          <option value="catppuccin-mocha">Catppuccin Mocha</option>
+          <option value="catppuccin-latte">Catppuccin Latte</option>
+          <option value="dracula">Dracula</option>
+          <option value="github-dark">GitHub Dark</option>
+          <option value="github-light">GitHub Light</option>
+          <option value="bulma-light">Bulma Light</option>
+          <option value="bulma-dark">Bulma Dark</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="card">
+      <h2>Buttons</h2>
+      <div class="buttons">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-success">Success</button>
+        <button class="btn btn-danger">Danger</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Content</h2>
+      <p>
+        Body text using <code>var(--turbo-text-primary)</code>. Secondary copy uses
+        <span class="muted">var(--turbo-text-muted)</span>.
+      </p>
+      <ul>
+        <li>Lists inherit typography tokens.</li>
+        <li>Background surfaces use <code>--turbo-bg-surface</code>.</li>
+        <li>Borders use <code>--turbo-border-default</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Metrics</h2>
+      <div class="metrics">
+        <div class="metric">
+          <div class="muted">Active Users</div>
+          <strong>1,248</strong>
+        </div>
+        <div class="metric">
+          <div class="muted">Conversions</div>
+          <strong>3.8%</strong>
+        </div>
+        <div class="metric">
+          <div class="muted">Latency</div>
+          <strong>123 ms</strong>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = 'turbo-theme';
+        const DEFAULT_THEME = 'catppuccin-mocha';
+        const selector = document.getElementById('theme-selector');
+        const themeLink = document.getElementById('theme-css');
+
+        function applyTheme(id) {
+          const themeId = id || DEFAULT_THEME;
+          const root = document.documentElement;
+
+          // Apply data-theme
+          root.dataset.theme = themeId;
+
+          // Apply theme-* class for CSS that scopes to the class selector
+          Array.from(root.classList)
+            .filter((cls) => cls.startsWith('theme-'))
+            .forEach((cls) => root.classList.remove(cls));
+          root.classList.add(`theme-${themeId}`);
+
+          // Swap stylesheet
+          if (themeLink) {
+            themeLink.href = `../../assets/css/themes/${themeId}.css`;
+          }
+
+          // Persist choice
+          try {
+            localStorage.setItem(STORAGE_KEY, themeId);
+          } catch (e) {
+            console.warn('Could not persist theme selection', e);
+          }
+        }
+
+        // Initialize from storage or default
+        let initial = DEFAULT_THEME;
+        try {
+          initial = localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
+        } catch (e) {
+          console.warn('Could not read theme from storage', e);
+        }
+        if (selector) {
+          selector.value = initial;
+        }
+        applyTheme(initial);
+
+        // Wire selector changes
+        if (selector) {
+          selector.addEventListener('change', (e) => {
+            applyTheme(e.target.value);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

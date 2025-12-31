@@ -1,0 +1,26 @@
+:root {
+  /* Backgrounds */
+  --bulma-body-background-color: var(--turbo-bg-base);
+  --bulma-scheme-main: var(--turbo-bg-base);
+  --bulma-scheme-main-bis: var(--turbo-bg-surface);
+  --bulma-scheme-main-ter: var(--turbo-bg-surface-alt);
+
+  /* Text */
+  --bulma-body-color: var(--turbo-text-primary);
+  --bulma-text-weak: var(--turbo-text-secondary);
+  --bulma-light-invert: var(--turbo-text-inverse);
+
+  /* Brand & links */
+  --bulma-primary: var(--turbo-brand-primary);
+  --bulma-link: var(--turbo-accent-link, var(--turbo-brand-primary));
+
+  /* State colors */
+  --bulma-info: var(--turbo-state-info);
+  --bulma-success: var(--turbo-state-success);
+  --bulma-warning: var(--turbo-state-warning);
+  --bulma-danger: var(--turbo-state-danger);
+
+  /* Borders */
+  --bulma-border: var(--turbo-border-default);
+  --bulma-border-strong: var(--turbo-border-strong, var(--turbo-border-default));
+}

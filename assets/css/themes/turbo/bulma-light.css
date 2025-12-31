@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+
+[data-theme='bulma-light'] {
+  --turbo-bg-base: #ffffff;
+  --turbo-bg-surface: #f5f5f5;
+  --turbo-bg-surface-alt: #eeeeee;
+  --turbo-text-primary: #363636;
+  --turbo-text-secondary: #4a4a4a;
+  --turbo-text-inverse: #ffffff;
+  --turbo-brand-primary: #00d1b2;
+  --turbo-state-info: #3e8ed0;
+  --turbo-state-success: #48c78e;
+  --turbo-state-warning: #ffe08a;
+  --turbo-state-danger: #f14668;
+  --turbo-border-default: #dbdbdb;
+  --turbo-accent-link: #485fc7;
+  --turbo-heading-h1: #00d1b2;
+  --turbo-heading-h2: #485fc7;
+  --turbo-heading-h3: #3e8ed0;
+  --turbo-heading-h4: #48c78e;
+  --turbo-heading-h5: #ffe08a;
+  --turbo-heading-h6: #f14668;
+  --turbo-body-primary: #4a4a4a;
+  --turbo-body-secondary: #7a7a7a;
+  --turbo-link-default: #485fc7;
+  --turbo-selection-fg: #363636;
+  --turbo-selection-bg: #b5d5ff;
+  --turbo-blockquote-border: #dbdbdb;
+  --turbo-blockquote-fg: #4a4a4a;
+  --turbo-blockquote-bg: #f5f5f5;
+  --turbo-code-inline-fg: #f14668;
+  --turbo-code-inline-bg: #f5f5f5;
+  --turbo-code-block-fg: #363636;
+  --turbo-code-block-bg: #f5f5f5;
+  --turbo-table-border: #dbdbdb;
+  --turbo-table-stripe: #fafafa;
+  --turbo-table-thead-bg: #f0f0f0;
+  --turbo-table-cell-bg: #ffffff;
+  --turbo-table-header-fg: #363636;
+  --turbo-font-sans:
+    'Nunito Sans', BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  --turbo-font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  color-scheme: light;
+}

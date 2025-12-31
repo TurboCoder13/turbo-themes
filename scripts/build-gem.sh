@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Build script for bulma-turbo-themes Ruby gem
-# This script copies assets from npm build output to gem structure
+# Build script for turbo-themes Ruby gem
+# This script copies assets from Bun build output to gem structure
 # Usage: ./scripts/build-gem.sh
 
-set -e  # Exit on any error
+set -euo pipefail  # Exit on error/undefined var; fail pipelines
+
+command -v bun >/dev/null 2>&1 || { echo "bun is required (see CONTRIBUTING.md)"; exit 1; }
 
 # Colors for output
 RED='\033[0;31m'
@@ -26,19 +28,19 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
-print_status "$BLUE" "🔨 Building bulma-turbo-themes gem..."
+print_status "$BLUE" "🔨 Building turbo-themes gem..."
 
-# Step 1: Ensure npm build has been run
-print_status "$YELLOW" "  Checking if npm build has been run..."
+# Step 1: Ensure Bun build has been run
+print_status "$YELLOW" "  Checking if Bun build has been run..."
 if [ ! -d "dist" ] || [ ! -f "dist/index.js" ]; then
-    print_status "$YELLOW" "  npm build not found, running npm run build..."
-    npm run build
+    print_status "$YELLOW" "  Bun build not found, running bun run build..."
+    bun run build
 fi
 
 # Step 2: Sync version from package.json to gem version file
 print_status "$YELLOW" "  Syncing version from package.json..."
 VERSION=$(node -p "require('./package.json').version")
-VERSION_FILE="lib/bulma-turbo-themes/version.rb"
+VERSION_FILE="lib/turbo-themes/version.rb"
 if [ -f "$VERSION_FILE" ]; then
     # Update version in version.rb (portable sed for macOS/Linux)
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -77,11 +79,11 @@ print_status "$GREEN" "  ✅ Assets verified"
 # Step 5: Build the gem
 print_status "$YELLOW" "  Building gem..."
 if command -v gem >/dev/null 2>&1; then
-    gem build bulma-turbo-themes.gemspec
+    gem build turbo-themes.gemspec
     print_status "$GREEN" "  ✅ Gem built successfully"
     
     # Show gem file info
-    GEM_FILE="bulma-turbo-themes-${VERSION}.gem"
+    GEM_FILE="turbo-themes-${VERSION}.gem"
     if [ -f "$GEM_FILE" ]; then
         print_status "$GREEN" "  📦 Gem file: $GEM_FILE"
         ls -lh "$GEM_FILE"

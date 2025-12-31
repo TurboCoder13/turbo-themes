@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
+[data-theme='dracula'] {
+  --turbo-bg-base: #282a36;
+  --turbo-bg-surface: #21222c;
+  --turbo-bg-surface-alt: #44475a;
+  --turbo-text-primary: #f8f8f2;
+  --turbo-text-secondary: #6272a4;
+  --turbo-text-inverse: #282a36;
+  --turbo-brand-primary: #bd93f9;
+  --turbo-state-info: #8be9fd;
+  --turbo-state-success: #50fa7b;
+  --turbo-state-warning: #f1fa8c;
+  --turbo-state-danger: #ff5555;
+  --turbo-border-default: #44475a;
+  --turbo-accent-link: #8be9fd;
+  --turbo-heading-h1: #ff79c6;
+  --turbo-heading-h2: #bd93f9;
+  --turbo-heading-h3: #8be9fd;
+  --turbo-heading-h4: #50fa7b;
+  --turbo-heading-h5: #ffb86c;
+  --turbo-heading-h6: #f1fa8c;
+  --turbo-body-primary: #f8f8f2;
+  --turbo-body-secondary: #6272a4;
+  --turbo-link-default: #8be9fd;
+  --turbo-selection-fg: #f8f8f2;
+  --turbo-selection-bg: #44475a;
+  --turbo-blockquote-border: #bd93f9;
+  --turbo-blockquote-fg: #6272a4;
+  --turbo-blockquote-bg: #21222c;
+  --turbo-code-inline-fg: #50fa7b;
+  --turbo-code-inline-bg: #21222c;
+  --turbo-code-block-fg: #f8f8f2;
+  --turbo-code-block-bg: #21222c;
+  --turbo-table-border: #44475a;
+  --turbo-table-stripe: #21222c;
+  --turbo-table-thead-bg: #44475a;
+  --turbo-table-cell-bg: #282a36;
+  --turbo-table-header-fg: #f8f8f2;
+  --turbo-font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --turbo-font-mono:
+    'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  color-scheme: dark;
+}

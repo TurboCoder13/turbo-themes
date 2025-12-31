@@ -4,7 +4,7 @@ set -euo pipefail
 # Extract gem information and output to GitHub Actions
 # Outputs: name, version, path
 
-GEM_FILE=$(find . -maxdepth 1 -name "bulma-turbo-themes-*.gem" -type f | head -1)
+GEM_FILE=$(find . -maxdepth 1 -name "turbo-themes-*.gem" -type f | head -1)
 
 if [ -z "$GEM_FILE" ]; then
   echo "❌ No gem file found"
@@ -12,7 +12,7 @@ if [ -z "$GEM_FILE" ]; then
 fi
 
 GEM_NAME=$(basename "$GEM_FILE")
-VERSION=$(echo "$GEM_NAME" | sed -n 's/bulma-turbo-themes-\(.*\)\.gem/\1/p')
+VERSION=$(echo "$GEM_NAME" | sed -n 's/turbo-themes-\(.*\)\.gem/\1/p')
 
 {
   echo "name=$GEM_NAME"

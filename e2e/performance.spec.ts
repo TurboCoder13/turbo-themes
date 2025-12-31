@@ -55,9 +55,9 @@ test.describe('Performance @performance', () => {
 
     if (themeMatch) {
       const themeName = themeMatch[1];
-      const cssUrl = `/assets/css/themes/${themeName}.css`;
+      const cssUrl = `/assets/css/themes/compiled/${themeName}.css`;
 
-      const response = await request.get(cssUrl, { baseURL: 'http://localhost:4000' });
+      const response = await request.get(cssUrl);
       expect(response.status()).toBe(200);
 
       const content = await response.text();

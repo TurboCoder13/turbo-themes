@@ -1,5 +1,9 @@
 import { test, expect } from './fixtures';
-import { navigateToThemeOption, interceptThemeCSS, removeThemeCSSInterception } from './helpers';
+import {
+  navigateToThemeOption,
+  interceptThemeCSS,
+  removeThemeCSSInterception,
+} from './helpers';
 
 /**
  * Edge case tests for theme functionality.
@@ -30,7 +34,9 @@ test.describe('Theme Edge Cases', () => {
     });
   });
 
-  test('should handle theme dropdown closing on outside click', async ({ homePage }) => {
+  test('should handle theme dropdown closing on outside click', async ({
+    homePage,
+  }) => {
     await homePage.goto();
 
     await test.step('Open theme dropdown', async () => {
@@ -52,7 +58,9 @@ test.describe('Theme Edge Cases', () => {
     });
   });
 
-  test('should maintain theme consistency across page navigations', async ({ basePage }) => {
+  test('should maintain theme consistency across page navigations', async ({
+    basePage,
+  }) => {
     await basePage.goto('/');
 
     await test.step('Set theme to catppuccin-mocha', async () => {
@@ -228,13 +236,17 @@ test.describe('Theme Edge Cases', () => {
         await homePage.page.keyboard.press('Enter');
         await expect(themeDropdown.dropdown).toHaveClass(/is-active/);
 
-        const firstOption = homePage.page.locator('.dropdown-item[data-theme-id]').first();
+        const firstOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .first();
         await firstOption.waitFor({ state: 'attached' });
 
         // Wait for first option to be focused after opening with Enter
         // (Enter should focus the first option automatically)
         await expect(async () => {
-          const isFocused = await firstOption.evaluate((el) => document.activeElement === el);
+          const isFocused = await firstOption.evaluate(
+            (el) => document.activeElement === el
+          );
           const tabIndex = await firstOption.getAttribute('tabindex');
           if (!isFocused || tabIndex !== '0') {
             throw new Error(
@@ -246,7 +258,9 @@ test.describe('Theme Edge Cases', () => {
         // If first option is already focused, pressing ArrowDown will move to second
         // So we don't need to press ArrowDown here - first option should already be focused
         // Verify focus state and tabindex
-        const isFocused = await firstOption.evaluate((el) => document.activeElement === el);
+        const isFocused = await firstOption.evaluate(
+          (el) => document.activeElement === el
+        );
         const tabIndex = await firstOption.getAttribute('tabindex');
         expect(isFocused).toBe(true);
         expect(tabIndex).toBe('0');
@@ -262,7 +276,9 @@ test.describe('Theme Edge Cases', () => {
 
         // Verify focus moved to second option
         await expect(async () => {
-          const isFocused = await secondOption.evaluate((el) => document.activeElement === el);
+          const isFocused = await secondOption.evaluate(
+            (el) => document.activeElement === el
+          );
           const tabIndex = await secondOption.getAttribute('tabindex');
           if (!isFocused || tabIndex !== '0') {
             throw new Error(
@@ -281,12 +297,16 @@ test.describe('Theme Edge Cases', () => {
         await homePage.page.keyboard.press('ArrowUp');
         // Small delay to ensure focus settles
         await homePage.page.waitForTimeout(100);
-        const firstOption = homePage.page.locator('.dropdown-item[data-theme-id]').first();
+        const firstOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .first();
         await firstOption.waitFor({ state: 'attached' });
 
         // Verify focus returned to first option
         await expect(async () => {
-          const isFocused = await firstOption.evaluate((el) => document.activeElement === el);
+          const isFocused = await firstOption.evaluate(
+            (el) => document.activeElement === el
+          );
           const tabIndex = await firstOption.getAttribute('tabindex');
           if (!isFocused || tabIndex !== '0') {
             throw new Error(
@@ -310,7 +330,10 @@ test.describe('Theme Edge Cases', () => {
         await expect(themeOptions.first()).toBeVisible({ timeout: 2000 });
 
         const selectedThemeId = 'catppuccin-mocha';
-        const { targetElement } = await navigateToThemeOption(homePage.page, selectedThemeId);
+        const { targetElement } = await navigateToThemeOption(
+          homePage.page,
+          selectedThemeId
+        );
 
         // Verify target option is focused or selected before selecting
         await expect(targetElement).toBeFocused({ timeout: 3000 });
@@ -347,7 +370,10 @@ test.describe('Theme Edge Cases', () => {
         await expect(themeOptions.first()).toBeVisible({ timeout: 2000 });
 
         const selectedThemeId = 'catppuccin-latte';
-        const { targetElement } = await navigateToThemeOption(homePage.page, selectedThemeId);
+        const { targetElement } = await navigateToThemeOption(
+          homePage.page,
+          selectedThemeId
+        );
 
         // Verify target option is focused or selected before selecting
         await expect(targetElement).toBeFocused({ timeout: 3000 });
@@ -371,7 +397,10 @@ test.describe('Theme Edge Cases', () => {
       });
     });
 
-    test('should close dropdown with Escape key', async ({ homePage, themeDropdown }) => {
+    test('should close dropdown with Escape key', async ({
+      homePage,
+      themeDropdown,
+    }) => {
       await homePage.goto();
 
       await test.step('Open dropdown and close with Escape', async () => {
@@ -392,7 +421,10 @@ test.describe('Theme Edge Cases', () => {
       });
     });
 
-    test('should navigate with Home and End keys', async ({ homePage, themeDropdown }) => {
+    test('should navigate with Home and End keys', async ({
+      homePage,
+      themeDropdown,
+    }) => {
       await homePage.goto();
 
       await test.step('Open dropdown and navigate to middle option', async () => {
@@ -403,13 +435,17 @@ test.describe('Theme Edge Cases', () => {
         // Navigate to middle option
         await homePage.page.keyboard.press('ArrowDown');
         await homePage.page.keyboard.press('ArrowDown');
-        const middleOption = homePage.page.locator('.dropdown-item[data-theme-id]').nth(2);
+        const middleOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .nth(2);
         await expect(middleOption).toBeFocused({ timeout: 1000 });
       });
 
       await test.step('Jump to first option with Home key', async () => {
         await homePage.page.keyboard.press('Home');
-        const firstOption = homePage.page.locator('.dropdown-item[data-theme-id]').first();
+        const firstOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .first();
         await expect(firstOption).toBeFocused({ timeout: 1000 });
         const tabIndex = await firstOption.getAttribute('tabindex');
         expect(tabIndex).toBe('0');
@@ -448,7 +484,9 @@ test.describe('Theme Edge Cases', () => {
 
       await test.step('ArrowDown at last option wraps to first', async () => {
         await homePage.page.keyboard.press('ArrowDown');
-        const firstOption = homePage.page.locator('.dropdown-item[data-theme-id]').first();
+        const firstOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .first();
         await expect(firstOption).toBeFocused({ timeout: 1000 });
       });
 
@@ -461,7 +499,10 @@ test.describe('Theme Edge Cases', () => {
       });
     });
 
-    test('should handle rapid keyboard interactions', async ({ homePage, themeDropdown }) => {
+    test('should handle rapid keyboard interactions', async ({
+      homePage,
+      themeDropdown,
+    }) => {
       await homePage.goto();
 
       await test.step('Rapid ArrowDown presses', async () => {
@@ -475,7 +516,9 @@ test.describe('Theme Edge Cases', () => {
 
         // Wait for first option to be focused after opening with Enter
         await expect(async () => {
-          const isFocused = await options.first().evaluate((el) => document.activeElement === el);
+          const isFocused = await options
+            .first()
+            .evaluate((el) => document.activeElement === el);
           if (!isFocused) {
             throw new Error('First option not focused after opening dropdown');
           }
@@ -603,7 +646,9 @@ test.describe('Theme Edge Cases', () => {
         await expect(themeDropdown.dropdown).toHaveClass(/is-active/);
 
         // ArrowDown should focus first option
-        const firstOption = homePage.page.locator('.dropdown-item[data-theme-id]').first();
+        const firstOption = homePage.page
+          .locator('.dropdown-item[data-theme-id]')
+          .first();
         await expect(firstOption).toBeFocused({ timeout: 1000 });
       });
 
@@ -653,7 +698,7 @@ test.describe('Theme Edge Cases', () => {
 
         // Verify localStorage is updated
         const storedTheme = await homePage.page.evaluate(() =>
-          localStorage.getItem('bulma-theme-flavor')
+          localStorage.getItem('turbo-theme')
         );
         expect(storedTheme).toBe('catppuccin-latte');
       } finally {
@@ -686,12 +731,14 @@ test.describe('Theme Edge Cases', () => {
 
         // Verify localStorage is updated
         const storedTheme = await homePage.page.evaluate(() =>
-          localStorage.getItem('bulma-theme-flavor')
+          localStorage.getItem('turbo-theme')
         );
         expect(storedTheme).toBe('catppuccin-latte');
 
         // Verify CSS link is loaded (even if load fails)
-        const themeCss = homePage.page.locator('link[data-theme-id="catppuccin-latte"]');
+        const themeCss = homePage.page.locator(
+          'link[data-theme-id="catppuccin-latte"]'
+        );
         const href = await themeCss.getAttribute('href');
         expect(href).toContain('catppuccin-latte.css');
       } finally {
@@ -733,7 +780,7 @@ test.describe('Theme Edge Cases', () => {
 
           // Verify localStorage is updated
           const storedTheme = await homePage.page.evaluate(() =>
-            localStorage.getItem('bulma-theme-flavor')
+            localStorage.getItem('turbo-theme')
           );
           expect(storedTheme).toBe('catppuccin-mocha');
         });

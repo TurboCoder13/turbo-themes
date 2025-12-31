@@ -62,7 +62,9 @@ test.describe('Accessibility Tests @a11y', () => {
     });
   });
 
-  test('should have no accessibility violations on components page', async ({ basePage }) => {
+  test('should have no accessibility violations on components page', async ({
+    basePage,
+  }) => {
     await basePage.goto('/');
     await basePage.navigateToPage('components');
 
@@ -72,7 +74,9 @@ test.describe('Accessibility Tests @a11y', () => {
     });
   });
 
-  test('should have no accessibility violations on forms page', async ({ basePage }) => {
+  test('should have no accessibility violations on forms page', async ({
+    basePage,
+  }) => {
     await basePage.goto('/');
     await basePage.navigateToPage('forms');
 

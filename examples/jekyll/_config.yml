@@ -1,0 +1,16 @@
+---
+title: Turbo Themes Jekyll Demo
+description: Minimal Jekyll site using the Turbo Themes gem.
+baseurl: ''
+url: 'http://localhost:4000'
+
+theme: turbo-themes
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+markdown: kramdown
+kramdown:
+  input: GFM
+highlighter: rouge

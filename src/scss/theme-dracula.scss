@@ -16,8 +16,6 @@
 // Web font imports (compiled to top of CSS output)
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
 
-
-
 // Theme-specific overrides using Bulma's generated CSS variables
 // Note: Bulma automatically generates --bulma-primary-* CSS variables (00-100 shades)
 // and --bulma-primary-soft, --bulma-primary-bold variants from the Sass variables above
@@ -29,8 +27,12 @@
   --bulma-scheme-main-bis: #21222c;
   --bulma-scheme-main-ter: #44475a;
   --bulma-scheme-invert: #f8f8f2;
-  --theme-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --theme-font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --theme-font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --theme-font-mono:
+    'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
   --theme-text: #f8f8f2;
   --theme-text-muted: #6272a4;
   --theme-h1: #ff79c6;
@@ -127,11 +129,19 @@
 }
 
 .theme-dracula .has-theme-gradient-primary {
-  background: linear-gradient(to right, hsl(var(--bulma-primary)), hsl(var(--bulma-primary-95)));
+  background: linear-gradient(
+    to right,
+    hsl(var(--bulma-primary)),
+    hsl(var(--bulma-primary-95))
+  );
 }
 
 .theme-dracula .has-theme-gradient-link {
-  background: linear-gradient(to right, hsl(var(--bulma-link)), hsl(var(--bulma-link-95)));
+  background: linear-gradient(
+    to right,
+    hsl(var(--bulma-link)),
+    hsl(var(--bulma-link-95))
+  );
 }
 
 /* Syntax highlighting for this theme */

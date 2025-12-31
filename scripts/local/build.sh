@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build script for bulma-turbo-themes Jekyll site
+# Build script for turbo-themes Jekyll site
 # This script handles both local development and CI workflows
 # Usage: ./scripts/local/build.sh [--quick|--full|--serve|--no-serve|--skip-tests|--skip-lint|--skip-lh]
 #
@@ -63,7 +63,8 @@ port_available() {
         fi
         # Prefer ss (socket statistics) if available
         if command_exists "ss"; then
-            if ss -ltn 2>/dev/null | awk '{print $4}' | grep -qE ":(^|.*:)${port}$"; then
+            # matches ":4000" (IPv4) and "]:4000" (IPv6)
+            if ss -ltn 2>/dev/null | awk '{print $4}' | grep -qE "(:|\\])${port}$"; then
                 return 1
             else
                 return 0
@@ -102,13 +103,13 @@ wait_for_port_release() {
     local timeout="${PORT_RELEASE_TIMEOUT}"
     # Validate numeric (integer or decimal) and reject zero/sub-millisecond values
     case "$timeout" in
-        ''|*[!0-9.]*|*\..*\..*)
+        ''|*[!0-9.]*|*\..*\..*|.*|*.)
             print_status "$RED" "❌ Invalid timeout value: $timeout (must be a positive decimal number)"
             exit 1
             ;;
     esac
     case "$interval" in
-        ''|*[!0-9.]*|*\..*\..*)
+        ''|*[!0-9.]*|*\..*\..*|.*|*.)
             print_status "$RED" "❌ Invalid interval value: $interval (must be a positive decimal number)"
             exit 1
             ;;
@@ -241,7 +242,7 @@ if [ "$DEV_MODE" = true ]; then
     print_status "$BLUE" "📍 Environment: Development (baseurl: empty)"
     JEKYLL_CONFIG="_config.yml"
 elif [ "$PROD_MODE" = true ]; then
-    print_status "$BLUE" "📍 Environment: Production (baseurl: /bulma-turbo-themes)"
+    print_status "$BLUE" "📍 Environment: Production (baseurl: /turbo-themes)"
     JEKYLL_CONFIG="_config.yml,_config.prod.yml"
 else
     JEKYLL_CONFIG="_config.yml"
@@ -421,6 +422,48 @@ else
     fi
 fi
 
+# Step 5.5: Python tests
+if [ "$SKIP_TESTS" = false ]; then
+    print_status "$BLUE" "🐍 Step 5.5: Python tests..."
+    if [ -d "python" ]; then
+        print_status "$YELLOW" "  Running Python tests..."
+        if python3 -c "
+import sys
+import os
+sys.path.insert(0, os.path.join(os.getcwd(), 'python', 'src'))
+
+try:
+    from turbo_themes.manager import ThemeManager
+    manager = ThemeManager()
+    print('✅ ThemeManager creation')
+
+    manager.set_theme('github-light')
+    print('✅ Theme switching')
+
+    variables = manager.apply_theme_to_css_variables()
+    print(f'✅ CSS variables generation ({len(variables)} vars)')
+
+    json_data = manager.export_theme_json('catppuccin-latte')
+    print('✅ JSON export')
+
+    print('✅ All Python tests passed!')
+
+except Exception as e:
+    print(f'❌ Python test failed: {e}')
+    import traceback
+    traceback.print_exc()
+    exit(1)
+        "; then
+            print_status "$GREEN" "  ✅ Python tests passed"
+        else
+            print_status "$RED" "  ❌ Python tests failed"
+            exit 1
+        fi
+    else
+        print_status "$YELLOW" "⚠️  Python directory not found, skipping Python tests..."
+    fi
+fi
+
 # Step 6: CSS budget check
 if [ -f "package.json" ] && grep -q '"css:budget"' package.json >/dev/null 2>&1; then
     print_status "$BLUE" "💰 Step 6: CSS budget check..."
@@ -582,6 +625,9 @@ if [ "$SKIP_TESTS" = true ]; then
     print_status "$YELLOW" "  ⏭️  Tests skipped (--skip-tests flag)"
 else
     print_status "$GREEN" "  ✅ Unit tests with coverage passed"
+    if [ -d "python" ]; then
+        print_status "$GREEN" "  ✅ Python tests passed"
+    fi
 fi
 print_status "$GREEN" "  ✅ CSS budget check passed"
 print_status "$GREEN" "  ✅ Jekyll build passed"

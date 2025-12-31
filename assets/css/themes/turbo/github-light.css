@@ -1,0 +1,48 @@
+@import url('https://github.githubassets.com/assets/mona-sans-webfont.woff2');
+@import url('https://github.githubassets.com/assets/hubot-sans-webfont.woff2');
+
+[data-theme='github-light'] {
+  --turbo-bg-base: #ffffff;
+  --turbo-bg-surface: #f6f8fa;
+  --turbo-bg-surface-alt: #f6f8fa;
+  --turbo-text-primary: #1f2328;
+  --turbo-text-secondary: #59636e;
+  --turbo-text-inverse: #ffffff;
+  --turbo-brand-primary: #0969da;
+  --turbo-state-info: #0969da;
+  --turbo-state-success: #1a7f37;
+  --turbo-state-warning: #9a6700;
+  --turbo-state-danger: #d1242f;
+  --turbo-border-default: #d1d9e0;
+  --turbo-accent-link: #0969da;
+  --turbo-heading-h1: #1a7f37;
+  --turbo-heading-h2: #0969da;
+  --turbo-heading-h3: #0969da;
+  --turbo-heading-h4: #9a6700;
+  --turbo-heading-h5: #1a7f37;
+  --turbo-heading-h6: #d1242f;
+  --turbo-body-primary: #1f2328;
+  --turbo-body-secondary: #59636e;
+  --turbo-link-default: #0969da;
+  --turbo-selection-fg: #1f2328;
+  --turbo-selection-bg: #b6e3ff;
+  --turbo-blockquote-border: #d1d9e0;
+  --turbo-blockquote-fg: #59636e;
+  --turbo-blockquote-bg: #f6f8fa;
+  --turbo-code-inline-fg: #1f2328;
+  --turbo-code-inline-bg: #f6f8fa;
+  --turbo-code-block-fg: #1f2328;
+  --turbo-code-block-bg: #f6f8fa;
+  --turbo-table-border: #d1d9e0;
+  --turbo-table-stripe: #f6f8fa;
+  --turbo-table-thead-bg: #eaeef2;
+  --turbo-table-cell-bg: #ffffff;
+  --turbo-table-header-fg: #1f2328;
+  --turbo-font-sans:
+    'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --turbo-font-mono:
+    'Hubot Sans', ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    'Liberation Mono', monospace;
+  color-scheme: light;
+}

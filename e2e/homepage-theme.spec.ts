@@ -48,7 +48,7 @@ test.describe('Homepage Theme Switching @smoke', () => {
 
         // Verify localStorage contains the theme
         const storedTheme = await homePage.page.evaluate(() =>
-          localStorage.getItem('bulma-theme-flavor')
+          localStorage.getItem('turbo-theme')
         );
         expect(storedTheme).toBe(theme);
 
@@ -61,11 +61,20 @@ test.describe('Homepage Theme Switching @smoke', () => {
           new RegExp(`${escapedTheme}\\.css(?:\\?.*)?`)
         );
 
-        // Wait for stylesheet to be fully loaded before taking screenshot
+        // Wait for stylesheet network response + load event to avoid timeouts
+        await homePage.page
+          .waitForResponse((resp) => resp.url().includes(`${theme}.css`) && resp.ok(), {
+            timeout: 15000,
+          })
+          .catch(() => {});
         await waitForStylesheetLoad(themeCss);
 
         // Take screenshot with theme CSS element highlighted
-        await takeScreenshotWithHighlight(homePage.page, themeCss, `${theme}-theme-applied`);
+        await takeScreenshotWithHighlight(
+          homePage.page,
+          themeCss,
+          `${theme}-theme-applied`
+        );
       });
     });
   }
@@ -80,14 +89,20 @@ test.describe('Homepage Theme Switching @smoke', () => {
 
       // Take screenshot showing persisted theme
       const htmlElement = homePage.page.locator('html');
-      await takeScreenshotWithHighlight(homePage.page, htmlElement, 'theme-persisted-after-reload');
+      await takeScreenshotWithHighlight(
+        homePage.page,
+        htmlElement,
+        'theme-persisted-after-reload'
+      );
     });
   });
 
   const themes = ['catppuccin-mocha', 'catppuccin-latte'];
 
   for (const theme of themes) {
-    test(`should take visual snapshot of ${theme} theme @visual`, async ({ homePage }) => {
+    test(`should take visual snapshot of ${theme} theme @visual`, async ({
+      homePage,
+    }) => {
       await test.step(`Switch to ${theme} theme`, async () => {
         await homePage.switchToTheme(theme);
       });
@@ -102,6 +117,11 @@ test.describe('Homepage Theme Switching @smoke', () => {
           new RegExp(`${escapedTheme}\\.css(?:\\?.*)?`)
         );
         // stylesheet loaded (wait for 'load' if not yet loaded)
+        await homePage.page
+          .waitForResponse((resp) => resp.url().includes(`${theme}.css`) && resp.ok(), {
+            timeout: 15000,
+          })
+          .catch(() => {});
         await waitForStylesheetLoad(themeCss);
 
         // Take snapshot of the main content area

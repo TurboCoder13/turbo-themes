@@ -1,3 +1,4 @@
+import { layoutTokens } from '../shared-tokens.js';
 import type { ThemePackage } from '../types.js';
 
 /**
@@ -19,6 +20,7 @@ export const githubSynced: ThemePackage = {
       appearance: 'light',
       iconUrl: '/assets/img/github-logo-light.png',
       tokens: {
+        ...layoutTokens,
         background: {
           base: '#ffffff',
           surface: '#f6f8fa',
@@ -152,6 +154,7 @@ export const githubSynced: ThemePackage = {
       appearance: 'dark',
       iconUrl: '/assets/img/github-logo-dark.png',
       tokens: {
+        ...layoutTokens,
         background: {
           base: '#0d1117',
           surface: '#151b23',

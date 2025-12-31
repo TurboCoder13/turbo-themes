@@ -1,6 +1,7 @@
 # Scripts Organization
 
-This document describes the organization of scripts in the `bulma-turbo-themes` project and provides guidelines for adding new scripts.
+This document describes the organization of scripts in the `turbo-themes` project and
+provides guidelines for adding new scripts.
 
 ## Directory Structure
 
@@ -399,7 +400,8 @@ trap "rm -f '$temp_file'" EXIT
 
 ## Questions?
 
-If you have questions about script organization or need help creating a new script, please:
+If you have questions about script organization or need help creating a new script,
+please:
 
 1. Check existing scripts for patterns
 2. Review this documentation

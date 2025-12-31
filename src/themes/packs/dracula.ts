@@ -1,3 +1,4 @@
+import { layoutTokens } from '../shared-tokens.js';
 import type { ThemePackage } from '../types.js';
 
 /**
@@ -17,6 +18,7 @@ export const draculaThemes: ThemePackage = {
       appearance: 'dark',
       iconUrl: '/assets/img/dracula-logo.png',
       tokens: {
+        ...layoutTokens,
         background: {
           base: '#282a36', // Background
           surface: '#21222c', // Current Line (darker)

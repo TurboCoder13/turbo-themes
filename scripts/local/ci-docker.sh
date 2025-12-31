@@ -23,7 +23,7 @@ done
 
 cd "$REPO_ROOT"
 
-IMAGE_NAME="bulma-turbo-themes-ci"
+IMAGE_NAME="turbo-themes-ci"
 
 echo "[+] Building Docker image $IMAGE_NAME..."
 docker build -t "$IMAGE_NAME" .

@@ -145,7 +145,11 @@ export async function takeScreenshotWithMultipleHighlights(
   page: Page,
   elements: Locator[],
   screenshotName: string,
-  highlightColors = ['rgba(255, 0, 0, 0.3)', 'rgba(0, 255, 0, 0.3)', 'rgba(0, 0, 255, 0.3)']
+  highlightColors = [
+    'rgba(255, 0, 0, 0.3)',
+    'rgba(0, 255, 0, 0.3)',
+    'rgba(0, 0, 255, 0.3)',
+  ]
 ): Promise<void> {
   try {
     // Add visual highlighting boxes to all elements
@@ -228,7 +232,9 @@ export async function navigateToThemeOption(
 
   // Check if first option is already focused (e.g., if dropdown was opened with Enter)
   const firstOption = themeOptions.first();
-  const isFirstFocused = await firstOption.evaluate((el) => document.activeElement === el);
+  const isFirstFocused = await firstOption.evaluate(
+    (el) => document.activeElement === el
+  );
 
   // If first option is not focused, press ArrowDown to focus it
   // If it's already focused and targetIndex is 0, we're done
@@ -247,7 +253,9 @@ export async function navigateToThemeOption(
   if (targetIndex === 0) {
     // Verify focus
     await expect(async () => {
-      const isFocused = await targetElement.evaluate((el) => document.activeElement === el);
+      const isFocused = await targetElement.evaluate(
+        (el) => document.activeElement === el
+      );
       if (!isFocused) {
         throw new Error('Target option (index 0) is not focused');
       }
@@ -265,7 +273,9 @@ export async function navigateToThemeOption(
 
   // Wait for the target option to be focused with increased timeout
   await expect(async () => {
-    const isFocused = await targetElement.evaluate((el) => document.activeElement === el);
+    const isFocused = await targetElement.evaluate(
+      (el) => document.activeElement === el
+    );
     const tabIndex = await targetElement.getAttribute('tabindex');
     if (!isFocused && tabIndex !== '0') {
       throw new Error(
@@ -286,16 +296,36 @@ export async function navigateToThemeOption(
  * @returns Promise that resolves when the stylesheet is loaded
  * @throws Error if the stylesheet fails to load
  */
-export async function waitForStylesheetLoad(locator: Locator): Promise<void> {
-  await locator.evaluate((el) =>
-    (el as HTMLLinkElement).sheet
-      ? Promise.resolve()
-      : new Promise<void>((resolve, reject) => {
-          el.addEventListener('load', () => resolve(), { once: true });
-          el.addEventListener('error', () => reject(new Error('theme css failed to load')), {
-            once: true,
-          });
-        })
+export async function waitForStylesheetLoad(
+  locator: Locator,
+  timeoutMs: number = 8000
+): Promise<void> {
+  await locator.evaluate(
+    (el, timeout) =>
+      (el as HTMLLinkElement).sheet
+        ? Promise.resolve()
+        : new Promise<void>((resolve, reject) => {
+            const to = window.setTimeout(() => {
+              resolve();
+            }, timeout);
+            el.addEventListener(
+              'load',
+              () => {
+                window.clearTimeout(to);
+                resolve();
+              },
+              { once: true }
+            );
+            el.addEventListener(
+              'error',
+              () => {
+                window.clearTimeout(to);
+                reject(new Error('theme css failed to load'));
+              },
+              { once: true }
+            );
+          }),
+    timeoutMs
   );
 }
 

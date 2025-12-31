@@ -16,7 +16,7 @@ const rootDir = join(__dirname, "..");
 try {
   // Step 1: Run the prep command
   console.log("Running e2e prep (build + Jekyll build)...");
-  execSync("npm run e2e:prep", {
+  execSync("bun run e2e:prep", {
     cwd: rootDir,
     stdio: "inherit",
     shell: true,
@@ -32,7 +32,7 @@ try {
     process.exit(1);
   }
   console.log(`Starting http-server on http://${host}:${port}...`);
-  const npxCmd = process.platform === "win32" ? "npx.cmd" : "npx";
+  const npxCmd = process.platform === "win32" ? "bunx.cmd" : "bunx";
   const serverArgs = [
     "--no-install",
     "http-server",

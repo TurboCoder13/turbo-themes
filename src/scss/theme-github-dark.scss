@@ -16,7 +16,8 @@
 // Web font imports (compiled to top of CSS output)
 @font-face {
   font-family: 'Mona Sans';
-  src: url('https://github.githubassets.com/assets/mona-sans-webfont.woff2') format('woff2');
+  src: url('https://github.githubassets.com/assets/mona-sans-webfont.woff2')
+    format('woff2');
   font-weight: 200 900;
   font-style: normal;
   font-display: swap;
@@ -24,13 +25,12 @@
 
 @font-face {
   font-family: 'Hubot Sans';
-  src: url('https://github.githubassets.com/assets/hubot-sans-webfont.woff2') format('woff2');
+  src: url('https://github.githubassets.com/assets/hubot-sans-webfont.woff2')
+    format('woff2');
   font-weight: 200 900;
   font-style: normal;
   font-display: swap;
 }
-
-
 
 // Theme-specific overrides using Bulma's generated CSS variables
 // Note: Bulma automatically generates --bulma-primary-* CSS variables (00-100 shades)
@@ -43,8 +43,12 @@
   --bulma-scheme-main-bis: #151b23;
   --bulma-scheme-main-ter: #010409;
   --bulma-scheme-invert: #f0f6fc;
-  --theme-font-sans: "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --theme-font-mono: "Hubot Sans", ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace;
+  --theme-font-sans:
+    'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --theme-font-mono:
+    'Hubot Sans', ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    'Liberation Mono', monospace;
   --theme-text: #f0f6fc;
   --theme-text-muted: #9198a1;
   --theme-h1: #3fb950;
@@ -141,11 +145,19 @@
 }
 
 .theme-github-dark .has-theme-gradient-primary {
-  background: linear-gradient(to right, hsl(var(--bulma-primary)), hsl(var(--bulma-primary-95)));
+  background: linear-gradient(
+    to right,
+    hsl(var(--bulma-primary)),
+    hsl(var(--bulma-primary-95))
+  );
 }
 
 .theme-github-dark .has-theme-gradient-link {
-  background: linear-gradient(to right, hsl(var(--bulma-link)), hsl(var(--bulma-link-95)));
+  background: linear-gradient(
+    to right,
+    hsl(var(--bulma-link)),
+    hsl(var(--bulma-link-95))
+  );
 }
 
 /* Syntax highlighting for this theme */

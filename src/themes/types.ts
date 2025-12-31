@@ -34,6 +34,32 @@ export interface ThemeTokens {
     };
     webFonts: string[];
   };
+  spacing?: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  elevation?: {
+    none: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  animation?: {
+    durationFast: string;
+    durationNormal: string;
+    durationSlow: string;
+    easingDefault: string;
+    easingEmphasized: string;
+  };
+  opacity?: {
+    disabled: number;
+    hover: number;
+    pressed: number;
+  };
   content: {
     heading: {
       h1: string;

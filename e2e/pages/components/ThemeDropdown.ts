@@ -32,7 +32,9 @@ export class ThemeDropdown {
    * Open the dropdown by hovering.
    */
   async open(): Promise<void> {
-    const waitForActive = async (timeout: number = ThemeDropdown.THEME_DROPDOWN_ACTIVE_TIMEOUT) => {
+    const waitForActive = async (
+      timeout: number = ThemeDropdown.THEME_DROPDOWN_ACTIVE_TIMEOUT
+    ) => {
       // Assert the active state with timeout (word-boundary class match)
       await expect(this.dropdown).toHaveClass(/(?:^|\s)is-active(?:\s|$)/, {
         timeout,
@@ -100,7 +102,9 @@ export class ThemeDropdown {
    *
    * @param timeout - Optional timeout in milliseconds. Defaults to THEME_DROPDOWN_ACTIVE_TIMEOUT.
    */
-  async expectActive(timeout: number = ThemeDropdown.THEME_DROPDOWN_ACTIVE_TIMEOUT): Promise<void> {
+  async expectActive(
+    timeout: number = ThemeDropdown.THEME_DROPDOWN_ACTIVE_TIMEOUT
+  ): Promise<void> {
     await expect(this.dropdown).toHaveClass(/(?:^|\s)is-active(?:\s|$)/, {
       timeout,
     });

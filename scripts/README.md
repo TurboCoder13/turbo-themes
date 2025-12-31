@@ -1,6 +1,7 @@
 # Scripts Directory
 
-This directory contains automation scripts for the bulma-turbo-themes project, organized by purpose.
+This directory contains automation scripts for the turbo-themes project, organized by
+purpose.
 
 ## 📁 Directory Structure
 
@@ -27,30 +28,31 @@ Build the Ruby gem package for distribution to RubyGems.org.
 
 ```bash
 ./scripts/build-gem.sh
-# or via npm
-npm run build:gem
+# or via Bun
+bun run build:gem
 # or via Rake
 rake build:gem
 ```
 
 **What it does:**
 
-1. Verifies npm build artifacts exist
-2. Syncs version from `package.json` to `lib/bulma-turbo-themes/version.rb`
+1. Verifies Bun build artifacts exist
+2. Syncs version from `package.json` to `lib/turbo-themes/version.rb`
 3. Copies JavaScript bundle to `assets/js/`
 4. Verifies all required assets are present
-5. Builds the gem using `gem build bulma-turbo-themes.gemspec`
+5. Builds the gem using `gem build turbo-themes.gemspec`
 
 **Output:**
 
-- Creates `bulma-turbo-themes-VERSION.gem` in project root
+- Creates `turbo-themes-VERSION.gem` in project root
 
 **Environment:**
 
 - Requires: Ruby, gem command
-- Requires: npm build completed (`dist/` directory must exist)
+- Requires: Bun build completed (`dist/` directory must exist)
 
-**Note:** This script is integrated with the Rakefile and is called by the `rake build` task used in the gem publishing workflow.
+**Note:** This script is integrated with the Rakefile and is called by the `rake build`
+task used in the gem publishing workflow.
 
 ## 🤖 CI Scripts (`ci/`)
 
