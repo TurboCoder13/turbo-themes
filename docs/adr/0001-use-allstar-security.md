@@ -8,7 +8,8 @@ Accepted
 
 ## Context
 
-The bulma-turbo-themes project needs automated security policy enforcement to maintain consistent security posture across the repository. Manual security reviews are:
+The turbo-themes project needs automated security policy enforcement to maintain
+consistent security posture across the repository. Manual security reviews are:
 
 - Time-consuming and error-prone
 - Not scalable as the project grows
@@ -32,7 +33,8 @@ Alternatives considered:
 
 ## Decision
 
-We will use [Allstar](https://github.com/ossf/allstar), an OpenSSF project, for continuous security monitoring.
+We will use [Allstar](https://github.com/ossf/allstar), an OpenSSF project, for
+continuous security monitoring.
 
 Implementation:
 
@@ -55,7 +57,8 @@ Configuration approach:
 
 ### Positive
 
-- **Automated Enforcement** - Security policies enforced 24/7 without manual intervention
+- **Automated Enforcement** - Security policies enforced 24/7 without manual
+  intervention
 - **Early Detection** - Violations detected within minutes of occurrence
 - **Consistent Standards** - Same policies applied across all repositories
 - **OpenSSF Alignment** - Uses industry-standard best practices
@@ -93,4 +96,5 @@ The configuration files are located in `.allstar/`:
 - `outside.yaml` - Outside collaborator policy
 - `security.yaml` - Security documentation policy
 
-Allstar issues are labeled with `allstar` for easy filtering and can be automatically closed when violations are resolved.
+Allstar issues are labeled with `allstar` for easy filtering and can be automatically
+closed when violations are resolved.

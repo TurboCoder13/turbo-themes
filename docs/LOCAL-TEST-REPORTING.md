@@ -1,6 +1,7 @@
 # Local Test Reporting Guide
 
-This guide explains how to view test reports locally after running E2E tests and Lighthouse CI.
+This guide explains how to view test reports locally after running E2E tests and
+Lighthouse CI.
 
 ## Overview
 
@@ -16,7 +17,7 @@ The project generates two types of test reports:
 Run the E2E tests to generate the Playwright HTML report:
 
 ```bash
-npm run e2e:ci
+bun run e2e:ci
 ```
 
 This creates the `playwright-report/` directory with an interactive HTML report.
@@ -61,7 +62,8 @@ This creates the `lighthouse-reports/` directory with detailed audit results.
 
 View at `http://localhost:3001/`
 
-**Note:** When accessed through the Jekyll server at `http://localhost:4000`, the report is available at `/lighthouse/` (simplified from `lighthouse-reports/`).
+**Note:** When accessed through the Jekyll server at `http://localhost:4000`, the report
+is available at `/lighthouse/` (simplified from `lighthouse-reports/`).
 
 ## Using the Multi-Server Script
 
@@ -69,16 +71,20 @@ View at `http://localhost:3001/`
 
 Before running `serve-reports.sh`, ensure:
 
-- Scripts in `scripts/` are executable (e.g., `chmod +x ./scripts/local/serve-reports.sh`)
+- Scripts in `scripts/` are executable (e.g.,
+  `chmod +x ./scripts/local/serve-reports.sh`)
 - Required tools are installed: `bash`
 
-The `serve-reports.sh` script automatically detects which reports are available and starts the appropriate servers:
+The `serve-reports.sh` script automatically detects which reports are available and
+starts the appropriate servers:
 
 ```bash
 ./scripts/local/serve-reports.sh
 ```
 
-**Note**: The Jekyll server is optional and only needed if you want to access reports through the Jekyll site (see "Accessing Reports Through Jekyll" section below). If you want to use Jekyll, start it separately:
+**Note**: The Jekyll server is optional and only needed if you want to access reports
+through the Jekyll site (see "Accessing Reports Through Jekyll" section below). If you
+want to use Jekyll, start it separately:
 
 ```bash
 bundle exec jekyll serve --livereload --incremental
@@ -112,7 +118,8 @@ Press Ctrl+C to stop all servers
 
 Before accessing reports through Jekyll, ensure:
 
-- Scripts in `scripts/` are executable (e.g., `chmod +x ./scripts/local/serve-reports.sh`)
+- Scripts in `scripts/` are executable (e.g.,
+  `chmod +x ./scripts/local/serve-reports.sh`)
 - Required tools are installed: `bash`, `Jekyll`
 - Jekyll server is started separately:
 
@@ -129,7 +136,8 @@ include:
   - lighthouse-reports # Lighthouse performance reports
 ```
 
-When these directories exist, Jekyll will copy them to `_site/` and make them available through the main Jekyll server at:
+When these directories exist, Jekyll will copy them to `_site/` and make them available
+through the main Jekyll server at:
 
 - `http://localhost:4000/playwright/` (simplified from `playwright-report/`)
 - `http://localhost:4000/lighthouse/` (simplified from `lighthouse-reports/`)
@@ -146,7 +154,8 @@ In the CI pipeline, these reports are:
 
 - **Workflow**: `reporting-lighthouse-ci.yml`
 - **Deploy**: `deploy-lighthouse-pages.yml`
-- **Endpoint**: `https://<your-github-username>.github.io/<repository-name>/lighthouse-reports/`
+- **Endpoint**:
+  `https://<your-github-username>.github.io/<repository-name>/lighthouse-reports/`
 
 ### Playwright Reports
 
@@ -165,10 +174,11 @@ ERROR '/playwright' not found.
 ERROR '/lighthouse' not found.
 ```
 
-**Solution**: These directories are only created after running the respective tests. Run:
+**Solution**: These directories are only created after running the respective tests.
+Run:
 
 ```bash
-npm run e2e:ci      # For Playwright report
+bun run e2e:ci      # For Playwright report
 ./scripts/ci/run-lighthouse-ci.sh  # For Lighthouse reports
 ```
 
@@ -238,9 +248,12 @@ taskkill /IM node.exe /F
 #### General Recommendations
 
 1. **Check first**: Always check what process is using the port before killing it
-2. **Use gentler signals**: Try `kill` without `-9` first (Unix) or `taskkill` without `/F` first (Windows) to allow graceful shutdown
-3. **Restart terminal**: Sometimes the simplest solution is to close and restart your terminal session
-4. **Stop Node processes**: If you're certain all Node processes can be stopped, use `pkill -f node` (Unix) or `taskkill /IM node.exe /F` (Windows)
+2. **Use gentler signals**: Try `kill` without `-9` first (Unix) or `taskkill` without
+   `/F` first (Windows) to allow graceful shutdown
+3. **Restart terminal**: Sometimes the simplest solution is to close and restart your
+   terminal session
+4. **Stop Node processes**: If you're certain all Node processes can be stopped, use
+   `pkill -f node` (Unix) or `taskkill /IM node.exe /F` (Windows)
 
 After freeing the port, restart the server.
 
@@ -251,7 +264,7 @@ After freeing the port, restart the server.
 1. Run E2E tests to check for visual regressions:
 
    ```bash
-   npm run e2e:ci
+   bun run e2e:ci
    ```
 
 2. View the report:
@@ -266,7 +279,10 @@ After freeing the port, restart the server.
 
 1. Run complete CI pipeline:
 
-   The `build.sh` script runs tests, builds the site, and performs quality checks. Use `--quick` for faster builds that skip cleanup and E2E tests, or run without flags for the full pipeline including E2E tests. See [scripts/README.md](../scripts/README.md) for details.
+   The `build.sh` script runs tests, builds the site, and performs quality checks. Use
+   `--quick` for faster builds that skip cleanup and E2E tests, or run without flags for
+   the full pipeline including E2E tests. See [scripts/README.md](../scripts/README.md)
+   for details.
 
    ```bash
    ./scripts/local/build.sh --quick

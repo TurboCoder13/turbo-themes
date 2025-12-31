@@ -5,9 +5,10 @@ title: Home
 
 Welcome to the Bulma demo. Use the toggle to switch theme.
 
-Text can be **bold**, _italic_, or ~~strikethrough~~. There should be whitespace between paragraphs.
+Text can be **bold**, _italic_, or ~~strikethrough~~. There should be whitespace between
+paragraphs.
 
-### Typography
+## Typography
 
 # Heading 1
 
@@ -25,8 +26,8 @@ Paragraph text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam s
 
 Blockquote:
 
-> This is a blockquote following a header.
-> When something is important enough, you do it even if the odds are not in your favor.
+> This is a blockquote following a header. When something is important enough, you do it
+> even if the odds are not in your favor.
 
 Inline code like `const x = 1` and a code block:
 

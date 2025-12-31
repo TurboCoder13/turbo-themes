@@ -1,12 +1,14 @@
 # Release Train Documentation
 
-This document describes the complete release train process for bulma-turbo-themes, ensuring consistent and automated releases.
+This document describes the complete release train process for turbo-themes, ensuring
+consistent and automated releases.
 
 ## 🚂 Release Train Flow
 
 The release train now follows a two-stage PR-based process:
 
-1. **Semantic PR Title** → 2. **Commit Message** → 3. **Version PR** → 4. **Publish PR** → 5. **Release**
+1. **Semantic PR Title** → 2. **Commit Message** → 3. **Version PR** → 4. **Publish PR**
+   → 5. **Release**
 
 ### 1-2. Semantic PR Title & Commit Message Validation
 
@@ -48,8 +50,8 @@ The release train now follows a two-stage PR-based process:
 
 ### 3. Version PR Creation
 
-**Workflow:** `release-version-pr.yml`
-**Trigger:** Push to `main` branch OR manual trigger (workflow_dispatch)
+**Workflow:** `release-version-pr.yml` **Trigger:** Push to `main` branch OR manual
+trigger (workflow_dispatch)
 
 **Purpose:** Creates a version bump PR for review before tag creation
 
@@ -89,8 +91,8 @@ Merge version PR → creates git tag v0.3.0
 
 ### 4. Publish PR & Publishing
 
-**Workflows:** `release-publish-pr.yml`
-**Trigger:** Tag push (`v*.*.*`) OR manual trigger (workflow_dispatch)
+**Workflows:** `release-publish-pr.yml` **Trigger:** Tag push (`v*.*.*`) OR manual
+trigger (workflow_dispatch)
 
 **Purpose:** Publishes package to npm and creates GitHub release
 
@@ -110,13 +112,13 @@ Merge version PR → creates git tag v0.3.0
 **Requirements:**
 
 - `NPM_TOKEN` secret must be valid
-- npm account must have publish permissions for `@turbocoder13/bulma-turbo-themes`
+- npm account must have publish permissions for `@turbocoder13/turbo-themes`
 - 2FA must be set to "Authorization only" level
 
 ### 4.5 Auto Tag Creation
 
-**Workflow:** `release-auto-tag.yml`
-**Trigger:** Push to main with package.json changes, Manual (workflow_dispatch)
+**Workflow:** `release-auto-tag.yml` **Trigger:** Push to main with package.json
+changes, Manual (workflow_dispatch)
 
 **Purpose:** Automatically creates git tag after version PR merge
 
@@ -140,24 +142,28 @@ Available via workflow_dispatch for emergency tag creation:
 - `version` - Version to tag (e.g., v1.2.3)
 - `prerelease` - Mark as pre-release
 
-**Use case:** Automatically triggered by version PR merge; manual trigger available for emergencies
+**Use case:** Automatically triggered by version PR merge; manual trigger available for
+emergencies
 
 ## 🚀 CI/CD Optimization Strategy
 
 ### Trust-and-Skip Pattern
 
-The release train implements the **trust-and-skip pattern**, an industry best practice for CI/CD optimization:
+The release train implements the **trust-and-skip pattern**, an industry best practice
+for CI/CD optimization:
 
 **Philosophy:**
 
-- **Comprehensive validation on PRs** - All quality gates, tests, and builds run before merge
+- **Comprehensive validation on PRs** - All quality gates, tests, and builds run before
+  merge
 - **Protected main branch** - Only validated code reaches main
 - **Skip redundant checks in release workflows** - Trust PR validation results
 - **Focus release workflows** - Dedicated to versioning and publishing tasks
 
 **Benefits:**
 
-- ⚡ **60% faster release workflows** - Eliminated duplicate linting, testing, and building
+- ⚡ **60% faster release workflows** - Eliminated duplicate linting, testing, and
+  building
 - 💰 **Reduced CI costs** - Fewer compute minutes per release
 - 🎯 **Clearer separation of concerns** - PR validation vs. release automation
 - 🔒 **Maintained quality** - No reduction in testing coverage
@@ -235,15 +241,18 @@ Creates the version bump PR after `main` changes pass the quality and build gate
 
 ### `.github/workflows/release-auto-tag.yml`
 
-Creates a git tag (for example, `v0.4.0`) from the approved version PR when `package.json` changes are merged to `main`.
+Creates a git tag (for example, `v0.4.0`) from the approved version PR when
+`package.json` changes are merged to `main`.
 
 ### `.github/workflows/release-publish-pr.yml`
 
-Tag-triggered publish workflow that re-runs quality and build checks, generates SBOMs, publishes to npm, and creates the GitHub release.
+Tag-triggered publish workflow that re-runs quality and build checks, generates SBOMs,
+publishes to npm, and creates the GitHub release.
 
 ### `.github/workflows/publish-npm-test.yml`
 
-Manual publish workflow for pushing test/beta builds to npm under a non-`latest` dist-tag (for example, `beta`).
+Manual publish workflow for pushing test/beta builds to npm under a non-`latest`
+dist-tag (for example, `beta`).
 
 ## 📋 Release Types
 
@@ -318,7 +327,8 @@ These commit types do not trigger releases:
 
 ### Tag Created But No Release
 
-1. Check `release-publish-pr.yml` workflow (for tagged releases) or `publish-npm-test.yml` (for manual test publishes)
+1. Check `release-publish-pr.yml` workflow (for tagged releases) or
+   `publish-npm-test.yml` (for manual test publishes)
 2. Verify npm token permissions and that `NPM_TOKEN` is configured in repository secrets
 3. Check that the GitHub release job completed and attached SBOM artifacts correctly
 
@@ -328,9 +338,10 @@ These commit types do not trigger releases:
 
 1. **Use Conventional Commits** - Follow the format strictly
 2. **Match PR Title to Commits** - Ensure consistency
-3. **Test Locally** - Run `npm run ci:quick` before pushing
+3. **Test Locally** - Run `bun run ci:quick` before pushing
 4. **Review Release Impact** - Understand what your changes will trigger
-5. **Run E2E Tests When Touching UI/Theme Logic** - Use `npm run e2e:ci` (no retries by default) to catch flakes locally instead of relying on CI.
+5. **Run E2E Tests When Touching UI/Theme Logic** - Use `bun run e2e:ci` (no retries by
+   default) to catch flakes locally instead of relying on CI.
 
 ### For Maintainers
 
@@ -338,7 +349,9 @@ These commit types do not trigger releases:
 2. **Review SBOM Signatures** - Verify security artifacts
 3. **Check npm Publishing** - Verify package availability
 4. **Update Documentation** - Keep this guide current
-5. **Watch for E2E Failures** - Playwright runs in CI with retries disabled; any failure (including flaky tests) will fail the workflow and should be investigated before releasing.
+5. **Watch for E2E Failures** - Playwright runs in CI with retries disabled; any failure
+   (including flaky tests) will fail the workflow and should be investigated before
+   releasing.
 
 ## 🔗 Related Documentation
 

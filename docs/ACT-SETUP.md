@@ -2,7 +2,9 @@
 
 ## Overview
 
-This guide helps you test GitHub Actions workflows locally using `act` before pushing to the repository. This is particularly useful for validating CI configuration changes without waiting for actual GitHub runs.
+This guide helps you test GitHub Actions workflows locally using `act` before pushing to
+the repository. This is particularly useful for validating CI configuration changes
+without waiting for actual GitHub runs.
 
 ## Prerequisites
 
@@ -28,13 +30,13 @@ The easiest way to test all workflows is using the automated script:
 
 ```bash
 # Test all testable workflows
-npm run test:workflows
+bun run test:workflows
 
 # Test only quality workflows (faster)
-npm run test:workflows:quick
+bun run test:workflows:quick
 
 # Test a specific workflow
-npm run test:workflows:single -- quality-ci-main.yml
+bun run test:workflows:single -- quality-ci-main.yml
 
 # With verbose output
 ./scripts/local/test-workflows-act.sh --verbose
@@ -91,7 +93,8 @@ act -P ubuntu-24.04=ghcr.io/catthehacker/ubuntu:act-latest
 
 ### Steps That Skip in act Environment
 
-The following workflow steps automatically skip when running under `act` due to `if: ${{ !env.ACT }}` conditions:
+The following workflow steps automatically skip when running under `act` due to
+`if: ${{ !env.ACT }}` conditions:
 
 1. **Harden Runner** - Network security step (not needed locally)
 2. **Upload coverage to Codecov** - External service upload
@@ -120,14 +123,15 @@ Your workflow tests against multiple Node and Ruby versions:
 - Node: 18, 20, 22
 - Ruby: 3.3, 3.4
 
-**Note:** act may have limited support for matrix expansion. For thorough testing, use the local scripts instead:
+**Note:** act may have limited support for matrix expansion. For thorough testing, use
+the local scripts instead:
 
 ```bash
 # Run CI pipeline locally without matrix
-npm run ci:quick
+bun run ci:quick
 
 # Or run full CI
-npm run ci:full
+bun run ci:full
 ```
 
 ## Comparison: Local Scripts vs act
@@ -159,7 +163,8 @@ These workflows can be tested locally with ACT:
 
 ### Skipped Workflows
 
-These workflows are skipped during automated testing because they require GitHub-specific features:
+These workflows are skipped during automated testing because they require
+GitHub-specific features:
 
 - ⏭️ `security-codeql.yml` - Requires GitHub CodeQL API
 - ⏭️ `security-dependency-review.yml` - Requires GitHub API
@@ -178,10 +183,10 @@ Use local scripts for faster feedback:
 
 ```bash
 # Before committing
-npm run ci:quick
+bun run ci:quick
 
 # Before pushing
-npm run ci:full
+bun run ci:full
 ```
 
 ### Before Changing CI Workflows
@@ -190,10 +195,10 @@ Use ACT to validate workflow changes:
 
 ```bash
 # Test all workflows automatically
-npm run test:workflows
+bun run test:workflows
 
 # Or test a specific workflow
-npm run test:workflows:single -- quality-ci-main.yml
+bun run test:workflows:single -- quality-ci-main.yml
 
 # For manual testing:
 act -W .github/workflows/quality-ci-main.yml --container-architecture linux/arm64 -j build
@@ -204,7 +209,7 @@ act -W .github/workflows/quality-ci-main.yml --container-architecture linux/arm6
 Use Docker for exact CI environment match:
 
 ```bash
-npm run ci:docker
+bun run ci:docker
 ```
 
 ## Troubleshooting
@@ -228,7 +233,7 @@ act -P ubuntu-24.04=ghcr.io/catthehacker/ubuntu:act-latest
 
 This can happen with matrix testing when act tries to expand all combinations. Options:
 
-1. Run local scripts instead: `npm run ci:quick`
+1. Run local scripts instead: `bun run ci:quick`
 2. Test individual steps manually
 3. Use GitHub Codespaces for exact CI environment
 
@@ -238,8 +243,9 @@ If tests pass locally but fail in act:
 
 1. Check Node/Ruby version differences
 2. Run with exact versions: `node --version`, `ruby --version`
-3. Use `npm run ci:docker` for Ubuntu 24.04 environment
-4. Run with `--verbose` flag to see detailed output: `npm run test:workflows:single -- quality-ci-main.yml --verbose`
+3. Use `bun run ci:docker` for Ubuntu 24.04 environment
+4. Run with `--verbose` flag to see detailed output:
+   `bun run test:workflows:single -- quality-ci-main.yml --verbose`
 
 ### Workflow Not Found
 
@@ -248,7 +254,8 @@ If a workflow is not found:
 1. Ensure the workflow file exists in `.github/workflows/`
 2. Check the filename matches exactly (case-sensitive)
 3. Use `act --list` to see all available workflows
-4. Verify the workflow has `push` or `pull_request` triggers (manual/schedule-only workflows are skipped)
+4. Verify the workflow has `push` or `pull_request` triggers (manual/schedule-only
+   workflows are skipped)
 
 ## Local Test Results
 

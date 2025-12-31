@@ -15,38 +15,37 @@ The theme-selector feature requires a blocking inline script in the `<head>` of
 2. Applies the theme class to `<html>` before first paint
 3. Preloads the theme CSS file
 
-This script **must** run synchronously before any rendering occurs to prevent
-Flash of Unstyled Content (FOUC) — the jarring visual effect where the page
-first renders with the wrong theme and then snaps to the correct one.
+This script **must** run synchronously before any rendering occurs to prevent Flash of
+Unstyled Content (FOUC) — the jarring visual effect where the page first renders with
+the wrong theme and then snaps to the correct one.
 
 ### The Problem
 
-A strict Content Security Policy (CSP) would use a nonce or hash for inline
-scripts. However:
+A strict Content Security Policy (CSP) would use a nonce or hash for inline scripts.
+However:
 
-- **Nonces** require server-side generation on each request (not possible with
-  static Jekyll sites)
-- **Hashes** are fragile — any whitespace or comment change breaks the hash,
-  causing CI failures and security alerts
+- **Nonces** require server-side generation on each request (not possible with static
+  Jekyll sites)
+- **Hashes** are fragile — any whitespace or comment change breaks the hash, causing CI
+  failures and security alerts
 
-Since bulma-turbo-themes is a static Jekyll site deployed to GitHub Pages,
-we cannot dynamically generate nonces. Hash-based approaches create maintenance
-burden and brittleness in CI/CD pipelines.
+Since turbo-themes is a static Jekyll site deployed to GitHub Pages, we cannot
+dynamically generate nonces. Hash-based approaches create maintenance burden and
+brittleness in CI/CD pipelines.
 
 ### Alternatives Considered
 
-1. **External blocking script**: Would require an additional HTTP request,
-   defeating the FOUC prevention goal
+1. **External blocking script**: Would require an additional HTTP request, defeating the
+   FOUC prevention goal
 2. **Hash-based CSP**: Brittle; any script change breaks the hash
-3. **Nonce-based CSP**: Requires server-side rendering, not available for
-   static sites
+3. **Nonce-based CSP**: Requires server-side rendering, not available for static sites
 4. **Accept FOUC**: Poor user experience, not acceptable
 
 ## Decision
 
-We consciously permit `'unsafe-inline'` for `script-src` in the CSP to allow
-the inline theme-blocking script. This is a documented security trade-off
-prioritizing user experience (no FOUC) over strict CSP compliance.
+We consciously permit `'unsafe-inline'` for `script-src` in the CSP to allow the inline
+theme-blocking script. This is a documented security trade-off prioritizing user
+experience (no FOUC) over strict CSP compliance.
 
 ### Current CSP (lines 12–13 in `_layouts/default.html`)
 
@@ -59,25 +58,25 @@ prioritizing user experience (no FOUC) over strict CSP compliance.
 
 ### Mitigations in Place
 
-1. **Minimal inline code**: The blocking script is kept as small as possible
-   (only theme detection and class application)
-2. **Input validation**: The script validates theme IDs against an allowlist
-   to prevent class injection attacks
+1. **Minimal inline code**: The blocking script is kept as small as possible (only theme
+   detection and class application)
+2. **Input validation**: The script validates theme IDs against an allowlist to prevent
+   class injection attacks
 3. **URL sanitization**: The `sanitizeUrlPath()` function prevents XSS through
    manipulated `data-baseurl` attributes
-4. **No dynamic evaluation**: The script does not use `eval()`, `Function()`,
-   or other dynamic code execution
-5. **All other scripts external**: All interactive JavaScript (theme-selector,
-   etc.) is loaded from external files
+4. **No dynamic evaluation**: The script does not use `eval()`, `Function()`, or other
+   dynamic code execution
+5. **All other scripts external**: All interactive JavaScript (theme-selector, etc.) is
+   loaded from external files
 
 ### Future Tightening Actions
 
 When any of the following become available, we should revisit this decision:
 
-1. **Server-side rendering**: If we migrate to a server-rendered solution
-   (Next.js, Astro SSR, etc.), implement nonce-based CSP
-2. **Service Worker theme caching**: A service worker could precompute and
-   cache the correct theme class, eliminating the need for blocking JS
+1. **Server-side rendering**: If we migrate to a server-rendered solution (Next.js,
+   Astro SSR, etc.), implement nonce-based CSP
+2. **Service Worker theme caching**: A service worker could precompute and cache the
+   correct theme class, eliminating the need for blocking JS
 3. **CSS-only theme detection**: Future CSS features like `@when` or improved
    `prefers-color-scheme` matching might enable pure CSS theme initialization
 
@@ -111,8 +110,7 @@ When any of the following become available, we should revisit this decision:
 
 ## Notes
 
-If implementing a service worker for theme caching in the future, the approach
-would be:
+If implementing a service worker for theme caching in the future, the approach would be:
 
 1. Service worker intercepts navigation requests
 2. Checks localStorage for theme preference

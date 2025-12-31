@@ -8,14 +8,16 @@ Accepted
 
 ## Context
 
-Software Bill of Materials (SBOM) files document all dependencies in our package, which is critical for:
+Software Bill of Materials (SBOM) files document all dependencies in our package, which
+is critical for:
 
 - Supply chain security
 - Vulnerability tracking
 - Compliance requirements
 - Transparency to users
 
-However, unsigned SBOM files can be tampered with, defeating their security purpose. We need a signing strategy that:
+However, unsigned SBOM files can be tampered with, defeating their security purpose. We
+need a signing strategy that:
 
 - Proves SBOM authenticity
 - Doesn't require managing private keys
@@ -32,7 +34,8 @@ Alternatives considered:
 
 ## Decision
 
-We will use [Sigstore](https://www.sigstore.dev/) with [Cosign](https://docs.sigstore.dev/cosign/overview/) for SBOM signing.
+We will use [Sigstore](https://www.sigstore.dev/) with
+[Cosign](https://docs.sigstore.dev/cosign/overview/) for SBOM signing.
 
 Implementation details:
 

@@ -1,10 +1,12 @@
 # Architecture Decision Records (ADR)
 
-This directory contains Architecture Decision Records (ADRs) for the bulma-turbo-themes project.
+This directory contains Architecture Decision Records (ADRs) for the turbo-themes
+project.
 
 ## What is an ADR?
 
-An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along with its context and consequences.
+An Architecture Decision Record (ADR) is a document that captures an important
+architectural decision made along with its context and consequences.
 
 ## Why Use ADRs?
 
@@ -66,7 +68,8 @@ When a decision is no longer valid:
 
 ## Superseded
 
-This decision was superseded on 2025-11-01 by [ADR-0005](0005-new-decision.md) because...
+This decision was superseded on 2025-11-01 by [ADR-0005](0005-new-decision.md)
+because...
 ```
 
 ## Index of ADRs

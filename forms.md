@@ -102,6 +102,6 @@ permalink: /forms/
   </div>
 </form>
 
-### Horizontal rule
+## Horizontal rule
 
 <hr />
