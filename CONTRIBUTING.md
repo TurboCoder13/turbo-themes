@@ -9,7 +9,7 @@ Thanks for contributing! Please follow these guidelines to keep things smooth.
 - **Bun** (recommended): 1.3+ - [Install Bun](https://bun.sh/docs/installation)
 - **Node.js** (alternative): 22+ with npm
 - **Ruby**: 3.3+ with Bundler (for Jekyll demo site)
-- **uv**: Python package manager (for lintro)
+- **uv**: Python package manager (required for lintro linting tool)
 
 ### Quick Start with Bun (Recommended)
 

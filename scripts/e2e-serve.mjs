@@ -32,7 +32,7 @@ try {
     process.exit(1);
   }
   console.log(`Starting http-server on http://${host}:${port}...`);
-  const npxCmd = process.platform === "win32" ? "bunx.cmd" : "bunx";
+  const bunxCmd = process.platform === "win32" ? "bunx.cmd" : "bunx";
   const serverArgs = [
     "--no-install",
     "http-server",
@@ -44,7 +44,7 @@ try {
     "-c-1",
     "-s",
   ];
-  const serverProcess = spawn(npxCmd, serverArgs, {
+  const serverProcess = spawn(bunxCmd, serverArgs, {
     cwd: rootDir,
     stdio: "inherit",
   });

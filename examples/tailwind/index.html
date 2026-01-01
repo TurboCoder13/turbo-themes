@@ -88,9 +88,16 @@
 
     <script>
       const selector = document.getElementById('theme-selector');
-      selector.addEventListener('change', (e) => {
-        document.documentElement.dataset.theme = e.target.value;
-      });
+      if (selector) {
+        // Sync initial UI with current theme
+        selector.value = document.documentElement.dataset.theme ?? selector.value;
+        selector.addEventListener('change', (e) => {
+          const value = e.target && 'value' in e.target ? e.target.value : null;
+          if (typeof value === 'string') {
+            document.documentElement.dataset.theme = value;
+          }
+        });
+      }
     </script>
   </body>
 </html>

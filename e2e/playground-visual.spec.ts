@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+// Visual regression tests for representative theme samples
+// Full theme list in _layouts/default.html VALID_THEMES
 const themes = ['catppuccin-mocha', 'dracula', 'github-dark'];
 
 const examples = [

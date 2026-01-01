@@ -3,8 +3,35 @@ set -e
 # Run quick CI checks before commit
 echo "🔍 Running pre-commit CI checks..."
 
+# Add common installation paths to PATH for tools like GitHub Desktop
+# which may have restricted PATH
+export PATH="$PATH:/usr/local/bin:$HOME/.cargo/bin:$HOME/.local/bin"
+
+# Find uv in PATH or common locations
+find_uv() {
+  if command -v uv >/dev/null 2>&1; then
+    command -v uv
+    return 0
+  fi
+  # Check common installation paths
+  for path in /usr/local/bin/uv ~/.cargo/bin/uv ~/.local/bin/uv; do
+    if [ -x "$path" ]; then
+      echo "$path"
+      return 0
+    fi
+  done
+  return 1
+}
+
+UV_CMD=$(find_uv)
+if [ -z "$UV_CMD" ]; then
+  echo "❌ Error: uv not found. Please install uv: https://github.com/astral-sh/uv"
+  echo "   Or ensure uv is in your PATH"
+  exit 1
+fi
+
 # Run linting and formatting via lintro
-uv run lintro check
+"$UV_CMD" run lintro check
 
 # Run theme sync to ensure deterministic generation
 bun run theme:sync

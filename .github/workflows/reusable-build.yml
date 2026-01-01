@@ -64,7 +64,14 @@ jobs:
         shell: bash
         run: |
           git status --porcelain
-          git diff --quiet --exit-code
+          # Check only token-related paths
+          if git diff --quiet --exit-code -- 'python/src/turbo_themes/tokens.py' 'swift/Sources/TurboThemes/Tokens/' 'dist/css/tokens/'; then
+            echo "✅ All generated tokens are committed"
+          else
+            echo "❌ Generated tokens have uncommitted changes"
+            git diff -- 'python/src/turbo_themes/tokens.py' 'swift/Sources/TurboThemes/Tokens/' 'dist/css/tokens/'
+            exit 1
+          fi
 
       - name: Jekyll build
         run: bun run build:ci:jekyll

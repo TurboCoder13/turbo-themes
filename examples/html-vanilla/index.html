@@ -156,11 +156,26 @@
       (function () {
         const STORAGE_KEY = 'turbo-theme';
         const DEFAULT_THEME = 'catppuccin-mocha';
+        // Valid theme IDs - whitelist to prevent XSS/resource injection
+        const VALID_THEMES = [
+          'catppuccin-mocha',
+          'catppuccin-latte',
+          'dracula',
+          'github-dark',
+          'github-light',
+          'bulma-light',
+          'bulma-dark',
+        ];
         const selector = document.getElementById('theme-selector');
         const themeLink = document.getElementById('theme-css');
 
         function applyTheme(id) {
-          const themeId = id || DEFAULT_THEME;
+          let themeId = id || DEFAULT_THEME;
+          // Validate against whitelist to prevent XSS
+          if (!VALID_THEMES.includes(themeId)) {
+            console.warn('Invalid theme ID, using default:', themeId);
+            themeId = DEFAULT_THEME;
+          }
           const root = document.documentElement;
 
           // Apply data-theme
@@ -188,7 +203,10 @@
         // Initialize from storage or default
         let initial = DEFAULT_THEME;
         try {
-          initial = localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved && VALID_THEMES.includes(saved)) {
+            initial = saved;
+          }
         } catch (e) {
           console.warn('Could not read theme from storage', e);
         }

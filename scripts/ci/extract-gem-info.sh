@@ -14,6 +14,11 @@ fi
 GEM_NAME=$(basename "$GEM_FILE")
 VERSION=$(echo "$GEM_NAME" | sed -n 's/turbo-themes-\(.*\)\.gem/\1/p')
 
+if [ -z "$VERSION" ]; then
+  echo "❌ Failed to extract version from gem file: $GEM_NAME"
+  exit 1
+fi
+
 {
   echo "name=$GEM_NAME"
   echo "version=$VERSION"

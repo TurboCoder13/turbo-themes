@@ -1,6 +1,14 @@
-.PHONY: playground-html playground-jekyll playground-swift playground-tailwind playground-bootstrap playground-python playground-all playground-help \
+.PHONY: all clean test playground-html playground-jekyll playground-swift playground-tailwind playground-bootstrap playground-python playground-all playground-help \
 	build-help build-all build-core build-themes build-html build-jekyll build-tailwind build-swift \
-	test test-unit test-e2e test-python test-lhci test-all test-help ensure-deps serve-reports build-gem install-gem
+	test-unit test-e2e test-python test-lhci test-all test-help ensure-deps serve-reports build-gem install-gem
+
+all: build-all
+
+clean:
+	@echo "🧹 Cleaning build artifacts..."
+	@rm -rf dist/ _site/ coverage/ htmlcov/ .lighthouse/ lighthouse-reports/ playwright-report/ test-results/
+	@find . -name "*.gem" -type f -delete
+	@echo "✅ Clean complete"
 
 playground-help:
 	@echo "Playground targets:"

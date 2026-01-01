@@ -39,7 +39,8 @@ fi
 
 # Step 2: Sync version from package.json to gem version file
 print_status "$YELLOW" "  Syncing version from package.json..."
-VERSION=$(node -p "require('./package.json').version")
+# Use bun for consistency with primary toolchain
+VERSION=$(bun -p "require('./package.json').version")
 VERSION_FILE="lib/turbo-themes/version.rb"
 if [ -f "$VERSION_FILE" ]; then
     # Update version in version.rb (portable sed for macOS/Linux)

@@ -64,7 +64,7 @@ port_available() {
         # Prefer ss (socket statistics) if available
         if command_exists "ss"; then
             # matches ":4000" (IPv4) and "]:4000" (IPv6)
-            if ss -ltn 2>/dev/null | awk '{print $4}' | grep -qE "(:|\\])${port}$"; then
+            if ss -ltn 2>/dev/null | awk '{print $4}' | grep -qE "(:|])${port}$"; then
                 return 1
             else
                 return 0
@@ -102,18 +102,29 @@ wait_for_port_release() {
     local interval="${PORT_RELEASE_CHECK_INTERVAL}"
     local timeout="${PORT_RELEASE_TIMEOUT}"
     # Validate numeric (integer or decimal) and reject zero/sub-millisecond values
+    # Require at least one digit and reject strings that are just dots or start/end with dots
     case "$timeout" in
-        ''|*[!0-9.]*|*\..*\..*|.*|*.)
+        ''|*[!0-9.]*|*\..*\..*|.*|*.|^\.$|^\.\.*$)
             print_status "$RED" "❌ Invalid timeout value: $timeout (must be a positive decimal number)"
             exit 1
             ;;
     esac
+    # Ensure at least one digit is present
+    if ! echo "$timeout" | grep -qE '[0-9]'; then
+        print_status "$RED" "❌ Invalid timeout value: $timeout (must contain at least one digit)"
+        exit 1
+    fi
     case "$interval" in
-        ''|*[!0-9.]*|*\..*\..*|.*|*.)
+        ''|*[!0-9.]*|*\..*\..*|.*|*.|^\.$|^\.\.*$)
             print_status "$RED" "❌ Invalid interval value: $interval (must be a positive decimal number)"
             exit 1
             ;;
     esac
+    # Ensure at least one digit is present
+    if ! echo "$interval" | grep -qE '[0-9]'; then
+        print_status "$RED" "❌ Invalid interval value: $interval (must contain at least one digit)"
+        exit 1
+    fi
 
     # Reject zero values (0, 0.0, 0.00, etc.) at validation time
     # Use awk to handle decimal comparison properly

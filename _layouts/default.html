@@ -62,11 +62,11 @@
             'github-light',
             'github-dark',
           ];
-          for (var i = 0; i < LEGACY_STORAGE_KEYS.length; i++) {
-            var legacy = localStorage.getItem(LEGACY_STORAGE_KEYS[i]);
+          for (var j = 0; j < LEGACY_STORAGE_KEYS.length; j++) {
+            var legacy = localStorage.getItem(LEGACY_STORAGE_KEYS[j]);
             if (legacy && !localStorage.getItem(STORAGE_KEY)) {
               localStorage.setItem(STORAGE_KEY, legacy);
-              localStorage.removeItem(LEGACY_STORAGE_KEYS[i]);
+              localStorage.removeItem(LEGACY_STORAGE_KEYS[j]);
             }
           }
           var savedTheme = localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
