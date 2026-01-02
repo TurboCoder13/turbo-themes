@@ -10,6 +10,694 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.10.9] - 2026-01-02
+
+### 🐛 Fixed
+
+- update turbocoder13/py-lintro digest to 05d996c (#204)
+- update ruby/setup-ruby action to v1.278.0 (#203)
+- update renovatebot/github-action action to v44.2.2 (#202)
+- update ruby/setup-ruby action to v1.276.0 (#201)
+- update turbocoder13/py-lintro digest to 0376ea5 (#200)
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2026-01-01
+
+### 🐛 Fixed
+
+- update ruby/setup-ruby action to v1.278.0 (#203)
+- update renovatebot/github-action action to v44.2.2 (#202)
+- update ruby/setup-ruby action to v1.276.0 (#201)
+- update turbocoder13/py-lintro digest to 0376ea5 (#200)
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-30
+
+### 🐛 Fixed
+
+- update renovatebot/github-action action to v44.2.2 (#202)
+- update ruby/setup-ruby action to v1.276.0 (#201)
+- update turbocoder13/py-lintro digest to 0376ea5 (#200)
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-28
+
+### 🐛 Fixed
+
+- update ruby/setup-ruby action to v1.276.0 (#201)
+- update turbocoder13/py-lintro digest to 0376ea5 (#200)
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-26
+
+### 🐛 Fixed
+
+- update turbocoder13/py-lintro digest to 0376ea5 (#200)
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-24
+
+### 🐛 Fixed
+
+- update renovatebot/github-action action to v44.2.1 (#198)
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-24
+
+### 🐛 Fixed
+
+- update turbocoder13/py-lintro digest to 0304bb5 (#197)
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-22
+
+### 🐛 Fixed
+
+- update ruby/setup-ruby action to v1.275.0 (#196)
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-22
+
+### 🐛 Fixed
+
+- update softprops/action-gh-release digest to 5122b4e (#195)
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-21
+
+### 🐛 Fixed
+
+- update peter-evans/create-pull-request action to v8 (#194)
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-21
+
+### 🐛 Fixed
+
+- update actions/setup-node digest (#193)
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-19
+
+### 🐛 Fixed
+
+- update github artifact actions (#192)
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-19
+
+### 🐛 Fixed
+
+- update dependency bun to v1.3.5 (#191)
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-18
+
+### 🐛 Fixed
+
+- update actions/cache action to v5 (#189)
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-18
+
+### 🐛 Fixed
+
+- update github/codeql-action action to v4.31.9 (#190)
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-18
+
+### 🐛 Fixed
+
+- update turbocoder13/py-lintro digest to 12e0051 (#185)
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-18
+
+### 🐛 Fixed
+
+- update renovatebot/github-action action to v44.2.0 (#188)
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-16
+
+### 🐛 Fixed
+
+- update step-security/harden-runner action to v2.14.0 (#186)
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-15
+
+### 🐛 Fixed
+
+- update ruby/setup-ruby action to v1.270.0 (#181)
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-15
+
+### 🐛 Fixed
+
+- update astral-sh/setup-uv action to v7.1.6 (#184)
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-15
+
+### 🐛 Fixed
+
+- update actions/download-artifact digest to 37930b1 (#183)
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-13
+
+### 🐛 Fixed
+
+- update github/codeql-action action to v4.31.8 (#180)
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-12
+
+### 🐛 Fixed
+
+- update dependency bun to v1.3.4 (#179)
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-12
+
+### 🐛 Fixed
+
+- update codecov/codecov-action action to v5.5.2 (#178)
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-10
+
+### 🐛 Fixed
+
+- update actions/setup-node action to v6.1.0 (#176)
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-10
+
+### 🐛 Fixed
+
+- update turbocoder13/py-lintro digest to d2f79fd (#175)
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-09
+
+### 🐛 Fixed
+
+- update astral-sh/setup-uv action to v7.1.5 (#174)
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-09
+
+### 🐛 Fixed
+
+- update softprops/action-gh-release digest to 60cfd9a (#172)
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-08
+
+### 🐛 Fixed
+
+- update renovatebot/github-action action to v44.0.5 (#173)
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-07
+
+### 🐛 Fixed
+
+- update oven-sh/setup-bun action to v2.0.2 (#168)
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-07
+
+### 🐛 Fixed
+
+- update actions/create-github-app-token action to v2.2.1 (#169)
+- update github/codeql-action action to v4.31.7 (#167)
+
+## [0.10.9] - 2025-12-07
+
+### 🐛 Fixed
+
+- update github/codeql-action action to v4.31.7 (#167)
+
 ## [0.10.8] - 2025-12-05
 
 ### 🐛 Fixed
