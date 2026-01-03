@@ -15,7 +15,7 @@ GEM_NAME="$2"
 {
   echo "## 📦 Gem Published Successfully"
   echo ""
-  echo "✅ Published to RubyGems: https://rubygems.org/gems/bulma-turbo-themes"
+  echo "✅ Published to RubyGems: https://rubygems.org/gems/$GEM_NAME"
   echo ""
   echo "| Property | Value |"
   echo "|----------|-------|"

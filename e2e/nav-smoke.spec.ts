@@ -1,5 +1,8 @@
 import { test, expect } from './fixtures';
-import { takeScreenshotWithHighlight, takeScreenshotWithMultipleHighlights } from './helpers';
+import {
+  takeScreenshotWithHighlight,
+  takeScreenshotWithMultipleHighlights,
+} from './helpers';
 import { BasePage } from './pages/BasePage';
 
 /**
@@ -28,7 +31,11 @@ async function testNavigation(
   const link = basePage.getNavLink(pageName);
 
   await test.step(`Take screenshot before navigation`, async () => {
-    await takeScreenshotWithHighlight(basePage.page, link, `before-navigate-${pageName}`);
+    await takeScreenshotWithHighlight(
+      basePage.page,
+      link,
+      `before-navigate-${pageName}`
+    );
   });
 
   await test.step(`Navigate to ${pageName} page`, async () => {
@@ -57,7 +64,11 @@ async function testNavigation(
     }
 
     // Take screenshot after navigation
-    await takeScreenshotWithHighlight(basePage.page, activeLink, `after-navigate-${pageName}`);
+    await takeScreenshotWithHighlight(
+      basePage.page,
+      activeLink,
+      `after-navigate-${pageName}`
+    );
   });
 }
 
@@ -75,18 +86,20 @@ test.describe('Navigation Smoke Tests @smoke', () => {
       await basePage.expectNavLinkVisible('forms');
 
       // Verify initial active state: Home link should be active on home page
-      await expect(links.home, 'Home link should be active on initial page load').toHaveClass(
-        /is-active/
-      );
+      await expect(
+        links.home,
+        'Home link should be active on initial page load'
+      ).toHaveClass(/is-active/);
 
       // Verify other links are not active initially
       await expect(
         links.components,
         'Components link should not be active on home page'
       ).not.toHaveClass(/is-active/);
-      await expect(links.forms, 'Forms link should not be active on home page').not.toHaveClass(
-        /is-active/
-      );
+      await expect(
+        links.forms,
+        'Forms link should not be active on home page'
+      ).not.toHaveClass(/is-active/);
 
       // Take screenshot highlighting all navbar links
       await takeScreenshotWithMultipleHighlights(
@@ -120,7 +133,11 @@ test.describe('Navigation Smoke Tests @smoke', () => {
     const homeLink = basePage.getNavLink('home');
 
     await test.step('Take screenshot before navigating back', async () => {
-      await takeScreenshotWithHighlight(basePage.page, homeLink, 'before-navigate-home');
+      await takeScreenshotWithHighlight(
+        basePage.page,
+        homeLink,
+        'before-navigate-home'
+      );
     });
 
     await test.step('Navigate back to Home', async () => {
@@ -151,7 +168,11 @@ test.describe('Navigation Smoke Tests @smoke', () => {
       ).not.toHaveClass(/is-active/);
 
       // Take screenshot after navigating back
-      await takeScreenshotWithHighlight(basePage.page, activeHome, 'after-navigate-home');
+      await takeScreenshotWithHighlight(
+        basePage.page,
+        activeHome,
+        'after-navigate-home'
+      );
     });
   });
 });

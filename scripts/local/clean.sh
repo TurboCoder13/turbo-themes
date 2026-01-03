@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Clean script for bulma-turbo-themes Jekyll site
+# Clean script for turbo-themes Jekyll site
 # This script removes all build artifacts, temporary files, and cached content
 # to allow for a fresh rebuild from scratch.
 
 set -e  # Exit on any error
 
-echo "🧹 Starting cleanup of bulma-turbo-themes project..."
+echo "🧹 Starting cleanup of turbo-themes project..."
 
 # Colors for output
 RED='\033[0;31m'

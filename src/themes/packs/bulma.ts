@@ -1,3 +1,4 @@
+import { layoutTokens } from '../shared-tokens.js';
 import type { ThemePackage } from '../types.js';
 
 /**
@@ -19,8 +20,9 @@ export const bulmaThemes: ThemePackage = {
       label: 'Bulma Light',
       vendor: 'bulma',
       appearance: 'light',
-      iconUrl: '/assets/img/bulma-logo.png',
+      iconUrl: '/assets/img/turbo-themes-logo.png',
       tokens: {
+        ...layoutTokens,
         background: {
           base: '#ffffff',
           surface: '#f5f5f5',
@@ -153,8 +155,9 @@ export const bulmaThemes: ThemePackage = {
       label: 'Bulma Dark',
       vendor: 'bulma',
       appearance: 'dark',
-      iconUrl: '/assets/img/bulma-logo.png',
+      iconUrl: '/assets/img/turbo-themes-logo.png',
       tokens: {
+        ...layoutTokens,
         background: {
           base: '#141414',
           surface: '#1f1f1f',

@@ -19,7 +19,7 @@ try {
   bulmaMod = await import(pathToFileURL(path.join(distDir, "themes/bulma.js")));
 } catch (error) {
   console.error(`Failed to import theme modules from ${distDir}:`, error.message);
-  console.error("Make sure to run 'npm run build' first to compile TypeScript files.");
+  console.error("Make sure to run 'bun run build' first to compile TypeScript files.");
   process.exit(1);
 }
 

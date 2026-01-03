@@ -11,8 +11,7 @@ const THEMES = [
     name: 'Light',
     description: 'Classic Bulma look with a bright, neutral palette.',
     cssFile: 'assets/css/themes/bulma-light.css',
-    icon: 'assets/img/bulma-logo.webp',
-    iconFallback: 'assets/img/bulma-logo.png',
+    icon: 'assets/img/turbo-themes-logo.png',
     family: 'bulma',
     appearance: 'light',
     colors: { bg: '#ffffff', surface: '#f5f5f5', accent: '#00d1b2', text: '#363636' },
@@ -22,8 +21,7 @@ const THEMES = [
     name: 'Dark',
     description: 'Dark Bulma theme tuned for low-light reading.',
     cssFile: 'assets/css/themes/bulma-dark.css',
-    icon: 'assets/img/bulma-logo.webp',
-    iconFallback: 'assets/img/bulma-logo.png',
+    icon: 'assets/img/turbo-themes-logo.png',
     family: 'bulma',
     appearance: 'dark',
     colors: { bg: '#1a1a2e', surface: '#252540', accent: '#00d1b2', text: '#f5f5f5' },
@@ -34,8 +32,7 @@ const THEMES = [
     name: 'Latte',
     description: 'Light, soft Catppuccin palette for daytime use.',
     cssFile: 'assets/css/themes/catppuccin-latte.css',
-    icon: 'assets/img/catppuccin-logo-latte.webp',
-    iconFallback: 'assets/img/catppuccin-logo-latte.png',
+    icon: 'assets/img/catppuccin-logo-latte.png',
     family: 'catppuccin',
     appearance: 'light',
     colors: { bg: '#eff1f5', surface: '#e6e9ef', accent: '#8839ef', text: '#4c4f69' },
@@ -45,8 +42,7 @@ const THEMES = [
     name: 'Frappé',
     description: 'Balanced dark Catppuccin theme for focused work.',
     cssFile: 'assets/css/themes/catppuccin-frappe.css',
-    icon: 'assets/img/catppuccin-logo-latte.webp',
-    iconFallback: 'assets/img/catppuccin-logo-latte.png',
+    icon: 'assets/img/catppuccin-logo-latte.png',
     family: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#303446', surface: '#414559', accent: '#ca9ee6', text: '#c6d0f5' },
@@ -56,8 +52,7 @@ const THEMES = [
     name: 'Macchiato',
     description: 'Deep, atmospheric Catppuccin variant with rich contrast.',
     cssFile: 'assets/css/themes/catppuccin-macchiato.css',
-    icon: 'assets/img/catppuccin-logo-macchiato.webp',
-    iconFallback: 'assets/img/catppuccin-logo-macchiato.png',
+    icon: 'assets/img/catppuccin-logo-macchiato.png',
     family: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#24273a', surface: '#363a4f', accent: '#c6a0f6', text: '#cad3f5' },
@@ -67,8 +62,7 @@ const THEMES = [
     name: 'Mocha',
     description: 'Cozy, high-contrast Catppuccin theme for late-night sessions.',
     cssFile: 'assets/css/themes/catppuccin-mocha.css',
-    icon: 'assets/img/catppuccin-logo-macchiato.webp',
-    iconFallback: 'assets/img/catppuccin-logo-macchiato.png',
+    icon: 'assets/img/catppuccin-logo-macchiato.png',
     family: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#1e1e2e', surface: '#313244', accent: '#cba6f7', text: '#cdd6f4' },
@@ -79,8 +73,7 @@ const THEMES = [
     name: 'Classic',
     description: 'Iconic Dracula dark theme with vibrant accents.',
     cssFile: 'assets/css/themes/dracula.css',
-    icon: 'assets/img/dracula-logo.webp',
-    iconFallback: 'assets/img/dracula-logo.png',
+    icon: 'assets/img/dracula-logo.png',
     family: 'dracula',
     appearance: 'dark',
     colors: { bg: '#282a36', surface: '#44475a', accent: '#bd93f9', text: '#f8f8f2' },
@@ -89,10 +82,10 @@ const THEMES = [
   {
     id: 'github-light',
     name: 'Light',
-    description: 'GitHub-inspired light theme suited for documentation and UI heavy pages.',
+    description:
+      'GitHub-inspired light theme suited for documentation and UI heavy pages.',
     cssFile: 'assets/css/themes/github-light.css',
-    icon: 'assets/img/github-logo-light.webp',
-    iconFallback: 'assets/img/github-logo-light.png',
+    icon: 'assets/img/github-logo-light.png',
     family: 'github',
     appearance: 'light',
     colors: { bg: '#ffffff', surface: '#f6f8fa', accent: '#0969da', text: '#1f2328' },
@@ -102,18 +95,15 @@ const THEMES = [
     name: 'Dark',
     description: 'GitHub dark theme optimized for code-heavy views.',
     cssFile: 'assets/css/themes/github-dark.css',
-    icon: 'assets/img/github-logo-dark.webp',
-    iconFallback: 'assets/img/github-logo-dark.png',
+    icon: 'assets/img/github-logo-dark.png',
     family: 'github',
     appearance: 'dark',
     colors: { bg: '#0d1117', surface: '#161b22', accent: '#58a6ff', text: '#c9d1d9' },
   },
 ];
-const STORAGE_KEY = 'bulma-theme-flavor';
+const STORAGE_KEY = 'turbo-theme';
+const LEGACY_STORAGE_KEYS = ['bulma-theme-flavor'];
 const DEFAULT_THEME = 'catppuccin-mocha';
-// Generation counter for theme switching to prevent race conditions
-// Incremented each time applyTheme is called; used to skip cleanup if a newer switch occurred
-let themeGenerationCounter = 0;
 function getCurrentThemeFromClasses(element) {
   const classList = Array.from(element.classList);
   for (const className of classList) {
@@ -135,10 +125,8 @@ function getBaseUrl(doc) {
   }
 }
 async function applyTheme(doc, themeId) {
-  // Increment and capture generation counter to detect if a newer theme switch occurs
-  themeGenerationCounter++;
-  const thisGeneration = themeGenerationCounter;
-  const theme = THEMES.find((t) => t.id === themeId) || THEMES.find((t) => t.id === DEFAULT_THEME);
+  const theme =
+    THEMES.find((t) => t.id === themeId) || THEMES.find((t) => t.id === DEFAULT_THEME);
   const baseUrl = getBaseUrl(doc);
   // Add loading state to trigger button
   const trigger = doc.getElementById('theme-flavor-trigger');
@@ -210,17 +198,14 @@ async function applyTheme(doc, themeId) {
       }
     }
     // Clean up old theme CSS links (keep current and base themes)
-    // Only cleanup if this is still the latest theme switch (prevents race condition)
-    if (thisGeneration === themeGenerationCounter) {
-      const themeLinks = doc.querySelectorAll('link[id^="theme-"][id$="-css"]');
-      themeLinks.forEach((link) => {
-        const linkThemeId = link.id.replace('theme-', '').replace('-css', '');
-        if (linkThemeId !== theme.id && linkThemeId !== 'base') {
-          link.remove();
-        }
-      });
-    }
-    // Update trigger button icon with theme's icon image (WebP with PNG fallback)
+    const themeLinks = doc.querySelectorAll('link[id^="theme-"][id$="-css"]');
+    themeLinks.forEach((link) => {
+      const linkThemeId = link.id.replace('theme-', '').replace('-css', '');
+      if (linkThemeId !== theme.id && linkThemeId !== 'base') {
+        link.remove();
+      }
+    });
+    // Update trigger button icon with theme's icon image
     const triggerIcon = doc.getElementById('theme-flavor-trigger-icon');
     if (triggerIcon && theme.icon) {
       try {
@@ -233,20 +218,14 @@ async function applyTheme(doc, themeId) {
         triggerIcon.src = resolvedPath;
         triggerIcon.alt = `${THEME_FAMILIES[theme.family].name} ${theme.name}`;
         triggerIcon.title = `${THEME_FAMILIES[theme.family].name} ${theme.name}`;
-        // Fallback to PNG if WebP fails
-        if (theme.iconFallback) {
-          const fallbackPath = new URL(theme.iconFallback, base).pathname;
-          triggerIcon.onerror = () => {
-            triggerIcon.onerror = null;
-            triggerIcon.src = fallbackPath;
-          };
-        }
       } catch {
         console.warn(`Invalid theme icon path for ${theme.id}`);
       }
     }
     // Update active state in dropdown
-    const dropdownItems = doc.querySelectorAll('#theme-flavor-menu .dropdown-item.theme-item');
+    const dropdownItems = doc.querySelectorAll(
+      '#theme-flavor-menu .dropdown-item.theme-item'
+    );
     dropdownItems.forEach((item) => {
       if (item.getAttribute('data-theme-id') === theme.id) {
         item.classList.add('is-active');
@@ -264,6 +243,14 @@ async function applyTheme(doc, themeId) {
   }
 }
 export async function initTheme(documentObj, windowObj) {
+  // Migrate legacy storage keys
+  for (const legacyKey of LEGACY_STORAGE_KEYS) {
+    const legacy = windowObj.localStorage.getItem(legacyKey);
+    if (legacy && !windowObj.localStorage.getItem(STORAGE_KEY)) {
+      windowObj.localStorage.setItem(STORAGE_KEY, legacy);
+      windowObj.localStorage.removeItem(legacyKey);
+    }
+  }
   // Check if theme was already applied by blocking script
   const initialTheme = windowObj.__INITIAL_THEME__;
   const savedTheme = windowObj.localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
@@ -313,7 +300,11 @@ export function initNavbar(documentObj) {
       item.classList.remove('is-active');
       const link = item;
       // Check if removeAttribute exists (for test mocks that might not have it)
-      if (link && 'removeAttribute' in link && typeof link.removeAttribute === 'function') {
+      if (
+        link &&
+        'removeAttribute' in link &&
+        typeof link.removeAttribute === 'function'
+      ) {
         link.removeAttribute('aria-current');
       }
     }
@@ -333,7 +324,8 @@ export function initNavbar(documentObj) {
     const reportPaths = ['/coverage', '/playwright', '/lighthouse'];
     const normalizedCurrentPath = currentPath.replace(/\/$/, '') || '/';
     const isOnReportsPage = reportPaths.some(
-      (path) => normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + '/')
+      (path) =>
+        normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + '/')
     );
     if (isOnReportsPage) {
       reportsLink.classList.add('is-active');
@@ -386,22 +378,14 @@ export function wireFlavorSelector(documentObj, windowObj) {
     // Enable select when JS is active
     selectEl.disabled = false;
     // Allow changing theme via native select
-    selectEl.addEventListener(
-      'change',
-      (event) => {
-        const target = event.target;
-        const selectedThemeId = target?.value || DEFAULT_THEME;
-        windowObj.localStorage.setItem(STORAGE_KEY, selectedThemeId);
-        applyTheme(documentObj, selectedThemeId).catch((error) => {
-          console.error(`Failed to apply theme ${selectedThemeId}:`, error);
-        });
-      },
-      { signal: abortController.signal }
-    );
-  }
-  // Clear any existing dropdown content before populating
-  while (dropdownMenu.firstChild) {
-    dropdownMenu.removeChild(dropdownMenu.firstChild);
+    selectEl.addEventListener('change', (event) => {
+      const target = event.target;
+      const selectedThemeId = target?.value || DEFAULT_THEME;
+      windowObj.localStorage.setItem(STORAGE_KEY, selectedThemeId);
+      applyTheme(documentObj, selectedThemeId).catch((error) => {
+        console.error(`Failed to apply theme ${selectedThemeId}:`, error);
+      });
+    });
   }
   // Populate dropdown with grouped theme options
   const families = Object.keys(THEME_FAMILIES);
@@ -448,31 +432,16 @@ export function wireFlavorSelector(documentObj, windowObj) {
       if (isActive) {
         item.classList.add('is-active');
       }
-      // Icon - use WebP with PNG fallback for performance
+      // Icon
       const icon = documentObj.createElement('img');
       icon.className = 'theme-icon';
       if (theme.icon) {
-        // Always use absolute path from origin to avoid relative path issues
-        // on subpages like /components/ where relative paths would break
-        const origin = windowObj.location.origin;
-        const iconPath = baseUrl ? `${origin}${baseUrl}/${theme.icon}` : `${origin}/${theme.icon}`;
+        const iconPath = baseUrl ? `${baseUrl}/${theme.icon}` : theme.icon;
         icon.src = iconPath;
         icon.alt = `${familyMeta.name} ${theme.name}`;
-        // Fallback to PNG if WebP fails to load
-        if (theme.iconFallback) {
-          const fallbackPath = baseUrl
-            ? `${origin}${baseUrl}/${theme.iconFallback}`
-            : `${origin}/${theme.iconFallback}`;
-          icon.onerror = () => {
-            icon.onerror = null; // Prevent infinite loop
-            icon.src = fallbackPath;
-          };
-        }
       }
       icon.width = 24;
       icon.height = 24;
-      // Add loading="lazy" for icons below the fold
-      icon.loading = 'lazy';
       item.appendChild(icon);
       // Text content
       const copy = documentObj.createElement('div');
@@ -498,7 +467,10 @@ export function wireFlavorSelector(documentObj, windowObj) {
       svg.setAttribute('stroke-width', '3');
       svg.setAttribute('stroke-linecap', 'round');
       svg.setAttribute('stroke-linejoin', 'round');
-      const polyline = documentObj.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      const polyline = documentObj.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polyline'
+      );
       polyline.setAttribute('points', '20 6 9 17 4 12');
       svg.appendChild(polyline);
       check.appendChild(svg);
@@ -507,20 +479,17 @@ export function wireFlavorSelector(documentObj, windowObj) {
         e.preventDefault();
         // Always update localStorage and close dropdown, even if CSS loading fails
         windowObj.localStorage.setItem(STORAGE_KEY, theme.id);
-        closeDropdown({ restoreFocus: true });
         if (selectEl) {
           selectEl.value = theme.id;
-          // Dispatch change event which triggers the select's change listener
-          // that calls applyTheme. Do NOT call applyTheme here to avoid
-          // duplicate calls causing race conditions (flickering, duplicate CSS links).
+          // Notify any listeners watching the native select
           const changeEvent = new Event('change', { bubbles: true });
           selectEl.dispatchEvent(changeEvent);
-        } else {
-          // Fallback: apply theme directly only if no select element exists
-          applyTheme(documentObj, theme.id).catch((error) => {
-            console.error(`Failed to apply theme ${theme.id}:`, error);
-          });
         }
+        closeDropdown({ restoreFocus: true });
+        // Apply theme asynchronously (doesn't block dropdown closing)
+        applyTheme(documentObj, theme.id).catch((error) => {
+          console.error(`Failed to apply theme ${theme.id}:`, error);
+        });
       });
       menuItems.push(item);
       themesContainer.appendChild(item);
@@ -644,7 +613,8 @@ export function wireFlavorSelector(documentObj, windowObj) {
             if (currentIndex < 0) {
               focusMenuItem(0);
             } else {
-              const nextIndex = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
+              const nextIndex =
+                currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
               focusMenuItem(nextIndex);
             }
           }

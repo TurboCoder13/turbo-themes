@@ -14,7 +14,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$REPO_ROOT"
 
-IMAGE_NAME="bulma-turbo-themes-ci"
+IMAGE_NAME="turbo-themes-ci"
 CONTAINER_WORK_DIR="/work"
 
 DOCKERFILE_PATH="$REPO_ROOT/Dockerfile"

@@ -1,10 +1,12 @@
 # Advanced Bulma Theming
 
-This document covers advanced theming capabilities that leverage Bulma's full Sass customization system.
+This document covers advanced theming capabilities that leverage Bulma's full Sass
+customization system.
 
 ## Overview
 
-The bulma-turbo-themes library now supports complete Bulma customization through Sass variables, allowing themes to:
+The turbo-themes library now supports complete Bulma customization through Sass
+variables, allowing themes to:
 
 - Customize responsive breakpoints per theme
 - Modify spacing scales
@@ -15,7 +17,8 @@ The bulma-turbo-themes library now supports complete Bulma customization through
 
 ## Theme Configuration
 
-Themes can include advanced Bulma customizations through the `bulma` property in theme definitions:
+Themes can include advanced Bulma customizations through the `bulma` property in theme
+definitions:
 
 ```typescript
 {
@@ -145,11 +148,14 @@ Themes can use Bulma's Sass mixins for advanced responsive behavior:
 
 ## Color Palette Access
 
-With direct Sass variable integration, themes have access to Bulma's complete color palette system. When you configure Bulma with Sass variables (as done in the generated theme files), Bulma automatically generates a comprehensive set of CSS variables.
+With direct Sass variable integration, themes have access to Bulma's complete color
+palette system. When you configure Bulma with Sass variables (as done in the generated
+theme files), Bulma automatically generates a comprehensive set of CSS variables.
 
 ### 21-Shade Color System
 
-Bulma generates 21 shades (00-100) for each color automatically. These are accessible via CSS variables:
+Bulma generates 21 shades (00-100) for each color automatically. These are accessible
+via CSS variables:
 
 ```scss
 .theme-my-theme {
@@ -207,7 +213,8 @@ In your theme SCSS files, you can use Bulma's color functions:
 
 ## Helper Classes
 
-Bulma automatically generates helper classes for all color variants. These work automatically with your theme colors:
+Bulma automatically generates helper classes for all color variants. These work
+automatically with your theme colors:
 
 ```html
 <!-- Text color helpers -->
@@ -268,7 +275,8 @@ $primary-dark: bulma-fn.bulmaFindDarkColor($primary);
 
 ### On-Scheme Colors
 
-Bulma's color system automatically handles light/dark mode awareness. The `-invert` variants ensure proper contrast regardless of the color scheme:
+Bulma's color system automatically handles light/dark mode awareness. The `-invert`
+variants ensure proper contrast regardless of the color scheme:
 
 ```scss
 .theme-my-theme {
@@ -306,7 +314,8 @@ If migrating from the previous CSS variable approach:
 
 1. **Remove CSS custom properties** - These are no longer needed
 2. **Add Sass configurations** - Use the `bulma` property in theme definitions
-3. **Update component styles** - Use Bulma's generated CSS variables instead of custom ones
+3. **Update component styles** - Use Bulma's generated CSS variables instead of custom
+   ones
 4. **Test thoroughly** - Verify all visual elements render correctly
 
 ## Examples
@@ -352,4 +361,5 @@ If migrating from the previous CSS variable approach:
 }
 ```
 
-This advanced theming system unlocks Bulma's full potential while maintaining the simplicity and performance of the turbo themes approach.
+This advanced theming system unlocks Bulma's full potential while maintaining the
+simplicity and performance of the turbo themes approach.

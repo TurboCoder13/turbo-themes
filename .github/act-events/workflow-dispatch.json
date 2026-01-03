@@ -1,0 +1,15 @@
+{
+  "ref": "refs/heads/main",
+  "inputs": {
+    "tag": "v0.0.0-act",
+    "reason": "act-local-test"
+  },
+  "repository": {
+    "full_name": "turbocoder13/turbo-themes",
+    "default_branch": "main"
+  },
+  "sender": {
+    "login": "act-runner"
+  }
+}
+

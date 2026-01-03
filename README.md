@@ -1,22 +1,22 @@
-# bulma-turbo-themes
+# turbo-themes
 
-Modern, accessible theme packs and a drop-in theme selector for Bulma 1.x.
+Universal, accessible theme packs and a drop-in theme selector.
 
 [![Bun](https://img.shields.io/badge/bun-1.3+-black?logo=bun)](https://bun.sh/)
 [![Node.js](https://img.shields.io/badge/node.js-22-green)](https://nodejs.org/)
-[![Coverage](https://codecov.io/gh/TurboCoder13/bulma-turbo-themes/branch/main/graph/badge.svg)](https://codecov.io/gh/TurboCoder13/bulma-turbo-themes)
+[![Coverage](https://codecov.io/gh/TurboCoder13/turbo-themes/branch/main/graph/badge.svg)](https://codecov.io/gh/TurboCoder13/turbo-themes)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Tests](https://img.shields.io/github/actions/workflow/status/TurboCoder13/bulma-turbo-themes/quality-ci-main.yml?label=tests&branch=main&logo=githubactions&logoColor=white)](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/quality-ci-main.yml?query=branch%3Amain)
-[![CI](https://img.shields.io/github/actions/workflow/status/TurboCoder13/bulma-turbo-themes/quality-ci-main.yml?label=ci&branch=main&logo=githubactions&logoColor=white)](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/quality-ci-main.yml?query=branch%3Amain)
-[![Lighthouse](https://img.shields.io/github/actions/workflow/status/TurboCoder13/bulma-turbo-themes/reporting-lighthouse-ci.yml?label=lighthouse&branch=main)](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/reporting-lighthouse-ci.yml?query=branch%3Amain)
+[![Tests](https://img.shields.io/github/actions/workflow/status/TurboCoder13/turbo-themes/quality-ci-main.yml?label=tests&branch=main&logo=githubactions&logoColor=white)](https://github.com/TurboCoder13/turbo-themes/actions/workflows/quality-ci-main.yml?query=branch%3Amain)
+[![CI](https://img.shields.io/github/actions/workflow/status/TurboCoder13/turbo-themes/quality-ci-main.yml?label=ci&branch=main&logo=githubactions&logoColor=white)](https://github.com/TurboCoder13/turbo-themes/actions/workflows/quality-ci-main.yml?query=branch%3Amain)
+[![Lighthouse](https://img.shields.io/github/actions/workflow/status/TurboCoder13/turbo-themes/reporting-lighthouse-ci.yml?label=lighthouse&branch=main)](https://github.com/TurboCoder13/turbo-themes/actions/workflows/reporting-lighthouse-ci.yml?query=branch%3Amain)
 
-[![CodeQL](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/security-codeql.yml/badge.svg?branch=main)](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/security-codeql.yml?query=branch%3Amain)
+[![CodeQL](https://github.com/TurboCoder13/turbo-themes/actions/workflows/security-codeql.yml/badge.svg?branch=main)](https://github.com/TurboCoder13/turbo-themes/actions/workflows/security-codeql.yml?query=branch%3Amain)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11471/badge)](https://www.bestpractices.dev/projects/11471)
 [![SBOM](https://img.shields.io/badge/SBOM-enabled-brightgreen)](SECURITY.md)
-[![Download SBOM](https://img.shields.io/badge/SBOM-download_latest-blue?logo=github)](https://github.com/TurboCoder13/bulma-turbo-themes/actions/workflows/security-sbom.yml)
+[![Download SBOM](https://img.shields.io/badge/SBOM-download_latest-blue?logo=github)](https://github.com/TurboCoder13/turbo-themes/actions/workflows/security-sbom.yml)
 
-[![npm](https://img.shields.io/npm/v/%40turbocoder13%2Fbulma-turbo-themes)](https://www.npmjs.com/package/@turbocoder13/bulma-turbo-themes)
-[![RubyGems](https://img.shields.io/gem/v/bulma-turbo-themes.svg)](https://rubygems.org/gems/bulma-turbo-themes)
+[![npm](https://img.shields.io/npm/v/%40turbocoder13%2Fturbo-themes)](https://www.npmjs.com/package/@turbocoder13/turbo-themes)
+[![RubyGems](https://img.shields.io/gem/v/turbo-themes.svg)](https://rubygems.org/gems/turbo-themes)
 
 ## Features
 
@@ -36,12 +36,12 @@ Install as a Ruby gem:
 
 ```ruby
 # Gemfile
-gem "bulma-turbo-themes", "~> 0.4"
+gem "turbo-themes", "~> 0.10"
 ```
 
 ```yaml
 # _config.yml
-theme: bulma-turbo-themes
+theme: turbo-themes
 ```
 
 Then run:
@@ -55,7 +55,8 @@ Assets are automatically available - no copying needed!
 
 ### Advanced Theming
 
-For advanced customization options including custom breakpoints, spacing, shadows, and Bulma mixins, see the [Advanced Theming Guide](docs/ADVANCED-THEMING.md).
+For advanced customization options including custom breakpoints, spacing, shadows, and
+Bulma mixins, see the [Advanced Theming Guide](docs/ADVANCED-THEMING.md).
 
 ### For Non-Jekyll Projects
 
@@ -63,10 +64,10 @@ Install via Bun (recommended) or npm:
 
 ```bash
 # Using Bun (recommended - 5-10x faster)
-bun add @turbocoder13/bulma-turbo-themes
+bun add @turbocoder13/turbo-themes
 
 # Using npm
-npm install @turbocoder13/bulma-turbo-themes
+npm install @turbocoder13/turbo-themes
 ```
 
 ## Quick start
@@ -100,7 +101,11 @@ npm install @turbocoder13/bulma-turbo-themes
     <span class="icon is-small" id="theme-flavor-trigger-icon"></span>
     Theme
   </button>
-  <div class="navbar-dropdown" id="theme-flavor-menu" aria-labelledby="theme-flavor-trigger">
+  <div
+    class="navbar-dropdown"
+    id="theme-flavor-menu"
+    aria-labelledby="theme-flavor-trigger"
+  >
     <div class="dropdown-content" id="theme-flavor-items"></div>
   </div>
 </div>
@@ -115,9 +120,11 @@ npm install @turbocoder13/bulma-turbo-themes
 
 ### Non-Jekyll Projects
 
-1. Copy CSS files from `node_modules/@turbocoder13/bulma-turbo-themes/assets/css/themes/` to your project:
+1. Copy CSS files from `node_modules/@turbocoder13/turbo-themes/assets/css/themes/` to
+   your project:
    - `global.css` (required)
-   - Flavor CSS files (e.g., `catppuccin-mocha.css`, `dracula.css`, `github-dark.css`) - copy the ones you want to use
+   - Flavor CSS files (e.g., `catppuccin-mocha.css`, `dracula.css`, `github-dark.css`) -
+     copy the ones you want to use
 2. Include CSS links (adjust paths to match your project structure):
 
 ```html
@@ -140,7 +147,11 @@ npm install @turbocoder13/bulma-turbo-themes
     <span class="icon is-small" id="theme-flavor-trigger-icon"></span>
     Theme
   </button>
-  <div class="navbar-dropdown" id="theme-flavor-menu" aria-labelledby="theme-flavor-trigger">
+  <div
+    class="navbar-dropdown"
+    id="theme-flavor-menu"
+    aria-labelledby="theme-flavor-trigger"
+  >
     <div class="dropdown-content" id="theme-flavor-items"></div>
   </div>
 </div>
@@ -150,7 +161,7 @@ npm install @turbocoder13/bulma-turbo-themes
 ```
 
 ```ts
-import { initTheme, wireFlavorSelector } from '@turbocoder13/bulma-turbo-themes';
+import { initTheme, wireFlavorSelector } from '@turbocoder13/turbo-themes';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme(document, window);
@@ -158,92 +169,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-### React Native / Cross-Platform
-
-This package provides platform-agnostic design tokens that work in React Native, Expo, and other non-web environments.
-
-#### Installation
+### Python (PyPI)
 
 ```bash
-bun add @turbocoder13/bulma-turbo-themes
+pip install turbo-themes
 # or
-npm install @turbocoder13/bulma-turbo-themes
+uv add turbo-themes
 ```
 
-#### Basic Usage (Without Context)
+```python
+from turbo_themes import ThemeManager, THEMES
 
-```tsx
-import { useTheme, useThemeColors } from '@turbocoder13/bulma-turbo-themes/tokens/react-native';
-
-function MyComponent() {
-  const { colors, styles, theme } = useTheme('catppuccin-mocha');
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.h1}>{theme.label}</Text>
-      <Text style={[styles.text, { color: colors.brandPrimary }]}>
-        Primary color text
-      </Text>
-    </View>
-  );
-}
+manager = ThemeManager()
+manager.set_theme("catppuccin-mocha")
+css_vars = manager.apply_theme_to_css_variables()
+print(len(css_vars), "CSS variables ready to inject")
 ```
 
-#### With ThemeProvider (Recommended)
+### Swift (Swift Package Manager via GitHub)
 
-```tsx
-import { ThemeProvider, useThemeContext } from '@turbocoder13/bulma-turbo-themes/tokens/react-native';
-import { useColorScheme } from 'react-native';
+1. In Xcode, add a package dependency:  
+   URL: `https://github.com/TurboCoder13/turbo-themes.git`  
+   Version: `from 0.10.8`
+2. Add the library product **TurboThemes** to your target.
 
-// Wrap your app with ThemeProvider
-function App() {
-  return (
-    <ThemeProvider
-      useColorScheme={useColorScheme}
-      followSystem
-      lightTheme="catppuccin-latte"
-      darkTheme="catppuccin-mocha"
-    >
-      <MyApp />
-    </ThemeProvider>
-  );
-}
+```swift
+import TurboThemes
 
-// Use the theme in any component
-function MyApp() {
-  const { colors, styles, setTheme, toggleAppearance, appearance } = useThemeContext();
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.h1}>Welcome!</Text>
-      <Button
-        title={`Switch to ${appearance === 'dark' ? 'light' : 'dark'}`}
-        onPress={toggleAppearance}
-      />
-    </View>
-  );
-}
+let mocha = ThemeRegistry.themes[.catppuccinMocha]
+// Use ThemeDefinition values in your SwiftUI views
 ```
+
+### Supported Platforms
+
+- RubyGems (Jekyll theme)
+- npm (JS/TS + CSS assets)
+- PyPI (Python helper library)
+- Swift Package (SwiftUI previews/helpers)
 
 #### Available Exports
 
-| Import Path | Use Case |
-|-------------|----------|
-| `@turbocoder13/bulma-turbo-themes/tokens` | Platform-agnostic tokens (pure data) |
-| `@turbocoder13/bulma-turbo-themes/tokens/react-native` | React Native utilities, hooks, and context |
-| `@turbocoder13/bulma-turbo-themes/tokens.json` | JSON tokens for Flutter, Swift, Kotlin |
-| `@turbocoder13/bulma-turbo-themes/css/*` | CSS files for web |
-
-#### Pre-built Styles
-
-The React Native module includes pre-built styles for common components:
-
-- **Layout**: `container`, `safeArea`, `centered`, `row`
-- **Typography**: `h1`-`h6`, `text`, `textSecondary`, `caption`, `label`, `link`
-- **Components**: `card`, `cardElevated`, `button`, `buttonOutline`, `input`, `listItem`, `badge`, `tag`, `divider`
-- **State Colors**: `success`, `warning`, `danger`, `info`
-
-Plus design tokens for `spacing`, `typography`, `borderRadius`, and `shadows`.
+| Import Path                              | Use Case                                         |
+| ---------------------------------------- | ------------------------------------------------ |
+| `@turbocoder13/turbo-themes/tokens`      | Platform-agnostic tokens (pure data)             |
+| `@turbocoder13/turbo-themes/tokens.json` | JSON tokens for Python/Swift or custom pipelines |
+| `@turbocoder13/turbo-themes/css/*`       | CSS files for web                                |
 
 ## Testing
 
@@ -284,8 +254,8 @@ For detailed E2E testing documentation, see `docs/E2E-TESTING.md`.
 
 ```bash
 # Clone and install
-git clone https://github.com/TurboCoder13/bulma-turbo-themes.git
-cd bulma-turbo-themes
+git clone https://github.com/TurboCoder13/turbo-themes.git
+cd turbo-themes
 bun install
 bundle install
 

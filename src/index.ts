@@ -1,5 +1,7 @@
+import type { ThemeFlavor as CanonicalThemeFlavor } from './themes/types.js';
+
 export type ThemeMode = 'theme';
-export type ThemeAppearance = 'light' | 'dark';
+export type ThemeAppearance = CanonicalThemeFlavor['appearance'];
 export type ThemeFamily = 'bulma' | 'catppuccin' | 'github' | 'dracula';
 
 interface ThemeColors {
@@ -9,14 +11,16 @@ interface ThemeColors {
   text: string;
 }
 
-interface ThemeFlavor {
+interface ThemeFlavor extends Pick<
+  CanonicalThemeFlavor,
+  'id' | 'appearance' | 'vendor'
+> {
   id: string;
   name: string;
   description: string;
   cssFile: string;
   icon?: string;
   family: ThemeFamily;
-  appearance: ThemeAppearance;
   colors: ThemeColors;
 }
 
@@ -46,8 +50,9 @@ const THEMES: ThemeFlavor[] = [
     name: 'Light',
     description: 'Classic Bulma look with a bright, neutral palette.',
     cssFile: 'assets/css/themes/bulma-light.css',
-    icon: 'assets/img/bulma-logo.png',
+    icon: 'assets/img/turbo-themes-logo.png',
     family: 'bulma',
+    vendor: 'bulma',
     appearance: 'light',
     colors: { bg: '#ffffff', surface: '#f5f5f5', accent: '#00d1b2', text: '#363636' },
   },
@@ -56,8 +61,9 @@ const THEMES: ThemeFlavor[] = [
     name: 'Dark',
     description: 'Dark Bulma theme tuned for low-light reading.',
     cssFile: 'assets/css/themes/bulma-dark.css',
-    icon: 'assets/img/bulma-logo.png',
+    icon: 'assets/img/turbo-themes-logo.png',
     family: 'bulma',
+    vendor: 'bulma',
     appearance: 'dark',
     colors: { bg: '#1a1a2e', surface: '#252540', accent: '#00d1b2', text: '#f5f5f5' },
   },
@@ -69,6 +75,7 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/catppuccin-latte.css',
     icon: 'assets/img/catppuccin-logo-latte.png',
     family: 'catppuccin',
+    vendor: 'catppuccin',
     appearance: 'light',
     colors: { bg: '#eff1f5', surface: '#e6e9ef', accent: '#8839ef', text: '#4c4f69' },
   },
@@ -79,6 +86,7 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/catppuccin-frappe.css',
     icon: 'assets/img/catppuccin-logo-latte.png',
     family: 'catppuccin',
+    vendor: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#303446', surface: '#414559', accent: '#ca9ee6', text: '#c6d0f5' },
   },
@@ -89,6 +97,7 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/catppuccin-macchiato.css',
     icon: 'assets/img/catppuccin-logo-macchiato.png',
     family: 'catppuccin',
+    vendor: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#24273a', surface: '#363a4f', accent: '#c6a0f6', text: '#cad3f5' },
   },
@@ -99,6 +108,7 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/catppuccin-mocha.css',
     icon: 'assets/img/catppuccin-logo-macchiato.png',
     family: 'catppuccin',
+    vendor: 'catppuccin',
     appearance: 'dark',
     colors: { bg: '#1e1e2e', surface: '#313244', accent: '#cba6f7', text: '#cdd6f4' },
   },
@@ -110,6 +120,7 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/dracula.css',
     icon: 'assets/img/dracula-logo.png',
     family: 'dracula',
+    vendor: 'dracula',
     appearance: 'dark',
     colors: { bg: '#282a36', surface: '#44475a', accent: '#bd93f9', text: '#f8f8f2' },
   },
@@ -117,10 +128,12 @@ const THEMES: ThemeFlavor[] = [
   {
     id: 'github-light',
     name: 'Light',
-    description: 'GitHub-inspired light theme suited for documentation and UI heavy pages.',
+    description:
+      'GitHub-inspired light theme suited for documentation and UI heavy pages.',
     cssFile: 'assets/css/themes/github-light.css',
     icon: 'assets/img/github-logo-light.png',
     family: 'github',
+    vendor: 'github',
     appearance: 'light',
     colors: { bg: '#ffffff', surface: '#f6f8fa', accent: '#0969da', text: '#1f2328' },
   },
@@ -131,12 +144,14 @@ const THEMES: ThemeFlavor[] = [
     cssFile: 'assets/css/themes/github-dark.css',
     icon: 'assets/img/github-logo-dark.png',
     family: 'github',
+    vendor: 'github',
     appearance: 'dark',
     colors: { bg: '#0d1117', surface: '#161b22', accent: '#58a6ff', text: '#c9d1d9' },
   },
 ];
 
-const STORAGE_KEY = 'bulma-theme-flavor';
+const STORAGE_KEY = 'turbo-theme';
+const LEGACY_STORAGE_KEYS = ['bulma-theme-flavor'];
 const DEFAULT_THEME = 'catppuccin-mocha';
 
 function getCurrentThemeFromClasses(element: HTMLElement): string | null {
@@ -162,11 +177,13 @@ function getBaseUrl(doc: Document): string {
 }
 
 async function applyTheme(doc: Document, themeId: string): Promise<void> {
-  const theme = THEMES.find((t) => t.id === themeId) || THEMES.find((t) => t.id === DEFAULT_THEME)!;
+  const theme =
+    THEMES.find((t) => t.id === themeId) || THEMES.find((t) => t.id === DEFAULT_THEME)!;
   const baseUrl = getBaseUrl(doc);
-
   // Add loading state to trigger button
-  const trigger = doc.getElementById('theme-flavor-trigger') as HTMLButtonElement | null;
+  const trigger = doc.getElementById(
+    'theme-flavor-trigger'
+  ) as HTMLButtonElement | null;
   if (trigger) {
     trigger.classList.add('is-loading');
   }
@@ -253,7 +270,9 @@ async function applyTheme(doc: Document, themeId: string): Promise<void> {
     });
 
     // Update trigger button icon with theme's icon image
-    const triggerIcon = doc.getElementById('theme-flavor-trigger-icon') as HTMLImageElement | null;
+    const triggerIcon = doc.getElementById(
+      'theme-flavor-trigger-icon'
+    ) as HTMLImageElement | null;
 
     if (triggerIcon && theme.icon) {
       try {
@@ -272,7 +291,9 @@ async function applyTheme(doc: Document, themeId: string): Promise<void> {
     }
 
     // Update active state in dropdown
-    const dropdownItems = doc.querySelectorAll('#theme-flavor-menu .dropdown-item.theme-item');
+    const dropdownItems = doc.querySelectorAll(
+      '#theme-flavor-menu .dropdown-item.theme-item'
+    );
     dropdownItems.forEach((item) => {
       if (item.getAttribute('data-theme-id') === theme.id) {
         item.classList.add('is-active');
@@ -290,7 +311,18 @@ async function applyTheme(doc: Document, themeId: string): Promise<void> {
   }
 }
 
-export async function initTheme(documentObj: Document, windowObj: Window): Promise<void> {
+export async function initTheme(
+  documentObj: Document,
+  windowObj: Window
+): Promise<void> {
+  // Migrate legacy storage keys
+  for (const legacyKey of LEGACY_STORAGE_KEYS) {
+    const legacy = windowObj.localStorage.getItem(legacyKey);
+    if (legacy && !windowObj.localStorage.getItem(STORAGE_KEY)) {
+      windowObj.localStorage.setItem(STORAGE_KEY, legacy);
+      windowObj.localStorage.removeItem(legacyKey);
+    }
+  }
   // Check if theme was already applied by blocking script
   const initialTheme = windowObj.__INITIAL_THEME__;
   const savedTheme = windowObj.localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
@@ -346,7 +378,11 @@ export function initNavbar(documentObj: Document): void {
       item.classList.remove('is-active');
       const link = item as HTMLAnchorElement;
       // Check if removeAttribute exists (for test mocks that might not have it)
-      if (link && 'removeAttribute' in link && typeof link.removeAttribute === 'function') {
+      if (
+        link &&
+        'removeAttribute' in link &&
+        typeof link.removeAttribute === 'function'
+      ) {
         link.removeAttribute('aria-current');
       }
     }
@@ -363,12 +399,15 @@ export function initNavbar(documentObj: Document): void {
   }
 
   // Handle Reports dropdown highlighting
-  const reportsLink = documentObj.querySelector<HTMLElement>('[data-testid="nav-reports"]');
+  const reportsLink = documentObj.querySelector<HTMLElement>(
+    '[data-testid="nav-reports"]'
+  );
   if (reportsLink) {
     const reportPaths = ['/coverage', '/playwright', '/lighthouse'];
     const normalizedCurrentPath = currentPath.replace(/\/$/, '') || '/';
     const isOnReportsPage = reportPaths.some(
-      (path) => normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + '/')
+      (path) =>
+        normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + '/')
     );
 
     if (isOnReportsPage) {
@@ -397,10 +436,14 @@ export function wireFlavorSelector(
 ): { cleanup: () => void } {
   const abortController = new AbortController();
   const dropdownMenu = documentObj.getElementById('theme-flavor-menu');
-  const trigger = documentObj.getElementById('theme-flavor-trigger') as HTMLButtonElement | null;
+  const trigger = documentObj.getElementById(
+    'theme-flavor-trigger'
+  ) as HTMLButtonElement | null;
   // Get the outer dropdown container (navbar-item has-dropdown) for active state toggling
   const dropdown = trigger?.closest('.navbar-item.has-dropdown') as HTMLElement | null;
-  const selectEl = documentObj.getElementById('theme-flavor-select') as HTMLSelectElement | null;
+  const selectEl = documentObj.getElementById(
+    'theme-flavor-select'
+  ) as HTMLSelectElement | null;
   const baseUrl = getBaseUrl(documentObj);
 
   if (!dropdownMenu || !trigger || !dropdown) {
@@ -545,7 +588,10 @@ export function wireFlavorSelector(
       svg.setAttribute('stroke-width', '3');
       svg.setAttribute('stroke-linecap', 'round');
       svg.setAttribute('stroke-linejoin', 'round');
-      const polyline = documentObj.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      const polyline = documentObj.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polyline'
+      );
       polyline.setAttribute('points', '20 6 9 17 4 12');
       svg.appendChild(polyline);
       check.appendChild(svg);
@@ -702,7 +748,8 @@ export function wireFlavorSelector(
             if (currentIndex < 0) {
               focusMenuItem(0);
             } else {
-              const nextIndex = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
+              const nextIndex =
+                currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
               focusMenuItem(nextIndex);
             }
           }

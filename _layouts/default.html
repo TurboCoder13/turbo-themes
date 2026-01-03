@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="{{ site.lang | default: 'en' }}" data-theme="auto" data-baseurl="{{ site.baseurl }}">
+<html
+  lang="{{ site.lang | default: 'en' }}"
+  data-theme="auto"
+  data-baseurl="{{ site.baseurl }}"
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,7 +47,8 @@
     <script>
       (function () {
         try {
-          var STORAGE_KEY = 'bulma-theme-flavor';
+          var STORAGE_KEY = 'turbo-theme';
+          var LEGACY_STORAGE_KEYS = ['bulma-theme-flavor'];
           var DEFAULT_THEME = 'catppuccin-mocha';
           // Valid theme IDs - must match THEMES array in theme-selector.js
           var VALID_THEMES = [
@@ -57,6 +62,13 @@
             'github-light',
             'github-dark',
           ];
+          for (var j = 0; j < LEGACY_STORAGE_KEYS.length; j++) {
+            var legacy = localStorage.getItem(LEGACY_STORAGE_KEYS[j]);
+            if (legacy && !localStorage.getItem(STORAGE_KEY)) {
+              localStorage.setItem(STORAGE_KEY, legacy);
+              localStorage.removeItem(LEGACY_STORAGE_KEYS[j]);
+            }
+          }
           var savedTheme = localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME;
           // Validate theme ID against allowed list to prevent invalid class/URL injection
           if (VALID_THEMES.indexOf(savedTheme) === -1) {
@@ -92,7 +104,8 @@
           var base = sanitizedBaseUrl
             ? window.location.origin + sanitizedBaseUrl + '/'
             : window.location.origin + '/';
-          var themePath = new URL('assets/css/themes/' + savedTheme + '.css', base).pathname;
+          var themePath = new URL('assets/css/themes/' + savedTheme + '.css', base)
+            .pathname;
 
           // Create preload link
           var preloadLink = document.createElement('link');
@@ -113,18 +126,18 @@
     <link
       rel="icon"
       type="image/png"
-      href="{{ '/assets/img/bulma-logo.png' | relative_url }}"
+      href="{{ '/assets/img/turbo-themes-logo.png' | relative_url }}"
       media="(prefers-color-scheme: light)"
     />
     <link
       rel="icon"
       type="image/png"
-      href="{{ '/assets/img/bulma-logo-dark.png' | relative_url }}"
+      href="{{ '/assets/img/turbo-themes-logo-dark.png' | relative_url }}"
       media="(prefers-color-scheme: dark)"
     />
     <link
       rel="mask-icon"
-      href="{{ '/assets/img/bulma-logo.png' | relative_url }}"
+      href="{{ '/assets/img/turbo-themes-logo.png' | relative_url }}"
       color="#111827"
     />
     <!--
@@ -141,14 +154,23 @@
       onload="this.rel = 'stylesheet'"
     />
     <noscript>
-      <link rel="stylesheet" href="{{ '/assets/css/themes/base.css' | relative_url }}" />
+      <link
+        rel="stylesheet"
+        href="{{ '/assets/css/themes/base.css' | relative_url }}"
+      />
     </noscript>
     <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}" />
     <!-- Use minified JS in production for ~50% smaller payload -->
     {% if jekyll.environment == 'production' %}
-    <script type="module" src="{{ '/assets/js/theme-selector.min.js' | relative_url }}"></script>
+    <script
+      type="module"
+      src="{{ '/assets/js/theme-selector.min.js' | relative_url }}"
+    ></script>
     {% else %}
-    <script type="module" src="{{ '/assets/js/theme-selector.js' | relative_url }}"></script>
+    <script
+      type="module"
+      src="{{ '/assets/js/theme-selector.js' | relative_url }}"
+    ></script>
     {% endif %}
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -179,7 +201,11 @@
     <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="{{ '/' | relative_url }}" data-testid="navbar-brand">
+          <a
+            class="navbar-item"
+            href="{{ '/' | relative_url }}"
+            data-testid="navbar-brand"
+          >
             {{ site.title }}
           </a>
           <button
@@ -199,7 +225,12 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item" href="{{ '/' | relative_url }}" data-testid="nav-home">Home</a>
+            <a
+              class="navbar-item"
+              href="{{ '/' | relative_url }}"
+              data-testid="nav-home"
+              >Home</a
+            >
             <a
               class="navbar-item"
               href="{{ '/components/' | relative_url }}"
@@ -207,7 +238,10 @@
             >
               Components
             </a>
-            <a class="navbar-item" href="{{ '/forms/' | relative_url }}" data-testid="nav-forms"
+            <a
+              class="navbar-item"
+              href="{{ '/forms/' | relative_url }}"
+              data-testid="nav-forms"
               >Forms</a
             >
             <div class="navbar-item has-dropdown is-hoverable">
@@ -252,7 +286,9 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
                       <polyline points="15 3 21 3 21 9"></polyline>
                       <line x1="10" y1="14" x2="21" y2="3"></line>
                     </svg>
@@ -283,7 +319,9 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
                       <polyline points="15 3 21 3 21 9"></polyline>
                       <line x1="10" y1="14" x2="21" y2="3"></line>
                     </svg>
@@ -314,7 +352,9 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
                       <polyline points="15 3 21 3 21 9"></polyline>
                       <line x1="10" y1="14" x2="21" y2="3"></line>
                     </svg>
@@ -324,7 +364,10 @@
             </div>
           </div>
           <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable" data-testid="theme-dropdown">
+            <div
+              class="navbar-item has-dropdown is-hoverable"
+              data-testid="theme-dropdown"
+            >
               <button
                 class="theme-trigger-icon"
                 id="theme-flavor-trigger"
@@ -354,7 +397,11 @@
               </div>
             </div>
             <div class="select is-rounded is-small is-hidden">
-              <select id="theme-flavor-select" aria-label="Theme flavor" disabled></select>
+              <select
+                id="theme-flavor-select"
+                aria-label="Theme flavor"
+                disabled
+              ></select>
             </div>
           </div>
         </div>

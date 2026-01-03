@@ -1,0 +1,178 @@
+// SPDX-License-Identifier: MIT
+/**
+ * Bootstrap utility classes for Turbo Themes
+ *
+ * Additional utility classes that extend Bootstrap with Turbo Theme tokens.
+ * Import after Bootstrap's main styles.
+ *
+ * @example
+ * ```scss
+ * @import "~bootstrap/scss/bootstrap";
+ * @import "~@turbocoder13/turbo-themes/adapters/bootstrap/utilities";
+ * ```
+ */
+
+// Theme-aware background and text utilities
+.bg-theme-surface {
+  background-color: var(--turbo-bg-surface) !important;
+}
+.bg-theme-surface-alt {
+  background-color: var(--turbo-bg-surface-alt) !important;
+}
+.bg-theme-primary {
+  background-color: var(--turbo-brand-primary) !important;
+}
+.bg-theme-accent {
+  background-color: var(--turbo-accent-link) !important;
+}
+
+.text-theme-primary {
+  color: var(--turbo-text-primary) !important;
+}
+.text-theme-secondary {
+  color: var(--turbo-text-secondary) !important;
+}
+.text-theme-inverse {
+  color: var(--turbo-text-inverse) !important;
+}
+.text-theme-brand {
+  color: var(--turbo-brand-primary) !important;
+}
+.text-theme-accent {
+  color: var(--turbo-accent-link) !important;
+}
+
+.border-theme {
+  border-color: var(--turbo-border-default) !important;
+}
+.border-theme-strong {
+  border-color: var(--turbo-border-strong, var(--turbo-border-default)) !important;
+}
+
+// Heading color utilities
+.text-heading-1 {
+  color: var(--turbo-heading-h1) !important;
+}
+.text-heading-2 {
+  color: var(--turbo-heading-h2) !important;
+}
+.text-heading-3 {
+  color: var(--turbo-heading-h3) !important;
+}
+.text-heading-4 {
+  color: var(--turbo-heading-h4) !important;
+}
+.text-heading-5 {
+  color: var(--turbo-heading-h5) !important;
+}
+.text-heading-6 {
+  color: var(--turbo-heading-h6) !important;
+}
+
+// Code styling
+.code-inline {
+  color: var(--turbo-code-inline-fg);
+  background-color: var(--turbo-code-inline-bg);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: var(--turbo-font-mono);
+  font-size: 0.875em;
+}
+
+.code-block {
+  color: var(--turbo-code-block-fg);
+  background-color: var(--turbo-code-block-bg);
+  padding: 1rem;
+  border-radius: 0.375rem;
+  font-family: var(--turbo-font-mono);
+  font-size: 0.875em;
+  overflow-x: auto;
+}
+
+// Blockquote styling
+.blockquote-theme {
+  border-left: 4px solid var(--turbo-blockquote-border);
+  color: var(--turbo-blockquote-fg);
+  background-color: var(--turbo-blockquote-bg);
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+// Selection styling
+::selection {
+  background-color: var(--turbo-selection-bg);
+  color: var(--turbo-selection-fg);
+}
+
+// Focus styling for better accessibility
+.focus-theme:focus {
+  outline: 2px solid var(--turbo-brand-primary);
+  outline-offset: 2px;
+}
+
+// Spacing utilities (if spacing tokens are available)
+.spacing-xs {
+  gap: var(--turbo-spacing-xs, 0.25rem) !important;
+}
+.spacing-sm {
+  gap: var(--turbo-spacing-sm, 0.5rem) !important;
+}
+.spacing-md {
+  gap: var(--turbo-spacing-md, 1rem) !important;
+}
+.spacing-lg {
+  gap: var(--turbo-spacing-lg, 1.5rem) !important;
+}
+.spacing-xl {
+  gap: var(--turbo-spacing-xl, 2rem) !important;
+}
+
+// Elevation/shadow utilities (if elevation tokens are available)
+.shadow-elevation-sm {
+  box-shadow: var(--turbo-elevation-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05)) !important;
+}
+.shadow-elevation-md {
+  box-shadow: var(--turbo-elevation-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1)) !important;
+}
+.shadow-elevation-lg {
+  box-shadow: var(--turbo-elevation-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1)) !important;
+}
+.shadow-elevation-xl {
+  box-shadow: var(--turbo-elevation-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1)) !important;
+}
+
+// Animation utilities (if animation tokens are available)
+.transition-fast {
+  transition-duration: var(--turbo-animation-duration-fast, 150ms) !important;
+}
+.transition-normal {
+  transition-duration: var(--turbo-animation-duration-normal, 300ms) !important;
+}
+.transition-slow {
+  transition-duration: var(--turbo-animation-duration-slow, 500ms) !important;
+}
+
+.ease-default {
+  transition-timing-function: var(
+    --turbo-animation-easing-default,
+    cubic-bezier(0.4, 0, 0.2, 1)
+  ) !important;
+}
+.ease-emphasized {
+  transition-timing-function: var(
+    --turbo-animation-easing-emphasized,
+    cubic-bezier(0.05, 0.7, 0.1, 1)
+  ) !important;
+}
+
+// Opacity utilities (if opacity tokens are available)
+.opacity-disabled {
+  opacity: var(--turbo-opacity-disabled, 0.5) !important;
+}
+.opacity-hover {
+  opacity: var(--turbo-opacity-hover, 0.8) !important;
+}
+.opacity-pressed {
+  opacity: var(--turbo-opacity-pressed, 0.6) !important;
+}

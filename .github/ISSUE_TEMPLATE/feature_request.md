@@ -14,4 +14,5 @@ labels: enhancement
 
 ---
 
-Please follow our Code of Conduct (see CODE_OF_CONDUCT.md) when engaging in this project.
+Please follow our Code of Conduct (see CODE_OF_CONDUCT.md) when engaging in this
+project.

@@ -21,6 +21,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: audit
@@ -68,8 +69,15 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: '🔗 External Link Issues Detected',
-                body:
-                  `## External Link Validation Report\n\n\`\`\`\n${output}\n\`\`\`\n\n**Note:** External link failures are non-blocking and may be transient.\nPlease review and investigate persistent failures.`,
+                body: [
+                  '## External Link Validation Report',
+                  '```',
+                  output,
+                  '```',
+                  '',
+                  '**Note:** External link failures are non-blocking and may be transient.',
+                  'Please review and investigate persistent failures.',
+                ].join('\\n'),
                 labels: ['type:monitoring', 'priority:low'],
               });
             }

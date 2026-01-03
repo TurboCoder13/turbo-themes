@@ -8,7 +8,8 @@ Accepted
 
 ## Context
 
-As the project grew, we accumulated multiple GitHub Actions workflows with significant duplication:
+As the project grew, we accumulated multiple GitHub Actions workflows with significant
+duplication:
 
 - Quality checks repeated in multiple workflows
 - Build steps duplicated across CI and publish workflows

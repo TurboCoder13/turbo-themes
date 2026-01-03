@@ -1,0 +1,93 @@
+// SPDX-License-Identifier: MIT
+/**
+ * Bootstrap SCSS variables for Turbo Themes
+ *
+ * Maps Turbo Theme design tokens to Bootstrap 5 SCSS variables.
+ * Import this file after Bootstrap's defaults but before your custom styles.
+ *
+ * @example
+ * ```scss
+ * @import "~bootstrap/scss/functions";
+ * @import "~bootstrap/scss/variables";
+ * @import "~@turbocoder13/turbo-themes/adapters/bootstrap/variables";
+ * @import "~bootstrap/scss/bootstrap";
+ * ```
+ */
+
+// Color palette mapping
+$primary: var(--turbo-brand-primary) !default;
+$secondary: var(--turbo-text-secondary) !default;
+$success: var(--turbo-state-success) !default;
+$info: var(--turbo-state-info) !default;
+$warning: var(--turbo-state-warning) !default;
+$danger: var(--turbo-state-danger) !default;
+$light: var(--turbo-bg-surface) !default;
+$dark: var(--turbo-text-primary) !default;
+
+// Body and text colors
+$body-color: var(--turbo-text-primary) !default;
+$body-bg: var(--turbo-bg-base) !default;
+
+// Links
+$link-color: var(--turbo-accent-link) !default;
+$link-hover-color: var(--turbo-accent-link) !default;
+
+// Borders
+$border-color: var(--turbo-border-default) !default;
+
+// Component backgrounds
+$component-active-bg: var(--turbo-bg-surface) !default;
+
+// Card component
+$card-bg: var(--turbo-bg-surface) !default;
+$card-border-color: var(--turbo-border-default) !default;
+$card-cap-bg: var(--turbo-bg-surface-alt) !default;
+
+// Dropdown
+$dropdown-bg: var(--turbo-bg-surface) !default;
+$dropdown-border-color: var(--turbo-border-default) !default;
+$dropdown-link-hover-bg: var(--turbo-bg-surface-alt) !default;
+
+// Modal
+$modal-content-bg: var(--turbo-bg-surface) !default;
+$modal-header-border-color: var(--turbo-border-default) !default;
+$modal-footer-border-color: var(--turbo-border-default) !default;
+
+// Navigation
+$navbar-light-bg: var(--turbo-bg-surface) !default;
+$navbar-light-color: var(--turbo-text-primary) !default;
+$navbar-dark-bg: var(--turbo-bg-base) !default;
+$navbar-dark-color: var(--turbo-text-primary) !default;
+
+// Tables
+$table-bg: var(--turbo-bg-surface) !default;
+$table-striped-bg: var(--turbo-table-stripe) !default;
+$table-border-color: var(--turbo-table-border) !default;
+$table-head-bg: var(--turbo-table-thead-bg) !default;
+
+// Code blocks
+$code-color: var(--turbo-code-inline-fg) !default;
+$code-bg: var(--turbo-code-inline-bg) !default;
+
+// Blockquotes
+$blockquote-footer-color: var(--turbo-blockquote-fg) !default;
+
+// Focus and selection
+$input-focus-border-color: var(--turbo-brand-primary) !default;
+$selection-bg: var(--turbo-selection-bg) !default;
+$selection-color: var(--turbo-selection-fg) !default;
+
+// Spacing (if available)
+$spacer: var(--turbo-spacing-md, 1rem) !default;
+
+// Typography
+$font-family-sans-serif: var(--turbo-font-sans) !default;
+$font-family-monospace: var(--turbo-font-mono) !default;
+
+// Headings
+$h1-color: var(--turbo-heading-h1) !default;
+$h2-color: var(--turbo-heading-h2) !default;
+$h3-color: var(--turbo-heading-h3) !default;
+$h4-color: var(--turbo-heading-h4) !default;
+$h5-color: var(--turbo-heading-h5) !default;
+$h6-color: var(--turbo-heading-h6) !default;

@@ -1,10 +1,12 @@
 # Egress Policy Documentation
 
-This document explains the egress policies used in bulma-turbo-themes GitHub Actions workflows, managed by `step-security/harden-runner`.
+This document explains the egress policies used in turbo-themes GitHub Actions
+workflows, managed by `step-security/harden-runner`.
 
 ## What are Egress Policies?
 
-Egress policies control which external endpoints GitHub Actions workflows can connect to. By using `step-security/harden-runner`, we:
+Egress policies control which external endpoints GitHub Actions workflows can connect
+to. By using `step-security/harden-runner`, we:
 
 1. **Block by default** - Prevent unauthorized network access
 2. **Allowlist specific endpoints** - Only permit known, necessary connections
@@ -41,11 +43,8 @@ Egress policies control which external endpoints GitHub Actions workflows can co
 
 ```yaml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  release-assets.githubusercontent.com:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 release-assets.githubusercontent.com:443
   uploads.github.com:443
 ```
 
@@ -73,8 +72,7 @@ allowed-endpoints: >
 
 ```yaml
 allowed-endpoints: >
-  rubygems.org:443
-  index.rubygems.org:443
+  rubygems.org:443 index.rubygems.org:443
 ```
 
 **Used for:**
@@ -85,10 +83,7 @@ allowed-endpoints: >
 
 ```yaml
 allowed-endpoints: >
-  codecov.io:443
-  api.codecov.io:443
-  uploader.codecov.io:443
-  storage.googleapis.com:443
+  codecov.io:443 api.codecov.io:443 uploader.codecov.io:443 storage.googleapis.com:443
 ```
 
 **Used for:**
@@ -101,9 +96,7 @@ allowed-endpoints: >
 
 ```yaml
 allowed-endpoints: >
-  fulcio.sigstore.dev:443
-  rekor.sigstore.dev:443
-  tuf-repo-cdn.sigstore.dev:443
+  fulcio.sigstore.dev:443 rekor.sigstore.dev:443 tuf-repo-cdn.sigstore.dev:443
 ```
 
 **Used for:**
@@ -117,8 +110,7 @@ allowed-endpoints: >
 
 ```yaml
 allowed-endpoints: >
-  anchore.io:443
-  toolbox-data.anchore.io:443
+  anchore.io:443 toolbox-data.anchore.io:443
 ```
 
 **Used for:**
@@ -134,29 +126,14 @@ allowed-endpoints: >
 ```yaml
 # quality-ci-main.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  uploads.github.com:443
-  pipelines.actions.githubusercontent.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  registry.npmjs.org:443
-  npmjs.org:443
-  bun.sh:443
-  raw.githubusercontent.com:443
-  github-releases.githubusercontent.com:443
-  release-assets.githubusercontent.com:443
-  rubygems.org:443
-  api.rubygems.org:443
-  index.rubygems.org:443
-  bundler.rubygems.org:443
-  rubygems.global.ssl.fastly.net:443
-  cache.ruby-lang.org:443
-  pypi.org:443
-  files.pythonhosted.org:443
-  codecov.io:443
-  api.codecov.io:443
-  uploader.codecov.io:443
+  github.com:443 api.github.com:443 uploads.github.com:443
+  pipelines.actions.githubusercontent.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 registry.npmjs.org:443 npmjs.org:443 bun.sh:443
+  raw.githubusercontent.com:443 github-releases.githubusercontent.com:443
+  release-assets.githubusercontent.com:443 rubygems.org:443 api.rubygems.org:443
+  index.rubygems.org:443 bundler.rubygems.org:443 rubygems.global.ssl.fastly.net:443
+  cache.ruby-lang.org:443 pypi.org:443 files.pythonhosted.org:443 codecov.io:443
+  api.codecov.io:443 uploader.codecov.io:443
 ```
 
 **Rationale:**
@@ -173,20 +150,11 @@ allowed-endpoints: >
 ```yaml
 # publish-gem.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  release-assets.githubusercontent.com:443
-  pipelines.actions.githubusercontent.com:443
-  registry.npmjs.org:443
-  npmjs.org:443
-  cache.ruby-lang.org:443
-  rubygems-downloads.global.ssl.fastly.net:443
-  rubygems.org:443
-  api.rubygems.org:443
-  index.rubygems.org:443
-  bundler.rubygems.org:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 release-assets.githubusercontent.com:443
+  pipelines.actions.githubusercontent.com:443 registry.npmjs.org:443 npmjs.org:443
+  cache.ruby-lang.org:443 rubygems-downloads.global.ssl.fastly.net:443 rubygems.org:443
+  api.rubygems.org:443 index.rubygems.org:443 bundler.rubygems.org:443
   rubygems.global.ssl.fastly.net:443
 ```
 
@@ -204,15 +172,9 @@ allowed-endpoints: >
 ```yaml
 # reusable-sbom.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  anchore.io:443
-  toolbox-data.anchore.io:443
-  fulcio.sigstore.dev:443
-  rekor.sigstore.dev:443
-  tuf-repo-cdn.sigstore.dev:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 anchore.io:443 toolbox-data.anchore.io:443
+  fulcio.sigstore.dev:443 rekor.sigstore.dev:443 tuf-repo-cdn.sigstore.dev:443
 ```
 
 **Rationale:**
@@ -226,12 +188,8 @@ allowed-endpoints: >
 ```yaml
 # release-publish-pr.yml, publish-npm-test.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  uploads.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  registry.npmjs.org:443
+  github.com:443 api.github.com:443 uploads.github.com:443
+  objects.githubusercontent.com:443 codeload.github.com:443 registry.npmjs.org:443
 ```
 
 **Rationale:**
@@ -244,12 +202,8 @@ allowed-endpoints: >
 ```yaml
 # release-semantic-release.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  registry.npmjs.org:443
-  uploads.github.com:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 registry.npmjs.org:443 uploads.github.com:443
 ```
 
 **Rationale:**
@@ -262,14 +216,9 @@ allowed-endpoints: >
 ```yaml
 # reporting-lighthouse-ci.yml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
-  codeload.github.com:443
-  registry.npmjs.org:443
-  playwright.azureedge.net:443
-  playwright-akamai.azureedge.net:443
-  playwright-verizon.azureedge.net:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
+  codeload.github.com:443 registry.npmjs.org:443 playwright.azureedge.net:443
+  playwright-akamai.azureedge.net:443 playwright-verizon.azureedge.net:443
 ```
 
 **Rationale:**
@@ -310,7 +259,8 @@ allowed-endpoints: >
 
 **Rationale:**
 
-- GitHub: Artifact download (from test workflows), Pages deployment, API access for finding workflow runs
+- GitHub: Artifact download (from test workflows), Pages deployment, API access for
+  finding workflow runs
 - npm/rubygems/pypi: Dependency installation
 - No Playwright browser downloads (E2E tests excluded from build phase)
 
@@ -341,8 +291,7 @@ allowed-endpoints: >
 
    ```yaml
    allowed-endpoints: >
-     existing.endpoint.com:443
-     new-endpoint.com:443  # Add with comment explaining why
+     existing.endpoint.com:443 new-endpoint.com:443  # Add with comment explaining why
    ```
 
 5. **Switch back to block mode**
@@ -373,8 +322,7 @@ allowed-endpoints: >
   with:
     egress-policy: block
     allowed-endpoints: >
-      github.com:443
-      api.newservice.com:443  # Required for XYZ integration
+      github.com:443 api.newservice.com:443  # Required for XYZ integration
 ```
 
 ## Monitoring
@@ -405,17 +353,14 @@ Blocked connection: 192.168.1.1:443
 
 ```yaml
 allowed-endpoints: >
-  *.github.com:443  # Too broad
-  *:443             # Defeats purpose
+  *.github.com:443  # Too broad *:443             # Defeats purpose
 ```
 
 **✅ Good:**
 
 ```yaml
 allowed-endpoints: >
-  github.com:443
-  api.github.com:443
-  objects.githubusercontent.com:443
+  github.com:443 api.github.com:443 objects.githubusercontent.com:443
 ```
 
 **Rationale:** Wildcards reduce security benefits. Explicitly list each subdomain.

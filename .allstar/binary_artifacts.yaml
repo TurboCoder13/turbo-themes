@@ -1,3 +1,4 @@
+---
 # Binary Artifacts Policy
 # Prevents binary artifacts from being committed to the repository
 # See: https://github.com/ossf/scorecard/blob/main/docs/checks.md#binary-artifacts

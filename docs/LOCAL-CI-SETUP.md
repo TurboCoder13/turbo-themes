@@ -6,19 +6,19 @@
 
 ```bash
 # Quick CI (skips cleanup and Lighthouse)
-npm run ci:quick
+bun run ci:quick
 
 # Full CI (includes Lighthouse performance analysis via npx)
-npm run ci:full
+bun run ci:full
 
 # Default CI (same as quick)
-npm run ci
+bun run ci
 
 # Run CI in Docker (CI-parity: Ubuntu + Ruby 3.3 + Node 20)
-npm run ci:docker
+bun run ci:docker
 
 # Full CI in Docker (includes Lighthouse --full builds)
-npm run ci:docker:full
+bun run ci:docker:full
 ```
 
 ### Run Local Build (dev/prod) with Lighthouse
@@ -68,8 +68,8 @@ npm run ci:docker:full
 ### Dependencies Added
 
 - `@catppuccin/palette` - Theme palette data
-  - Note: Lighthouse CI is executed via `npx @lhci/cli@latest` and is not
-    installed as a devDependency to avoid deprecated transitive packages.
+  - Note: Lighthouse CI is executed via `npx @lhci/cli@latest` and is not installed as a
+    devDependency to avoid deprecated transitive packages.
 
 ## 🎯 Usage Patterns
 
@@ -77,14 +77,14 @@ npm run ci:docker:full
 
 ```bash
 # Run quick checks
-npm run ci:quick
+bun run ci:quick
 ```
 
 ### Before Pushing
 
 ```bash
 # Run full CI pipeline
-npm run ci:full
+bun run ci:full
 ```
 
 ### Pre-commit Hooks
@@ -103,7 +103,7 @@ git commit -m "your message"
 
 ```bash
 # Check if theme sync is deterministic
-npm run theme:sync
+bun run theme:sync
 git status --porcelain  # Should be empty
 ```
 
@@ -111,7 +111,7 @@ git status --porcelain  # Should be empty
 
 ```bash
 # Check coverage
-npm test --coverage
+bun run test
 # Generated files are excluded from coverage
 ```
 
@@ -119,14 +119,14 @@ npm test --coverage
 
 ```bash
 # Test Lighthouse locally
-npx @lhci/cli autorun --config=./lighthouserc.json
+bunx @lhci/cli autorun --config=./lighthouserc.json
 ```
 
 #### 4. Missing Dependencies
 
 ```bash
 # Install all dependencies
-npm install
+bun install
 bundle install
 ```
 
@@ -152,10 +152,10 @@ Use Docker or GitHub Codespaces for exact CI environment matching.
 
 ```bash
 # One-time: build the image
-docker build -t bulma-turbo-themes-ci .
+docker build -t turbo-themes-ci .
 
 # Run quick CI inside Docker
-npm run ci:docker
+bun run ci:docker
 ```
 
 ## 🔍 Debugging
@@ -174,10 +174,10 @@ gh run view <run-id>
 
 ```bash
 # Run individual steps
-npm run lint
-npm run format
-npm run theme:sync
-npm run build
+bun run lint
+bun run format
+bun run theme:sync
+bun run build
 npm test
 ./scripts/local/build.sh --no-serve
 ```
@@ -191,8 +191,8 @@ npm test
 
 ## 🎯 Best Practices
 
-1. **Always run `npm run ci:quick` before committing**
-2. **Run `npm run ci:full` before pushing**
+1. **Always run `bun run ci:quick` before committing**
+2. **Run `bun run ci:full` before pushing**
 3. **Keep CI and local scripts in sync**
 4. **Document all CI dependencies**
 5. **Use pre-commit hooks for basic checks**

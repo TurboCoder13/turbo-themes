@@ -4,7 +4,7 @@ title: Components
 permalink: /components/
 ---
 
-### Tabs
+## Tabs
 
 <div class="tabs is-toggle is-toggle-rounded is-fullwidth">
   <ul>
@@ -82,7 +82,7 @@ permalink: /components/
     <span class="panel-icon">
       <i class="fas fa-book" aria-hidden="true"></i>
     </span>
-    bulma-turbo-themes
+    turbo-themes
   </a>
   <a class="panel-block" href="#">
     <span class="panel-icon">

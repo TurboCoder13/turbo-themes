@@ -2,11 +2,16 @@
 
 ## Overview
 
-Visual regression tests in this project use Playwright's snapshot comparison feature to ensure consistent rendering across themes. These tests compare screenshots of the homepage with different themes applied.
+Visual regression tests in this project use Playwright's snapshot comparison feature to
+ensure consistent rendering across themes. These tests compare screenshots of the
+homepage with different themes applied.
 
 ## Platform-Specific Snapshots
 
-**Key Innovation**: Instead of using different tolerance levels for different platforms, we store separate snapshots for each platform (macOS and Linux). This allows us to use **strict tolerance levels everywhere** while avoiding false failures due to platform rendering differences.
+**Key Innovation**: Instead of using different tolerance levels for different platforms,
+we store separate snapshots for each platform (macOS and Linux). This allows us to use
+**strict tolerance levels everywhere** while avoiding false failures due to platform
+rendering differences.
 
 ### Snapshot Storage Structure
 
@@ -22,7 +27,8 @@ e2e/homepage-theme-snapshots/
 
 ### Tolerance Settings
 
-We use **strict tolerance levels everywhere** because snapshots are compared against platform-specific baselines:
+We use **strict tolerance levels everywhere** because snapshots are compared against
+platform-specific baselines:
 
 - `maxDiffPixels`: 100
 - `threshold`: 0.2
@@ -30,13 +36,15 @@ We use **strict tolerance levels everywhere** because snapshots are compared aga
 
 ### Why Platform-Specific Snapshots?
 
-macOS and Linux render fonts and subpixels differently, causing visual differences that don't affect functionality:
+macOS and Linux render fonts and subpixels differently, causing visual differences that
+don't affect functionality:
 
 - Font rendering engines differ between platforms (CoreText vs FreeType)
 - Subpixel rendering varies
 - Anti-aliasing approaches differ
 
-By maintaining separate snapshots for each platform, we can use strict tolerances while avoiding false failures.
+By maintaining separate snapshots for each platform, we can use strict tolerances while
+avoiding false failures.
 
 ## Running Visual Tests
 
@@ -44,7 +52,7 @@ By maintaining separate snapshots for each platform, we can use strict tolerance
 
 ```bash
 # Run all visual tests (uses macOS snapshots)
-npm run e2e:visual
+bun run e2e:visual
 
 # Run specific visual test file
 npx playwright test e2e/homepage-theme.spec.ts --grep @visual
@@ -52,7 +60,8 @@ npx playwright test e2e/homepage-theme.spec.ts --grep @visual
 
 ### CI Environment
 
-Visual tests run automatically as part of the E2E test suite via `.github/workflows/quality-e2e.yml`. CI uses Linux snapshots for comparison.
+Visual tests run automatically as part of the E2E test suite via
+`.github/workflows/quality-e2e.yml`. CI uses Linux snapshots for comparison.
 
 ### Generating Linux Snapshots Locally
 
@@ -87,19 +96,25 @@ npx playwright test --grep @visual --update-snapshots
 bash scripts/local/generate-linux-snapshots.sh
 ```
 
-**Important**: Always update both macOS and Linux snapshots when making visual changes to ensure tests pass in both environments.
+**Important**: Always update both macOS and Linux snapshots when making visual changes
+to ensure tests pass in both environments.
 
 ## Best Practices
 
-1. **Commit both platform snapshots**: Always commit both macOS and Linux snapshots when making visual changes.
+1. **Commit both platform snapshots**: Always commit both macOS and Linux snapshots when
+   making visual changes.
 
-2. **Generate Linux snapshots before committing**: Run `bash scripts/local/generate-linux-snapshots.sh` before pushing to ensure CI passes.
+2. **Generate Linux snapshots before committing**: Run
+   `bash scripts/local/generate-linux-snapshots.sh` before pushing to ensure CI passes.
 
-3. **Review diffs carefully**: When snapshots differ, visually inspect the generated diff images to determine if changes are intentional.
+3. **Review diffs carefully**: When snapshots differ, visually inspect the generated
+   diff images to determine if changes are intentional.
 
-4. **Test theme changes locally first**: Use `npm run e2e:visual` to verify changes before pushing to CI.
+4. **Test theme changes locally first**: Use `bun run e2e:visual` to verify changes
+   before pushing to CI.
 
-5. **Keep tolerance strict**: Current settings (100 pixels, 0.2 threshold) catch real regressions while avoiding false positives thanks to platform-specific snapshots.
+5. **Keep tolerance strict**: Current settings (100 pixels, 0.2 threshold) catch real
+   regressions while avoiding false positives thanks to platform-specific snapshots.
 
 ## Troubleshooting
 
@@ -107,7 +122,8 @@ bash scripts/local/generate-linux-snapshots.sh
 
 **Possible causes**:
 
-1. **Linux snapshots missing**: Run `bash scripts/local/generate-linux-snapshots.sh` to create them
+1. **Linux snapshots missing**: Run `bash scripts/local/generate-linux-snapshots.sh` to
+   create them
 2. **Linux snapshots outdated**: Regenerate them after making visual changes
 3. **Actual visual regression**: Check the diff images uploaded as CI artifacts
 
@@ -124,13 +140,14 @@ git commit -m "chore: update Linux visual test snapshots"
 
 ### Snapshots appear blurred or pixelated
 
-This is normal for Linux-generated snapshots. Linux fonts render differently than macOS due to different font rendering engines (FreeType vs CoreText).
+This is normal for Linux-generated snapshots. Linux fonts render differently than macOS
+due to different font rendering engines (FreeType vs CoreText).
 
 ### Need to regenerate snapshots
 
 ```bash
 # macOS snapshots
-npm run e2e:prep
+bun run e2e:prep
 npx playwright test --grep @visual --update-snapshots
 
 # Linux snapshots

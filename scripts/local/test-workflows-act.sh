@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# Purpose: Test all GitHub Actions workflows locally using ACT
+# Purpose: Test GitHub Actions workflows locally using ACT
 #
 # Usage:
-#   ./scripts/local/test-workflows-act.sh [--quick] [--single WORKFLOW] [--verbose]
+#   ./scripts/local/test-workflows-act.sh [workflow ...] [options]
 #
-# Options:
-#   --quick      Test only quality workflows (faster)
-#   --single     Test a specific workflow file
-#   --verbose    Show detailed output from ACT
-#   --help       Show this help message
+# Examples:
+#   ./scripts/local/test-workflows-act.sh quality-ci-main
+#   ./scripts/local/test-workflows-act.sh quality-ci-main --event pull_request
+#   ./scripts/local/test-workflows-act.sh --category quality
+#   ./scripts/local/test-workflows-act.sh --list
+#   ./scripts/local/test-workflows-act.sh quality-ci-main --dry-run
 
 set -euo pipefail
 
@@ -17,447 +18,332 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
-# Source utility functions
 source "${SCRIPT_DIR}/../utils/utils.sh"
 
-# Note: Colors are already defined in utils.sh, so we don't redeclare them here
+EVENT_DIR="${REPO_ROOT}/.github/act-events"
+DEFAULT_EVENT_PUSH="${EVENT_DIR}/push-main.json"
+DEFAULT_EVENT_PR="${EVENT_DIR}/pull-request.json"
+DEFAULT_EVENT_TAG="${EVENT_DIR}/tag-push.json"
+DEFAULT_EVENT_DISPATCH="${EVENT_DIR}/workflow-dispatch.json"
+SECRETS_FILE="${REPO_ROOT}/.secrets.act"
 
-# Configuration
-QUICK_MODE=false
-SINGLE_WORKFLOW=""
 VERBOSE=false
-ACT_ARCH_FLAGS=()
+DRY_RUN=false
+CATEGORY="all"
+EVENT_OVERRIDE=""
+LIST_ONLY=false
+WORKFLOW_ARGS=()
 
-# Workflows that are always testable even without standard triggers
-WORKFLOWS_ALWAYS_TESTABLE=("reporting-link-monitoring.yml" "publish-npm-test.yml")
+SUPPORTED_EVENT_TYPES=("push" "pull_request" "tag" "workflow_dispatch")
 
-# Check if a workflow is always testable
-is_workflow_always_testable() {
-  local workflow_name="$1"
-  for allowed_workflow in "${WORKFLOWS_ALWAYS_TESTABLE[@]}"; do
-    if [[ "$workflow_name" == "$allowed_workflow" ]]; then
-      return 0
-    fi
-  done
-  return 1
-}
-
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --quick)
-      QUICK_MODE=true
-      shift
-      ;;
-    --single)
-      SINGLE_WORKFLOW="$2"
-      shift 2
-      ;;
-    --verbose)
-      VERBOSE=true
-      shift
-      ;;
-    --help|-h)
-      cat <<EOF
+print_help() {
+  cat <<EOF
 Test GitHub Actions workflows locally using ACT.
 
-Usage: $0 [OPTIONS]
+Usage: $0 [workflow ...] [options]
 
 Options:
-  --quick              Test only quality workflows (faster)
-  --single WORKFLOW    Test a specific workflow file (e.g., quality-ci-main.yml)
-  --verbose            Show detailed output from ACT
-  --help, -h           Show this help message
+  --category <name>      Filter by category (quality|security|deploy|publish|reporting|maintenance|release|all)
+  --event <type>         Force event type (push|pull_request|tag|workflow_dispatch)
+  --list                 List testable workflows and exit
+  --dry-run              Show commands without running ACT
+  --verbose              Show detailed ACT output
+  --help, -h             Show this help message
 
-Examples:
-  $0                              # Test all testable workflows
-  $0 --quick                      # Test only quality workflows
-  $0 --single quality-ci-main.yml # Test specific workflow
+If no workflows are provided, all testable workflows are run.
 EOF
-      exit 0
-      ;;
-    *)
-      log_error "Unknown option: $1"
-      echo "Use --help for usage information"
-      exit 1
-      ;;
+}
+
+normalize_workflow_path() {
+  local name="$1"
+  if [[ "$name" == *.yml || "$name" == *.yaml ]]; then
+    echo ".github/workflows/$name"
+  else
+    echo ".github/workflows/${name}.yml"
+  fi
+}
+
+workflow_category() {
+  local file="$1"
+  local base
+  base=$(basename "$file")
+  case "$base" in
+    quality-*) echo "quality" ;;
+    security-*) echo "security" ;;
+    deploy-*) echo "deploy" ;;
+    publish-*) echo "publish" ;;
+    release-*) echo "release" ;;
+    reporting-*) echo "reporting" ;;
+    maintenance-*) echo "maintenance" ;;
+    *) echo "other" ;;
   esac
-done
+}
 
-# Check prerequisites
-require_command act
-require_command docker
-
-# Check if Docker is running
-if ! docker ps >/dev/null 2>&1; then
-  die "Docker is not running. Please start Docker and try again."
-fi
-
-# Detect architecture
-detect_architecture() {
-  local arch
-  arch=$(uname -m)
-  case "$arch" in
-    arm64|aarch64)
-      ACT_ARCH_FLAGS=("--container-architecture" "linux/arm64")
-      log_info "Detected Apple Silicon architecture, using linux/arm64 containers"
+workflow_support_level() {
+  local file="$1"
+  local base
+  base=$(basename "$file")
+  case "$base" in
+    security-codeql.yml|security-dependency-review.yml|security-scorecards.yml)
+      echo "unsupported"
+      ;;
+    reusable-build.yml|reusable-quality.yml|reusable-sbom.yml)
+      echo "unsupported"
       ;;
     *)
-      ACT_ARCH_FLAGS=()
-      log_info "Detected architecture: $arch"
+      # Check if workflow uses setup-env or setup-node action (requires full-22.04 image with node+ruby)
+      # Note: setup-node is a JS action that needs Node.js to run, creating a chicken-and-egg problem
+      if grep -qE "(setup-env|setup-node)" "$file"; then
+        if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "catthehacker/ubuntu:full-22.04"; then
+          echo "supported"
+        else
+          echo "unsupported"
+        fi
+      else
+        echo "supported"
+      fi
       ;;
   esac
 }
 
-# Check if workflow is testable
-is_workflow_testable() {
-  local workflow_file="$1"
-  local workflow_name
-  workflow_name=$(basename "$workflow_file")
-
-  # Skip reusable workflows (they're called by other workflows)
-  if [[ "$workflow_name" == reusable-*.yml ]] || [[ "$workflow_name" == reusable-*.yaml ]]; then
-    return 1
+resolve_event_type() {
+  local file="$1"
+  if [[ -n "$EVENT_OVERRIDE" ]]; then
+    echo "$EVENT_OVERRIDE"
+    return
   fi
 
-  # Skip documentation files
-  if [[ "$workflow_name" == README.md ]] || [[ "$workflow_name" == TRIGGERS.md ]] || [[ "$workflow_name" == EGRESS-POLICIES.md ]]; then
-    return 1
+  if grep -qE "^\s*pull_request:" "$file"; then
+    echo "pull_request"
+  elif grep -qE "^\s*workflow_dispatch:" "$file"; then
+    echo "workflow_dispatch"
+  elif grep -qE "^\s*tags:" "$file"; then
+    echo "tag"
+  else
+    echo "push"
   fi
+}
 
-  # Check if workflow has push or pull_request triggers
-  if grep -qE "^\s*(push|pull_request):" "$workflow_file" 2>/dev/null; then
-    return 0
-  fi
+event_payload_path() {
+  local event="$1"
+  case "$event" in
+    push) echo "$DEFAULT_EVENT_PUSH" ;;
+    pull_request) echo "$DEFAULT_EVENT_PR" ;;
+    tag) echo "$DEFAULT_EVENT_TAG" ;;
+    workflow_dispatch) echo "$DEFAULT_EVENT_DISPATCH" ;;
+    *) die "Unsupported event type: $event" ;;
+  esac
+}
 
-  # Check for workflow_call (reusable workflows)
-  if grep -qE "^\s*workflow_call:" "$workflow_file" 2>/dev/null; then
-    return 1
-  fi
-
+is_supported_event() {
+  local event="$1"
+  for e in "${SUPPORTED_EVENT_TYPES[@]}"; do
+    [[ "$e" == "$event" ]] && return 0
+  done
   return 1
 }
 
-# Determine event type for workflow
-get_workflow_event_type() {
-  local workflow_file="$1"
-  
-  # Prefer push over pull_request for testing (simpler, doesn't need PR event data)
-  # Check if it has push trigger
-  if grep -qE "^\s*push:" "$workflow_file" 2>/dev/null; then
-    echo "push"
-  # Check if it has pull_request trigger
-  elif grep -qE "^\s*pull_request:" "$workflow_file" 2>/dev/null; then
-    echo "pull_request"
-  else
-    echo "unknown"
-  fi
+list_workflows() {
+  find .github/workflows -maxdepth 1 \( -name "*.yml" -o -name "*.yaml" \) \
+    | grep -vE "(README|TRIGGERS|EGRESS)" \
+    | sort
 }
 
-# Get main job name from workflow
-get_main_job_name() {
-  local workflow_file="$1"
-  
-  # Try to find job names under the "jobs:" section
-  # Look for lines that are indented after "jobs:" but not other top-level keys
-  local in_jobs=false
-  local job_name=""
-  
-  while IFS= read -r line; do
-    # Check if we've entered the jobs section
-    if [[ "$line" =~ ^jobs: ]]; then
-      in_jobs=true
-      continue
-    fi
-    
-    # If we're in jobs section, look for job definitions
-    if [[ "$in_jobs" == true ]]; then
-      # Job names are at the top level of jobs (usually 2 spaces indent)
-      if [[ "$line" =~ ^\s+[a-zA-Z0-9_-]+: ]] && [[ ! "$line" =~ ^\s+(name|runs-on|timeout|strategy|steps|if|uses|with|run|env|permissions|concurrency|needs|outputs|services|container): ]]; then
-        job_name=$(echo "$line" | sed 's/[[:space:]]*\([^:]*\):.*/\1/' | tr -d '[:space:]')
-        break
-      fi
-    fi
-  done < "$workflow_file"
-  
-  if [[ -n "$job_name" ]]; then
-    echo "$job_name"
-  else
-    # Default job names based on workflow type
-    local workflow_name
-    workflow_name=$(basename "$workflow_file" .yml)
-    workflow_name=$(basename "$workflow_name" .yaml)
-    
-    case "$workflow_name" in
-      quality-ci-main)
-        echo "build"
-        ;;
-      quality-e2e)
-        echo "e2e"
-        ;;
-      quality-theme-sync)
-        echo "check-determinism"
-        ;;
-      quality-semantic-pr-title)
-        echo "check"
-        ;;
-      quality-validate-action-pinning)
-        echo "check-pinning"
-        ;;
-      reporting-lighthouse-ci)
-        echo "lhci"
-        ;;
-      reporting-link-monitoring)
-        echo "validate-external-links"
-        ;;
-      publish-npm-test)
-        echo "publish"
-        ;;
-      security-sbom)
-        echo "sbom"
-        ;;
-      security-codeql|security-scorecards)
-        echo "analyze"
-        ;;
-      *)
-        echo "build"
-        ;;
-    esac
-  fi
-}
-
-# Check if workflow should be skipped
-should_skip_workflow() {
-  local workflow_file="$1"
-  local workflow_name
-  workflow_name=$(basename "$workflow_file")
-
-  # List of workflows that require GitHub-specific features
-  local skip_patterns=(
-    "security-codeql.yml"           # Requires GitHub CodeQL API
-    "security-dependency-review.yml" # Requires GitHub API
-    "security-scorecards.yml"        # Requires GitHub API
-    "deploy-pages.yml"               # Requires GitHub Pages API
-    "deploy-coverage-pages.yml"      # Requires GitHub Pages API
-    "deploy-lighthouse-pages.yml"    # Requires GitHub Pages API
-    "deploy-playwright-pages.yml"    # Requires GitHub Pages API
-    "release-auto-tag.yml"            # Manual trigger only
-    "release-version-pr.yml"         # Requires GitHub API
-    "release-publish-pr.yml"          # Requires GitHub API
-    "maintenance-renovate.yml"        # Schedule only
-    "maintenance-auto-bump-refs.yml"  # Schedule only
-  )
-
-  for pattern in "${skip_patterns[@]}"; do
-    if [[ "$workflow_name" == "$pattern" ]]; then
-      return 0
+filter_workflows_by_category() {
+  local desired="$1"
+  shift
+  for wf in "$@"; do
+    local cat
+    cat=$(workflow_category "$wf")
+    if [[ "$desired" == "all" || "$desired" == "$cat" ]]; then
+      printf "%s\n" "$wf"
     fi
   done
-
-  return 1
 }
 
-# Test a single workflow
-test_workflow() {
+run_workflow() {
   local workflow_file="$1"
   local workflow_name
   workflow_name=$(basename "$workflow_file")
-  
-  log_info "Testing workflow: $workflow_name"
 
-  # Check if workflow should be skipped
-  if should_skip_workflow "$workflow_file"; then
-    log_warn "Skipping $workflow_name (requires GitHub-specific features)"
+  if [[ ! -f "$workflow_file" ]]; then
+    log_error "Workflow not found: $workflow_file"
+    return 1
+  fi
+
+  local support_level
+  support_level=$(workflow_support_level "$workflow_file")
+  if [[ "$support_level" == "unsupported" ]]; then
+    log_warn "Skipping $workflow_name (GitHub-hosted service required)"
     return 2
   fi
 
-  # Check if workflow is testable
-  if ! is_workflow_testable "$workflow_file"; then
-    # For test-related workflows, allow manual testing even without push/pull_request triggers
-    if is_workflow_always_testable "$workflow_name"; then
-      log_info "Allowing manual test of $workflow_name"
-    else
-      log_warn "Skipping $workflow_name (not directly testable)"
-      return 2
-    fi
-  fi
-
-  # Get event type
   local event_type
-  event_type=$(get_workflow_event_type "$workflow_file")
-
-  if [[ "$event_type" == "unknown" ]]; then
-    # For manually allowed workflows, default to push event
-    if is_workflow_always_testable "$workflow_name"; then
-      event_type="push"
-      log_info "Using push event for $workflow_name"
-    else
-      log_warn "Skipping $workflow_name (unknown event type)"
-      return 2
-    fi
+  event_type=$(resolve_event_type "$workflow_file")
+  if ! is_supported_event "$event_type"; then
+    log_warn "Skipping $workflow_name (unsupported event: $event_type)"
+    return 2
   fi
 
-  # Get main job name
-  local job_name
-  job_name=$(get_main_job_name "$workflow_file")
-
-  # Build ACT command as array
-  local act_cmd_array=("act")
-
-  # Add architecture flags if set
-  if [[ ${#ACT_ARCH_FLAGS[@]} -gt 0 ]]; then
-    act_cmd_array+=("${ACT_ARCH_FLAGS[@]}")
+  local event_file
+  event_file=$(event_payload_path "$event_type")
+  if [[ ! -f "$event_file" ]]; then
+    log_error "Missing event payload: $event_file"
+    return 1
   fi
 
-  # Add event type
-  if [[ "$event_type" == "pull_request" ]]; then
-    act_cmd_array+=("pull_request")
-  else
-    # Use "push" as event name (ACT will generate mock event)
-    act_cmd_array+=("push")
+  local act_event="$event_type"
+  [[ "$event_type" == "tag" ]] && act_event="push"
+
+  local act_cmd=("act" "$act_event" "-W" "$workflow_file" "-e" "$event_file" "--env" "ACT=true" "--reuse" "--pull=false")
+  if [[ -f "$SECRETS_FILE" ]]; then
+    act_cmd+=("--secret-file" "$SECRETS_FILE")
   fi
+  [[ "$VERBOSE" == true ]] && act_cmd+=("--verbose")
 
-  # Add workflow file
-  act_cmd_array+=("-W" "$workflow_file")
-
-  # Add job name
-  act_cmd_array+=("-j" "$job_name")
-
-  # Add verbose flag if requested
-  if [[ "$VERBOSE" == true ]]; then
-    act_cmd_array+=("--verbose")
-  else
-    act_cmd_array+=("--quiet")
-  fi
-
-  # Set ACT environment variable
   export ACT=true
+  log_info "Running $workflow_name with event '$event_type' (payload: ${event_file})"
+  if [[ "$DRY_RUN" == true ]]; then
+    echo "DRY RUN: ${act_cmd[*]}"
+    return 0
+  fi
 
-  # Run ACT
-  log_info "Running: ${act_cmd_array[*]}"
-  if [[ "$VERBOSE" == true ]]; then
-    # Show full output when verbose
-    if "${act_cmd_array[@]}"; then
-      log_success "✓ $workflow_name passed"
-      return 0
-    else
-      log_error "✗ $workflow_name failed"
-      return 1
-    fi
+  if "${act_cmd[@]}"; then
+    log_success "✓ $workflow_name passed"
+    return 0
   else
-    # Suppress output when not verbose, but capture exit code
-    local act_exit_code=0
-    "${act_cmd_array[@]}" >/dev/null 2>&1 || act_exit_code=$?
-    if [[ $act_exit_code -eq 0 ]]; then
-      log_success "✓ $workflow_name passed"
-      return 0
-    else
-      log_error "✗ $workflow_name failed"
-      log_info "Run with --verbose to see detailed output"
-      return 1
-    fi
+    log_error "✗ $workflow_name failed"
+    return 1
   fi
 }
 
-# Main execution
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --category)
+        CATEGORY="$2"
+        shift 2
+        ;;
+      --event)
+        EVENT_OVERRIDE="$2"
+        shift 2
+        ;;
+      --list)
+        LIST_ONLY=true
+        shift
+        ;;
+      --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+      --verbose)
+        VERBOSE=true
+        shift
+        ;;
+      --help|-h)
+        print_help
+        exit 0
+        ;;
+      *)
+        WORKFLOW_ARGS+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -n "$EVENT_OVERRIDE" ]] && ! is_supported_event "$EVENT_OVERRIDE"; then
+    die "Unsupported event override: $EVENT_OVERRIDE"
+  fi
+}
+
 main() {
-  detect_architecture
+  parse_args "$@"
 
-  log_info "Starting ACT workflow testing..."
-  echo ""
+  if [[ "$LIST_ONLY" != true && "$DRY_RUN" != true ]]; then
+    require_command act
+    require_command docker
 
-  # Counters
+    if ! docker ps >/dev/null 2>&1; then
+      die "Docker is not running. Please start Docker and try again."
+    fi
+  fi
+
+  local workflows=()
+  if [[ ${#WORKFLOW_ARGS[@]} -gt 0 ]]; then
+    for arg in "${WORKFLOW_ARGS[@]}"; do
+      workflows+=("$(normalize_workflow_path "$arg")")
+    done
+  else
+    while IFS= read -r wf; do
+      [[ -n "$wf" ]] && workflows+=("$wf")
+    done < <(list_workflows)
+  fi
+
+  if [[ ${#workflows[@]} -eq 0 ]]; then
+    log_warn "No workflows found."
+    exit 0
+  fi
+
+  if [[ ${#workflows[@]} -gt 0 ]]; then
+    local deduped=()
+    while IFS= read -r wf; do
+      [[ -n "$wf" ]] && deduped+=("$wf")
+    done < <(printf "%s\n" "${workflows[@]}" | sort -u)
+    workflows=("${deduped[@]}")
+  fi
+
+  if [[ "$CATEGORY" != "all" ]]; then
+    local filtered=()
+    while IFS= read -r wf; do
+      [[ -n "$wf" ]] && filtered+=("$wf")
+    done < <(filter_workflows_by_category "$CATEGORY" "${workflows[@]}")
+    workflows=("${filtered[@]}")
+  fi
+
+  if [[ ${#workflows[@]} -eq 0 ]]; then
+    log_warn "No workflows match category '${CATEGORY}'."
+    exit 0
+  fi
+
+  if [[ "$LIST_ONLY" == true ]]; then
+    log_info "Testable workflows (category=${CATEGORY}):"
+    for wf in "${workflows[@]}"; do
+      local level
+      level=$(workflow_support_level "$wf")
+      echo " - $(basename "$wf") [${level}]"
+    done
+    exit 0
+  fi
+
   local passed=0
   local failed=0
   local skipped=0
 
-  # Get workflow files
-  local workflow_files=()
-  
-  if [[ -n "$SINGLE_WORKFLOW" ]]; then
-    # Single workflow mode
-    local workflow_path=".github/workflows/$SINGLE_WORKFLOW"
-    if [[ ! -f "$workflow_path" ]]; then
-      die "Workflow file not found: $workflow_path"
-    fi
-    workflow_files=("$workflow_path")
-  else
-    # Find all workflow files
-    local found_files
-    found_files=$(find .github/workflows -name "*.yml" -o -name "*.yaml" 2>/dev/null | grep -vE "(README|TRIGGERS|EGRESS)" | sort || true)
-    if [[ -n "$found_files" ]]; then
-      while IFS= read -r file; do
-        [[ -n "$file" ]] && workflow_files+=("$file")
-      done <<< "$found_files"
-    fi
-  fi
-
-  # Filter for quick mode
-  if [[ "$QUICK_MODE" == true ]]; then
-    local quick_workflows=()
-    for workflow_file in "${workflow_files[@]}"; do
-      local workflow_name
-      workflow_name=$(basename "$workflow_file")
-      if [[ "$workflow_name" =~ ^quality- ]]; then
-        quick_workflows+=("$workflow_file")
-      fi
-    done
-    if [[ ${#quick_workflows[@]} -gt 0 ]]; then
-      workflow_files=("${quick_workflows[@]}")
-    else
-      workflow_files=()
-    fi
-    log_info "Quick mode: Testing only quality workflows"
-  fi
-
-  if [[ ${#workflow_files[@]} -eq 0 ]]; then
-    log_warn "No workflows found to test"
-    exit 0
-  fi
-
-  log_info "Found ${#workflow_files[@]} workflow(s) to test"
-  echo ""
-
-  # Test each workflow
-  for workflow_file in "${workflow_files[@]}"; do
-    local result=0
-    # Temporarily disable exit on error to continue testing other workflows
+  for wf in "${workflows[@]}"; do
     set +e
-    test_workflow "$workflow_file"
+    run_workflow "$wf"
     result=$?
     set -e
-    
     case $result in
-      0)
-        ((passed++))
-        ;;
-      1)
-        ((failed++))
-        ;;
-      2)
-        ((skipped++))
-        ;;
+      0) ((passed++)) ;;
+      1) ((failed++)) ;;
+      2) ((skipped++)) ;;
     esac
     echo ""
   done
 
-  # Print summary
-  echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   log_info "Test Summary:"
   echo ""
   echo -e "  ${GREEN}✓ Passed:${NC}  $passed"
   echo -e "  ${RED}✗ Failed:${NC}  $failed"
   echo -e "  ${YELLOW}⊘ Skipped:${NC} $skipped"
-  echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-  # Exit with error if any tests failed
   if [[ $failed -gt 0 ]]; then
     exit 1
   fi
 }
 
-# Run main function
 main "$@"
 

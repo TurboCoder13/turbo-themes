@@ -72,17 +72,23 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
   && rm -rf /var/lib/apt/lists/*
 SHELL ["/bin/sh", "-c"]
 
+# Install Bun (preferred package manager/runtime)
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -fsSL https://bun.sh/install | bash \
+  && mv /root/.bun/bin/bun /usr/local/bin/bun \
+  && mv /root/.bun/bin/bunx /usr/local/bin/bunx \
+  && rm -rf /root/.bun
+SHELL ["/bin/sh", "-c"]
+
 # Ensure Bundler version matches Gemfile.lock (2.3.26)
 RUN gem install bundler:2.3.26
 
 WORKDIR /work
 
 # Pre-copy only manifests for better Docker layer caching
-COPY package.json package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
-
-# Install Playwright browsers for E2E tests
-RUN npx playwright install --with-deps chromium
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --lockfile bun.lock \
+  && bunx playwright install --with-deps chromium
 
 # Install Python package manager uv
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]

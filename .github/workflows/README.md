@@ -6,7 +6,8 @@ GitHub Actions workflows for quality checks, deployment, security, and maintenan
 
 Following py-lintro standards:
 
-- **File names:** `category-specific-action.yml` (e.g., `quality-ci-main.yml`, `security-codeql.yml`)
+- **File names:** `category-specific-action.yml` (e.g., `quality-ci-main.yml`,
+  `security-codeql.yml`)
 - **Workflow names:** `Category - Specific Action` format
 - **Job names:** Descriptive with emojis (e.g., `🏗️ Build & Quality Checks`)
 
@@ -14,7 +15,8 @@ Following py-lintro standards:
 
 ### Quality Check
 
-- `quality-ci-main.yml` - Main CI pipeline with build, test, linting (CSS/JS/MD), and quality gates
+- `quality-ci-main.yml` - Main CI pipeline with build, test, linting (CSS/JS/MD), and
+  quality gates
 - `quality-theme-sync.yml` - Theme synchronization determinism check
 - `quality-semantic-pr-title.yml` - PR title validation (Conventional Commits)
 - `quality-validate-action-pinning.yml` - SHA pinning compliance check

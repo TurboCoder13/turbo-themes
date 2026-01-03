@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SPDX-License-Identifier: MIT
-# Image optimization script for bulma-turbo-themes
+# Image optimization script for turbo-themes
 # This script optimizes PNG images for better Lighthouse performance
 # Requires: ImageMagick (convert command), libwebp
 

@@ -55,7 +55,6 @@
 }
 
 @keyframes theme-loading-spin {
-
   to {
     transform: rotate(360deg);
   }

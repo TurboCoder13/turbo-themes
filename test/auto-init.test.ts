@@ -233,7 +233,8 @@ describe('auto init', () => {
     // global.console = { ...originalConsole, ...mockConsole } as any;
 
     // Import the module to get access to the functions
-    const { initTheme, wireFlavorSelector, enhanceAccessibility } = await import('../src/index.ts');
+    const { initTheme, wireFlavorSelector, enhanceAccessibility } =
+      await import('../src/index.ts');
 
     // Directly call the initialization logic that the auto-init would do
     await initTheme(mockDocument, mockWindow);
@@ -270,7 +271,10 @@ describe('auto init', () => {
       expect(pagehideMockAbortController.abort).toHaveBeenCalled();
 
       // Verify removeEventListener was called (coverage for line 531)
-      expect(mockWindow.removeEventListener).toHaveBeenCalledWith('pagehide', pagehideHandlerFn);
+      expect(mockWindow.removeEventListener).toHaveBeenCalledWith(
+        'pagehide',
+        pagehideHandlerFn
+      );
     }
 
     // Restore AbortController

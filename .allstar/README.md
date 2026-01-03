@@ -1,10 +1,15 @@
 # Allstar Security Configuration
 
-This directory contains the configuration for [Allstar](https://github.com/ossf/allstar), a GitHub App that continuously monitors repositories for adherence to security best practices.
+This directory contains the configuration for
+[Allstar](https://github.com/ossf/allstar), a GitHub App that continuously monitors
+repositories for adherence to security best practices.
 
 ## What is Allstar?
 
-Allstar is developed by the [OpenSSF (Open Source Security Foundation)](https://openssf.org/) as part of the [Scorecard project](https://github.com/ossf/scorecard). It automatically detects security policy violations and creates issues to alert repository maintainers.
+Allstar is developed by the
+[OpenSSF (Open Source Security Foundation)](https://openssf.org/) as part of the
+[Scorecard project](https://github.com/ossf/scorecard). It automatically detects
+security policy violations and creates issues to alert repository maintainers.
 
 ## Configuration Files
 
@@ -51,7 +56,8 @@ Ensures presence of security documentation:
 
 ## How Allstar Works
 
-1. **Continuous Monitoring**: Allstar periodically checks repositories for policy compliance
+1. **Continuous Monitoring**: Allstar periodically checks repositories for policy
+   compliance
 2. **Issue Creation**: When a violation is detected, Allstar creates a GitHub issue
 3. **Issue Updates**: If the issue remains open, Allstar comments every 24 hours
 4. **Auto-Closure**: Once the violation is fixed, Allstar automatically closes the issue
@@ -68,7 +74,8 @@ All policies are configured with the `issue` action, which means:
 
 To enable Allstar on this repository:
 
-1. Install the [Allstar GitHub App](https://github.com/apps/allstar-app) on the organization
+1. Install the [Allstar GitHub App](https://github.com/apps/allstar-app) on the
+   organization
 2. Grant the app access to this repository
 3. Allstar will automatically start monitoring based on this configuration
 
@@ -87,7 +94,8 @@ If you need to temporarily disable Allstar on this repository:
 1. Add the repository name to the `optOutRepos` list in `allstar.yaml`
 2. Commit and push the change
 
-Note: Repository override is currently disabled, so individual repos cannot opt out without org-level configuration changes.
+Note: Repository override is currently disabled, so individual repos cannot opt out
+without org-level configuration changes.
 
 ## Additional Resources
 
@@ -98,4 +106,5 @@ Note: Repository override is currently disabled, so individual repos cannot opt 
 
 ## Contact
 
-For questions about this security configuration, please contact the repository maintainers or open an issue.
+For questions about this security configuration, please contact the repository
+maintainers or open an issue.

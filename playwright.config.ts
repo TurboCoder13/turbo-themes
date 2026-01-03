@@ -6,7 +6,8 @@ import * as os from 'os';
  * Values: 'darwin' (macOS), 'linux', or 'win32'
  */
 const platform = os.platform();
-const platformName = platform === 'darwin' ? 'macos' : platform === 'win32' ? 'windows' : 'linux';
+const platformName =
+  platform === 'darwin' ? 'macos' : platform === 'win32' ? 'windows' : 'linux';
 
 /**
  * Snapshot directory name configuration.
@@ -20,7 +21,7 @@ const platformName = platform === 'darwin' ? 'macos' : platform === 'win32' ? 'w
  *
  * @example
  * // Use environment variable:
- * PLAYWRIGHT_SNAPSHOT_DIR=homepage-theme-snapshots npm run test:e2e
+ * PLAYWRIGHT_SNAPSHOT_DIR=homepage-theme-snapshots bun run test:e2e
  *
  * // Or override in project config:
  * projects: [{
@@ -34,6 +35,9 @@ const snapshotDir = process.env.PLAYWRIGHT_SNAPSHOT_DIR || 'snapshots';
 
 const isCI = !!process.env.CI;
 
+const skipE2E = process.env.SKIP_E2E === '1';
+
+// Allow skipping E2E via SKIP_E2E=1 (e.g., sandbox without Jekyll/http-server)
 /**
  * Playwright configuration for E2E tests.
  *
@@ -46,7 +50,7 @@ const isCI = !!process.env.CI;
  *
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+const config = defineConfig({
   testDir: './e2e',
 
   // Run tests in parallel for faster execution
@@ -97,7 +101,7 @@ export default defineConfig({
 
   // Web server configuration - builds and serves the Jekyll site
   webServer: {
-    command: 'npm run e2e:start',
+    command: 'bun run e2e:start',
     port: 4173,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 2 minutes for build + serve
@@ -128,3 +132,12 @@ export default defineConfig({
   // Test timeout
   timeout: 30000,
 });
+
+if (skipE2E) {
+  // Disable running E2E when SKIP_E2E=1 (e.g., sandbox without Jekyll/http-server)
+  config.testMatch = [];
+  config.projects = [];
+  config.webServer = undefined;
+}
+
+export default config;

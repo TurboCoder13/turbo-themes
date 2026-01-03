@@ -41,22 +41,16 @@ jobs:
       id-token: write
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            registry.npmjs.org:443
-            bun.sh:443
-            objects.githubusercontent.com:443
-            github-releases.githubusercontent.com:443
+            github.com:443 api.github.com:443 registry.npmjs.org:443 bun.sh:443
+            objects.githubusercontent.com:443 github-releases.githubusercontent.com:443
             release-assets.githubusercontent.com:443
-            pipelines.actions.githubusercontent.com:443
-            codeload.github.com:443
-            fulcio.sigstore.dev:443
-            rekor.sigstore.dev:443
-            tuf-repo-cdn.sigstore.dev:443
+            pipelines.actions.githubusercontent.com:443 codeload.github.com:443
+            fulcio.sigstore.dev:443 rekor.sigstore.dev:443 tuf-repo-cdn.sigstore.dev:443
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -97,13 +91,12 @@ jobs:
       contents: write
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            uploads.github.com:443
+            github.com:443 api.github.com:443 uploads.github.com:443
 
       - name: Download SBOM artifacts
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
@@ -125,9 +118,9 @@ jobs:
             sbom/sbom.cyclonedx.xml.sig
             sbom/sbom.cyclonedx.xml.cert
           body: |
-            ## 📦 @turbocoder13/bulma-turbo-themes ${{ github.ref_name }}
+            ## 📦 @turbocoder13/turbo-themes ${{ github.ref_name }}
 
-            Published to npm: https://www.npmjs.com/package/@turbocoder13/bulma-turbo-themes
+            Published to npm: https://www.npmjs.com/package/@turbocoder13/turbo-themes
 
             ### 📋 Software Bill of Materials (SBOM)
 

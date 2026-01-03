@@ -7,7 +7,9 @@ import { hexToHsl } from './bulma.js';
 // Helper function to generate syntax highlighting CSS
 function generateSyntaxHighlightingCSS(flavor: ThemeFlavor): string {
   const { tokens } = flavor;
-  const escapedId = CSS.escape ? CSS.escape(flavor.id) : flavor.id.replace(/[<>"'&\\]/g, '\\$&');
+  const escapedId = CSS.escape
+    ? CSS.escape(flavor.id)
+    : flavor.id.replace(/[<>"'&\\]/g, '\\$&');
 
   // Extract syntax colors from theme tokens
   const syntaxColors = {
@@ -72,7 +74,9 @@ html[data-flavor='${escapedId}'] .highlight .nf {
 // Helper function to generate theme CSS variables
 function generateThemeCSSVariables(flavor: ThemeFlavor): string {
   const { tokens } = flavor;
-  const escapedId = CSS.escape ? CSS.escape(flavor.id) : flavor.id.replace(/[<>"'&\\]/g, '\\$&');
+  const escapedId = CSS.escape
+    ? CSS.escape(flavor.id)
+    : flavor.id.replace(/[<>"'&\\]/g, '\\$&');
 
   // Convert hex colors to HSL for CSS format
   const primaryHsl = hexToHsl(tokens.brand.primary);
@@ -143,7 +147,9 @@ function generateThemeCSSVariables(flavor: ThemeFlavor): string {
   /* Table component tokens (with fallbacks) */
   --theme-table-cell-bg: ${tokens.content.table.cellBg ?? tokens.background.base};
   --theme-table-header-fg: ${tokens.content.table.headerFg ?? tokens.text.primary};
-${tokens.components ? `  /* Card component tokens */
+${
+  tokens.components
+    ? `  /* Card component tokens */
   --theme-card-bg: ${tokens.components.card?.bg ?? tokens.background.surface};
   --theme-card-border: ${tokens.components.card?.border ?? tokens.border.default};
   --theme-card-header-bg: ${tokens.components.card?.headerBg ?? tokens.background.overlay};
@@ -181,7 +187,9 @@ ${tokens.components ? `  /* Card component tokens */
   --theme-tabs-link-bg: ${tokens.components.tabs?.linkBg ?? tokens.background.surface};
   --theme-tabs-link-active-bg: ${tokens.components.tabs?.linkActiveBg ?? tokens.background.base};
   --theme-tabs-link-hover-bg: ${tokens.components.tabs?.linkHoverBg ?? tokens.background.overlay};
-` : ''}  color-scheme: ${flavor.appearance};
+`
+    : ''
+}  color-scheme: ${flavor.appearance};
 }`;
 }
 

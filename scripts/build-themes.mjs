@@ -1,19 +1,15 @@
 /* SPDX-License-Identifier: MIT */
-// Build individual theme CSS files
+// Build theme CSS bundles and framework-agnostic turbo variables.
 //
-// This script builds self-contained theme CSS files where each theme includes:
-// - Its own Bulma framework compilation with theme-specific Sass variables
-// - Bulma automatically generates 21-shade color palettes and CSS variables
-// - Theme-specific overrides and customizations
-//
-// Build process:
-// 1. Build critical.css (above-the-fold styles)
-// 2. Build base.css (shared styles, minimal Bulma)
-// 3. Build individual theme bundles (each with full Bulma compilation)
+// Steps:
+// 1. Generate turbo CSS variables from tokens (no framework coupling)
+// 2. Build critical.css (above-the-fold styles)
+// 3. Build base.css (shared styles, minimal Bulma)
+// 4. Build individual theme bundles (full Bulma compilation)
 
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { execSync } from "node:child_process";
+import { execSync, execFileSync } from "node:child_process";
 
 // Resolve project root from this script location
 const __filename = fileURLToPath(import.meta.url);
@@ -23,16 +19,35 @@ const projectRoot = path.resolve(__dirname, "..");
 // Import compiled modules from dist
 const distDir = path.join(projectRoot, "dist");
 const registryMod = await import(pathToFileURL(path.join(distDir, "themes/registry.js")));
-
 const { flavors } = registryMod;
+
+const viteBin =
+  process.platform === 'win32'
+    ? path.join(projectRoot, 'node_modules', '.bin', 'vite.cmd')
+    : path.join(projectRoot, 'node_modules', '.bin', 'vite');
+
+console.log('Generating framework-agnostic turbo CSS variables...');
+try {
+  execSync('node scripts/generate-turbo-css.mjs', {
+    cwd: projectRoot,
+    stdio: 'inherit',
+    env: {
+      ...process.env,
+    },
+  });
+} catch (error) {
+  console.error('Failed to generate turbo CSS:', error.message);
+  process.exit(1);
+}
 
 console.log('Building optimized theme CSS files...');
 
 // Build critical CSS (above-the-fold styles)
 console.log('Building critical.css (above-the-fold styles)...');
 try {
-  execSync(
-    `npx vite build --config vite.config.js --mode production --logLevel error`,
+  execFileSync(
+    viteBin,
+    ['build', '--config', 'vite.config.js', '--mode', 'production', '--logLevel', 'error'],
     {
       cwd: projectRoot,
       env: {
@@ -51,8 +66,9 @@ try {
 // Build base CSS (minimal shared styles, no Bulma framework)
 console.log('Building base.css (minimal shared styles)...');
 try {
-  execSync(
-    `npx vite build --config vite.config.js --mode production --logLevel error`,
+  execFileSync(
+    viteBin,
+    ['build', '--config', 'vite.config.js', '--mode', 'production', '--logLevel', 'error'],
     {
       cwd: projectRoot,
       env: {
@@ -89,14 +105,15 @@ console.log(`Building ${flavors.length} self-contained theme bundles...`);
 flavors.forEach((flavor) => {
   const safeId = validateFlavorId(flavor.id);
   const themeFile = path.join('src', 'scss', `theme-${safeId}.scss`);
-  const outputFile = path.join('assets', 'css', 'themes', `${safeId}.css`);
+  const outputFile = path.join('assets', 'css', 'themes', 'compiled', `${safeId}.css`);
 
   console.log(`Building ${flavor.id} theme bundle (with full Bulma compilation)...`);
 
   try {
     // Use Vite to build this specific theme with its own Bulma instance
-    execSync(
-      `npx vite build --config vite.config.js --mode production --logLevel error`,
+    execFileSync(
+      viteBin,
+      ['build', '--config', 'vite.config.js', '--mode', 'production', '--logLevel', 'error'],
       {
         cwd: projectRoot,
         env: {

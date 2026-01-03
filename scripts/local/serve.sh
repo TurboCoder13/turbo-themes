@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Quick serve script for bulma-turbo-themes Jekyll site
+# Quick serve script for turbo-themes Jekyll site
 # This script serves the existing site without rebuilding.
 
 set -e  # Exit on any error
@@ -30,7 +30,7 @@ port_available() {
     ! lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1
 }
 
-print_status "$BLUE" "🚀 Quick serve for bulma-turbo-themes..."
+print_status "$BLUE" "🚀 Quick serve for turbo-themes..."
 
 # Check if Ruby/Bundler is available
 if ! command_exists "bundle"; then

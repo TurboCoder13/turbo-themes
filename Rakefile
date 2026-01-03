@@ -10,20 +10,20 @@ task :list do
   sh "rake -T"
 end
 
-# Build tasks for hybrid npm/Ruby project
+# Build tasks for hybrid Bun/Ruby project
 namespace :build do
-  desc "Build npm package (TypeScript -> JavaScript)"
+  desc "Build package (TypeScript -> JavaScript) via Bun"
   task :npm do
-    sh "npm run build"
+    sh "bun run build"
   end
 
-  desc "Build Ruby gem (includes npm build)"
+  desc "Build Ruby gem (includes Bun build)"
   task :gem do
-    sh "npm run build:gem"
+    sh "bun run build:gem"
   end
 end
 
-# Override bundler's build task to use our npm-based build
+# Override bundler's build task to use our Bun-based build
 # This allows `rake release` to work with our hybrid project
 task build: "build:gem"
 
@@ -39,7 +39,7 @@ end
 namespace :verify do
   desc "Verify gem can be built"
   task :gem do
-    sh "npm run build:gem"
+    sh "bun run build:gem"
     gem_file = Dir["*.gem"].first
     if gem_file && File.exist?(gem_file)
       puts "✅ Gem built successfully: #{gem_file}"
@@ -50,8 +50,8 @@ namespace :verify do
 
   desc "Verify all checks pass"
   task all: [:gem] do
-    sh "npm run lint"
-    sh "npm test"
+    sh "bun run lint"
+    sh "bun test"
   end
 end
 
@@ -60,7 +60,7 @@ desc "Open interactive Ruby console with gem loaded"
 task :console do
   require "irb"
   require "bundler/setup"
-  require_relative "lib/bulma-turbo-themes"
+  require_relative "lib/turbo-themes"
   ARGV.clear
   IRB.start
 end

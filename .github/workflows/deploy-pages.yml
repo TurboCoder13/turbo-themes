@@ -29,32 +29,27 @@ jobs:
     name: 🏗️ Build Site
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if:
+      ${{ github.event.workflow_run.conclusion == 'success' || github.event_name ==
+      'workflow_dispatch' }}
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            objects.githubusercontent.com:443
-            codeload.github.com:443
-            github-releases.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
-            registry.npmjs.org:443
-            npmjs.org:443
-            bun.sh:443
-            rubygems.org:443
-            api.rubygems.org:443
-            index.rubygems.org:443
-            bundler.rubygems.org:443
-            rubygems.global.ssl.fastly.net:443
-            pypi.org:443
-            files.pythonhosted.org:443
+            github.com:443 api.github.com:443 objects.githubusercontent.com:443
+            codeload.github.com:443 github-releases.githubusercontent.com:443
+            release-assets.githubusercontent.com:443 registry.npmjs.org:443
+            npmjs.org:443 bun.sh:443 rubygems.org:443 api.rubygems.org:443
+            index.rubygems.org:443 bundler.rubygems.org:443
+            rubygems.global.ssl.fastly.net:443 pypi.org:443 files.pythonhosted.org:443
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.event.inputs.branch || github.ref }}
+          ref:
+            ${{ github.event.workflow_run.head_sha || github.event.inputs.branch ||
+            github.ref }}
       - name: Setup environment
         uses: ./.github/actions/setup-env
         with:
@@ -87,15 +82,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Harden Runner
+        if: ${{ !env.ACT }}
         uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
         with:
           egress-policy: block
           allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            uploads.github.com:443
-            registry.npmjs.org:443
-            npmjs.org:443
+            github.com:443 api.github.com:443 uploads.github.com:443
+            registry.npmjs.org:443 npmjs.org:443
       - id: deployment
         # v4.0.5
         uses: actions/deploy-pages@854d7aa1b99e4509c4d1b53d69b7ba4eaf39215a

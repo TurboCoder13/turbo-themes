@@ -16,7 +16,8 @@
 
 ## Conventional Commits
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automated releases and changelog generation.
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for
+automated releases and changelog generation.
 
 **Commit Title Format:**
 
@@ -53,8 +54,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 
 <!-- Link related issues using keywords: Fixes #123, Closes #456, Relates to #789 -->
 
-Fixes #
-Relates to #
+Fixes # Relates to #
 
 ## Testing
 

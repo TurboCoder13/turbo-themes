@@ -3,6 +3,14 @@ dev-dependencies = [
     "lintro",
 ]
 
+[tool.black]
+line-length = 88
+extend-exclude = '''
+(
+    python/src/turbo_themes/themes\.py
+)
+'''
+
 [tool.lintro]
 exclude = ["_site/"]
 
@@ -11,3 +19,6 @@ exclude = ["_site/Dockerfile"]
 
 [tool.lintro.tool.actionlint]
 exclude = ["vendor/**"]
+
+[tool.lintro.tool.yamllint]
+include = [".github/**/*.yml", ".github/**/*.yaml"]

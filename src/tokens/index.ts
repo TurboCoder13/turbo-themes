@@ -11,7 +11,7 @@
  * - Any platform that needs theme colors
  *
  * For web apps, you can also import the CSS files directly:
- * import '@turbocoder13/bulma-turbo-themes/css/catppuccin-mocha.css'
+ * import '@turbocoder13/turbo-themes/css/catppuccin-mocha.css'
  */
 
 // Re-export types for consumers
@@ -97,6 +97,4 @@ export const themeIds: readonly string[] = flavors.map((f) => f.id);
 /**
  * List of all available vendors
  */
-export const vendors: readonly string[] = [
-  ...new Set(flavors.map((f) => f.vendor)),
-];
+export const vendors: readonly string[] = [...new Set(flavors.map((f) => f.vendor))];
