@@ -8,22 +8,6 @@
 # because PackageOverrides with vulnerability.ids is not supported in OSV-Scanner
 # v2.x. This matches py-lintro's approach.
 
-# --- qs (npm, root lockfile) ---
-# Fixed in qs 6.16.0, carried by Renovate PR #929. TEMPORARY suppression to
-# break a required-check deadlock: #933 fixes examples/tailwind but its merge
-# ref fails on root qs until #929 merges, and #929 fails on the examples
-# findings until #933 merges. Remove both entries once #929 lands.
-
-[[IgnoredVulns]]
-id = "GHSA-4mjr-xmp4-gh2g"
-ignoreUntil = 2026-09-12
-reason = "qs@6.15.3 root — patched by #929 (6.16.0); temporary deadlock relief 2026-09-05"
-
-[[IgnoredVulns]]
-id = "GHSA-x5fp-wj9c-mxmx"
-ignoreUntil = 2026-09-12
-reason = "qs@6.15.3 root — patched by #929 (6.16.0); temporary deadlock relief 2026-09-05"
-
 # --- h3 (npm, transitive via astro/nitro) ---
 # Fix only available in RC versions. Track: https://github.com/unjs/h3/releases
 
