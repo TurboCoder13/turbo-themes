@@ -131,7 +131,9 @@ exclude = [
 ignored-modules = ["assertpy"]
 
 [tool.pylint.design]
-# Tokens (python/src/turbo_themes/models.py) is a published type whose
-# declared fields mirror the theme token-category contract one-to-one;
-# the category count is fixed by the token schema, not by design drift.
+# Repo-wide instance-attribute budget. The binding constraint is Tokens
+# (python/src/turbo_themes/models.py), a published type whose declared
+# fields mirror the theme token-category contract one-to-one; that count
+# is fixed by the token schema, not by design drift. Every other class in
+# the repository stays far below the limit.
 max-attributes = 14
