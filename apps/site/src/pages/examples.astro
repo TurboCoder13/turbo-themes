@@ -100,11 +100,10 @@ const examples = [
 ];
 ---
 
-<BaseLayout title="Home">
-  <div class="examples-hero site-reveal" style="--reveal-delay: 0.1s">
-    <span class="site-badge">Integrations</span>
-    <h1 class="site-headline" data-testid="examples-heading">Examples</h1>
-    <p class="site-lede examples-subtitle">
+<BaseLayout title="Examples">
+  <div class="examples-hero">
+    <h1 data-testid="examples-heading">Examples</h1>
+    <p class="examples-subtitle">
       Complete, working examples showing Turbo Themes integrated with popular frameworks.
       Each example includes theme switching, localStorage persistence, and FOUC prevention.
     </p>
@@ -112,16 +111,18 @@ const examples = [
 
   {examples.map((section) => (
     <section class="examples-section">
-      <h2 class="examples-category">{section.category}</h2>
-      <div class="examples-grid">
-        {section.items.map((example) => (
-          <ExampleCard {...example} />
-        ))}
+      <div class="examples-card">
+        <h4 class="examples-category">{section.category}</h4>
+        <div class="examples-grid">
+          {section.items.map((example) => (
+            <ExampleCard {...example} />
+          ))}
+        </div>
       </div>
     </section>
   ))}
 
-  <section class="examples-cta site-footer-cta">
+  <section class="examples-cta">
     <h2>Want to contribute?</h2>
     <p>
       We welcome new examples! If you've integrated Turbo Themes with a framework not listed here,

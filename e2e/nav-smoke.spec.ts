@@ -66,6 +66,28 @@ test.describe('Navigation Smoke Tests @smoke', () => {
     await basePage.goto('/');
   });
 
+  test('should render the restored bubble examples layout', async ({ basePage }) => {
+    await basePage.goto('/examples/');
+    await expect(basePage.page.getByTestId('examples-heading')).toBeVisible();
+
+    const firstCard = basePage.page.locator('.example-card').first();
+    const bubble = firstCard.locator('.example-bubble');
+    await expect(firstCard).toBeVisible();
+    await expect(bubble).toBeVisible();
+
+    const cardBox = await firstCard.boundingBox();
+    const bubbleBox = await bubble.boundingBox();
+    expect(cardBox, 'example card box').toBeTruthy();
+    expect(bubbleBox, 'example bubble box').toBeTruthy();
+
+    // Compact bubble cards (pre-#705 density), not full-bleed sparse surface cards.
+    expect(cardBox!.width).toBeLessThanOrEqual(320);
+    expect(Math.abs((bubbleBox!.width ?? 0) - (bubbleBox!.height ?? 0))).toBeLessThanOrEqual(2);
+
+    const hero = basePage.page.locator('.examples-hero');
+    await expect(hero).toHaveCSS('text-align', 'center');
+  });
+
   test('should display all navbar links', async ({ basePage }) => {
     await test.step('Verify all navbar links are visible', async () => {
       const links = await basePage.getAllNavLinks();
