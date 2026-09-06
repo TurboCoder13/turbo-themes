@@ -10,6 +10,29 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.42.6] - 2026-09-06
+
+### 🐛 Fixed
+
+- Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories (#933)
+
+### 🔧 Changed
+
+- Update dependency happy-dom to 20.13.2 (minor) (#893)
+- Remove stale qs suppressions after qs 6.16.0 landed (#943)
+- Update dependency sharp to 0.35.4 (patch) (#940)
+- Update dependency picomatch to 4.0.7 (patch) (#939)
+- Update dependency js-yaml to 4.3.2 (patch) (#938)
+- Update dependency qs to 6.16.0 (minor) [security] (#929)
+- Update dependency fast-uri to 3.1.7 (patch) (#937)
+- Update dependency devalue to 5.9.2 (patch) (#936)
+- Update dependency cssnano to 8.0.10 (patch) (#935)
+- Update dependency @axe-core/playwright to 4.13.0 (minor) (#898)
+- Update dependency basic-ftp to 6.2.1 (patch) (#934)
+- Update dependency @testing-library/react to 16.3.3 (patch) (#931)
+- Update dependency lightningcss to 1.33.0 (minor) (#918)
+- Update npm-vitest to 4.1.11 (patch) (#913)
+
 ## [0.42.5] - 2026-08-27
 
 ### 🔧 Changed
