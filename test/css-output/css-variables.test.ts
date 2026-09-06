@@ -76,6 +76,31 @@ describe('CSS Output - turbo-core.css', () => {
     expect(fontMono).toContain('JetBrains Mono');
     expect(fontMono).toMatch(/monospace/);
   });
+
+  it('contains the design-system tokens (#823)', () => {
+    // assets/css/turbo-core.css has two producers: style-dictionary writes the
+    // token-only file, copy-adapters (the last step of `bun run build`)
+    // overwrites it with the generateCoreCss() version that also carries the
+    // design-system tokens. If a build pipeline lets style-dictionary win,
+    // these silently disappear — assert them so that cannot regress.
+    // Comments are stripped first so a commented-out declaration cannot
+    // satisfy the assertion.
+    const css = readFile(turboCoreFile).replace(/\/\*[\s\S]*?\*\//g, '');
+    const variables = parseCssVariables(css);
+    const designSystemTokens = [
+      '--space-md',
+      '--radius-md',
+      '--shadow-md',
+      '--transition-normal',
+      '--gradient-primary',
+      '--gradient-surface',
+      '--turbo-text-on-brand',
+    ];
+
+    designSystemTokens.forEach((token) => {
+      expect(variables.has(token), `Missing design-system token: ${token}`).toBe(true);
+    });
+  });
 });
 
 describe('CSS Output - Theme Files', () => {
