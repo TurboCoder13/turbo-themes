@@ -122,8 +122,8 @@
     "schema/contrast-pairs.json"
   ],
   "scripts": {
-    "build": "bun run build:tokens && bun run build:packages && bun run theme:sync && bun run build:root && node scripts/copy-adapters.mjs && bun run generate:css",
-    "build:tokens": "bun scripts/codegen/validate-schema.mjs && bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs && bun run build:tokens:copy && bun scripts/codegen/generate-native-contract.mjs",
+    "build": "bun run build:tokens && bun run build:packages && bun run theme:sync && bun run build:root && node scripts/copy-adapters.mjs && bun run generate:css && bun scripts/codegen/generate-native-contract.mjs",
+    "build:tokens": "bun scripts/codegen/validate-schema.mjs && bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs && bun run build:tokens:copy",
     "build:tokens:copy": "cp dist/tokens/style-dictionary/tokens.json packages/core/src/themes/tokens.json && cp dist/tokens/style-dictionary/tokens.json python/src/turbo_themes/tokens.json && cp dist/tokens/style-dictionary/tokens.json swift/Sources/TurboThemes/Resources/tokens.json",
     "build:sd": "bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs",
     "build:packages": "bun run build:core && bun run build:selector && bun run build:css-pkg && bun run build:adapters",
