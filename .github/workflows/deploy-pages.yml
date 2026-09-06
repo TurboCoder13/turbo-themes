@@ -32,7 +32,7 @@ jobs:
       github.event_name == 'workflow_dispatch'
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-deploy-site-with-reports.yml@f57b4d014f82d7f5996c7b339f1b2ca681780921 # v0.69.4
     with:
-      tooling-ref: ee8484ca71db3a2c2c33da6128bbf2330fcd7c88 # v0.59.2
+      tooling-ref: f57b4d014f82d7f5996c7b339f1b2ca681780921  # v0.69.4
       site-root: apps/site/dist
       working-directory: .
       package-manager: bun
