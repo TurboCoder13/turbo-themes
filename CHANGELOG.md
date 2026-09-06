@@ -10,6 +10,22 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.0] - 2026-09-06
+
+### ✨ Added
+
+- Declare contrast pairs once and drive normalizer and tests from the manifest (#957)
+
+### 🐛 Fixed
+
+- Stop excluding generated CHANGELOG.md from prettier (#975)
+- Update dependency astro to 7.3.1 (minor) (#972)
+
+### 🔧 Changed
+
+- Update dependency postcss to 8.5.28 (patch) (#977)
+- Update github-actions (#971)
+
 ## [0.42.6] - 2026-09-06
 
 ### 🐛 Fixed
