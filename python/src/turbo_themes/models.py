@@ -51,18 +51,42 @@ class TokenNamespace:
         return self._data
 
 
-class Tokens(TokenNamespace):
+@dataclass
+class Tokens:
     """Design tokens for a theme.
 
     Provides attribute access to nested token categories:
         tokens.background.base
         tokens.text.primary
         tokens.state.info
-
-    Categories are exposed dynamically from the underlying data (a theme
-    carries up to a dozen category namespaces); missing categories read
-    as ``None``.
     """
+
+    _data: dict[str, Any] = field(repr=False)
+
+    # Core token categories (always present)
+    accent: TokenNamespace = field(init=False)
+    background: TokenNamespace = field(init=False)
+    border: TokenNamespace = field(init=False)
+    brand: TokenNamespace = field(init=False)
+    content: TokenNamespace = field(init=False)
+    state: TokenNamespace = field(init=False)
+    text: TokenNamespace = field(init=False)
+    typography: TokenNamespace = field(init=False)
+
+    # Optional token categories
+    animation: TokenNamespace | None = field(init=False, default=None)
+    components: TokenNamespace | None = field(init=False, default=None)
+    elevation: TokenNamespace | None = field(init=False, default=None)
+    opacity: TokenNamespace | None = field(init=False, default=None)
+    spacing: TokenNamespace | None = field(init=False, default=None)
+
+    def __post_init__(self) -> None:
+        """Initialize token namespaces from data dict."""
+        for key, value in self._data.items():
+            if isinstance(value, dict):
+                setattr(self, key, TokenNamespace(value))
+            else:
+                setattr(self, key, value)
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Tokens:
@@ -74,7 +98,15 @@ class Tokens(TokenNamespace):
         Returns:
             Tokens instance with parsed token namespaces.
         """
-        return cls(data)
+        return cls(_data=data)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert back to dictionary.
+
+        Returns:
+            The underlying dictionary data.
+        """
+        return self._data
 
 
 @dataclass

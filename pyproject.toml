@@ -129,3 +129,9 @@ exclude = [
 # assertpy is a pytest-time dev dependency that the pinned lintro lint image
 # does not install; import-error stays enabled for every other module.
 ignored-modules = ["assertpy"]
+
+[tool.pylint.design]
+# Tokens (python/src/turbo_themes/models.py) is a published type whose
+# declared fields mirror the theme token-category contract one-to-one;
+# the category count is fixed by the token schema, not by design drift.
+max-attributes = 14
