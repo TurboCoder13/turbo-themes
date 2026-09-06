@@ -10,6 +10,57 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.42.6] - 2026-09-06
+
+### 🐛 Fixed
+
+- Wrap changelog bullets and escape emphasis in generator (#970)
+- Exclude generated CHANGELOG.md via tools.prettier.exclude (#961)
+- Exclude generated CHANGELOG.md from lintro quality gate (#954)
+- Drive accessibility overrides from audited tokens; require brand.primaryText (#949)
+- Emit audited state.\*Text inks as --turbo-state-\*-text CSS variables (#948)
+- Update npm-astro (#941)
+- Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories
+  (#933)
+
+### 🔧 Changed
+
+- Update dependency vite to 8.2.2 (minor) (#965)
+- Update dependency typedoc-plugin-markdown to 4.13.0 (minor) (#964)
+- Update dependency lgtm-hq/lgtm-ci to v0.69.5 (patch) (#960)
+- Keep CHANGELOG.md inside the lintro quality gate (#963)
+- Update dependency @types/react-dom to 19.2.7 (patch) (#959)
+- Update dependency smol-toml to 1.8.0 (minor) (#953)
+- Update dependency style-dictionary to 5.5.2 (minor) (#956)
+- Update dependency shell-quote to 1.10.0 (minor) (#952)
+- Update dependency @types/react-dom to 19.2.6 (patch) (#955)
+- Update dependency lgtm-hq/lgtm-ci to v0.69.4 (minor) (#917)
+- Update dependency oxlint to 1.81.0 (minor) (#947)
+- Update dependency sass to 1.103.1 (minor) (#951)
+- Update dependency lint-staged to 17.4.1 (minor) (#942)
+- Update dependency postcss to 8.5.27 (patch) (#950)
+- Update dependency html-validate to 11.12.0 (minor) (#914)
+- Update dependency oxfmt to 0.66.0 (minor) (#945)
+- Update dependency happy-dom to 20.13.2 (minor) (#893)
+- Remove stale qs suppressions after qs 6.16.0 landed (#943)
+- Update dependency sharp to 0.35.4 (patch) (#940)
+- Update dependency picomatch to 4.0.7 (patch) (#939)
+- Update dependency js-yaml to 4.3.2 (patch) (#938)
+- Update dependency qs to 6.16.0 (minor) [security] (#929)
+- Update dependency fast-uri to 3.1.7 (patch) (#937)
+- Update dependency devalue to 5.9.2 (patch) (#936)
+- Update dependency cssnano to 8.0.10 (patch) (#935)
+- Update dependency @axe-core/playwright to 4.13.0 (minor) (#898)
+- Update dependency basic-ftp to 6.2.1 (patch) (#934)
+- Update dependency @testing-library/react to 16.3.3 (patch) (#931)
+- Update dependency lightningcss to 1.33.0 (minor) (#918)
+- Update npm-vitest to 4.1.11 (patch) (#913)
+
+### 🤖 Internal
+
+- Drop scorecard inputs removed in lgtm-ci v0.69.4 (#966)
+- Stop build.sh from clobbering turbo-core.css design-system tokens (#946)
+
 ## [0.42.5] - 2026-08-27
 
 ### 🔧 Changed
