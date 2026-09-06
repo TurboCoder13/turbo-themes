@@ -37,3 +37,6 @@ apps/site/.astro/
 *.mjs
 *.cjs
 .lgtm-ci-tooling
+
+# Generated changelog (scripts/ci/version-bump.mjs)
+CHANGELOG.md
