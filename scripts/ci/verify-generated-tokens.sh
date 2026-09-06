@@ -33,6 +33,8 @@ TOKEN_PATHS=(
   # These are checked to ensure consistency when tokens.json changes
   'python/src/turbo_themes/themes.py'
   'swift/Sources/TurboThemes/ThemeLoader.swift'
+  # Site-native theme contract (#944, generated from the CSS generator)
+  'packages/core/src/native-theme/generated/native-contract.json'
   # Generated TypeScript sources (bun run generate:types:ts)
   'packages/core/src/themes/theme-ids.ts'
   'packages/core/src/themes/generated-types.ts'

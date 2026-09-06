@@ -20,6 +20,10 @@
       "types": "./dist/tokens/index.d.ts",
       "import": "./dist/tokens/index.js"
     },
+    "./native-theme": {
+      "types": "./dist/native-theme/index.d.ts",
+      "import": "./dist/native-theme/index.js"
+    },
     "./catalog": {
       "types": "./dist/catalog/index.d.ts",
       "import": "./dist/catalog/index.js"

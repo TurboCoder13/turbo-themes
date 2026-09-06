@@ -204,6 +204,10 @@ const script = generateBlockingScript({
 See the [theme switching guide](apps/site/src/content/docs/guides/theme-switching.md)
 for a complete walkthrough.
 
+Maintaining your own theme token file in your repo? See the
+[site-native themes guide](apps/site/src/content/docs/guides/site-native-themes.md) for
+the token contract and the `turbo-themes validate-native` CLI that gates it in CI.
+
 ## Examples
 
 Complete, working examples demonstrating Turbo Themes integration with various

@@ -44,6 +44,11 @@
       "import": "./dist/tokens/index.js"
     },
     "./tokens.json": "./dist/tokens/style-dictionary/tokens.json",
+    "./native-theme": {
+      "types": "./packages/core/dist/native-theme/index.d.ts",
+      "import": "./packages/core/dist/native-theme/index.js"
+    },
+    "./contrast-pairs.json": "./schema/contrast-pairs.json",
     "./catalog": {
       "types": "./dist/catalog/index.d.ts",
       "import": "./dist/catalog/index.js"
@@ -103,6 +108,7 @@
   },
   "types": "./dist/index.d.ts",
   "files": [
+    "bin/**",
     "dist/**",
     "packages/core/dist/**",
     "packages/css/dist/**",
@@ -113,11 +119,12 @@
     "assets/css/turbo-core.css",
     "assets/css/adapters/*.css",
     "assets/img/*.png",
-    "assets/img/*.webp"
+    "assets/img/*.webp",
+    "schema/contrast-pairs.json"
   ],
   "scripts": {
     "build": "bun run build:tokens && bun run build:packages && bun run theme:sync && bun run build:root && node scripts/copy-adapters.mjs && bun run generate:css",
-    "build:tokens": "bun scripts/codegen/validate-schema.mjs && bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs && bun run build:tokens:copy",
+    "build:tokens": "bun scripts/codegen/validate-schema.mjs && bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs && bun run build:tokens:copy && bun scripts/codegen/generate-native-contract.mjs",
     "build:tokens:copy": "cp dist/tokens/style-dictionary/tokens.json packages/core/src/themes/tokens.json && cp dist/tokens/style-dictionary/tokens.json python/src/turbo_themes/tokens.json && cp dist/tokens/style-dictionary/tokens.json swift/Sources/TurboThemes/Resources/tokens.json",
     "build:sd": "bun scripts/prepare-style-dictionary.mjs && bun scripts/codegen/generate-metadata.mjs && bun scripts/codegen/generate-catalog.mjs && bun scripts/build-style-dictionary.mjs",
     "build:packages": "bun run build:core && bun run build:selector && bun run build:css-pkg && bun run build:adapters",
@@ -206,6 +213,7 @@
     "@rose-pine/palette": "4.0.1",
     "@testing-library/react": "16.3.3",
     "@types/js-yaml": "4.0.9",
+    "@types/node": "26.4.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
     "@typescript/typescript6": "6.0.2",
@@ -264,5 +272,8 @@
     "js-yaml": "5.4.1",
     "fast-uri": "4.1.4",
     "sharp": "0.35.4"
+  },
+  "bin": {
+    "turbo-themes": "./bin/turbo-themes.js"
   }
 }
