@@ -29,7 +29,7 @@
     },
     {
       "description": "Keep tools/docs typescript pinned to 5.9 for typedoc's compiler API (see #875)",
-      "matchPaths": ["tools/docs/**"],
+      "matchFileNames": ["tools/docs/**"],
       "matchPackageNames": ["typescript"],
       "enabled": false
     }
