@@ -14,7 +14,8 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 ### 🐛 Fixed
 
-- Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories (#933)
+- Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories
+  (#933)
 
 ### 🔧 Changed
 
