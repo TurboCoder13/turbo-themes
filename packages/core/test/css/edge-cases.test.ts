@@ -30,6 +30,8 @@ describe('cssForFlavor - CSS escaping fallback', () => {
   afterEach(() => {
     if (originalDescriptor) {
       Object.defineProperty(globalThis, 'CSS', originalDescriptor);
+    } else {
+      delete (globalThis as { CSS?: unknown }).CSS;
     }
   });
 
