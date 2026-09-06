@@ -228,7 +228,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sass": "1.103.1",
-    "style-dictionary": "5.4.4",
+    "style-dictionary": "5.5.2",
     "stylelint": "17.14.1",
     "stylelint-config-standard": "40.0.0",
     "typescript": "7.0.2",
