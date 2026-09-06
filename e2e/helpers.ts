@@ -480,7 +480,7 @@ export async function getContrastRatio(target: Locator): Promise<number> {
       if (!parsed) {
         // Fail loudly on unknown spaces (oklch/lab/display-p3, etc.) so a
         // silent skip cannot under-report contrast when themes leave sRGB.
-        throw new Error(`Unparseable background color: ${bgValue}`);
+        throw new Error(`Unparsable background color: ${bgValue}`);
       }
       if (parsed.a > 0) {
         layers.push(parsed);
@@ -507,7 +507,7 @@ export async function getContrastRatio(target: Locator): Promise<number> {
 
     const textColor = parseColor(getComputedStyle(el).color);
     if (!textColor) {
-      throw new Error(`Unparseable text color: ${getComputedStyle(el).color}`);
+      throw new Error(`Unparsable text color: ${getComputedStyle(el).color}`);
     }
 
     /** WCAG relative luminance of an opaque sRGB color. */
