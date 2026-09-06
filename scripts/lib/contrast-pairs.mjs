@@ -72,6 +72,13 @@ export function loadContrastPairs(path = MANIFEST_PATH) {
   if (!manifest.$version || !manifest.levels || !Array.isArray(manifest.pairs)) {
     throw new Error(`[contrast-pairs] malformed manifest: ${path}`);
   }
+  for (const [level, floor] of Object.entries(LEVELS)) {
+    if (manifest.levels[level] !== floor) {
+      throw new Error(
+        `[contrast-pairs] ${path}: levels.${level} must be ${floor} (got ${manifest.levels[level]})`,
+      );
+    }
+  }
   const seen = new Set();
   for (const pair of manifest.pairs) {
     if (!pair.id || seen.has(pair.id)) {
@@ -99,10 +106,13 @@ export function loadContrastPairs(path = MANIFEST_PATH) {
 export function resolveTokenValue(tokens, path) {
   let cur = tokens;
   for (const key of path.split('.')) {
-    cur = cur?.[key];
-    if (cur === undefined || cur === null) return undefined;
+    // Own properties only: manifest paths must never reach Object.prototype.
+    if (typeof cur !== 'object' || cur === null || !Object.hasOwn(cur, key)) {
+      return undefined;
+    }
+    cur = cur[key];
   }
-  return typeof cur === 'object' ? cur.$value : cur;
+  return typeof cur === 'object' && cur !== null ? cur.$value : cur;
 }
 
 function resolveGradient(bg, tokens) {

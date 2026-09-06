@@ -20,11 +20,11 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import {
+  checkPair,
   classifyPair,
   contrastRatio as ratio,
   LEVELS,
   loadContrastPairs,
-  pairBackgrounds,
   resolveTokenValue,
 } from './lib/contrast-pairs.mjs';
 
@@ -505,27 +505,22 @@ function setToken(tree, path, value) {
   const keys = path.split('.');
   let cur = tree;
   for (let i = 0; i < keys.length - 1; i++) {
-    cur = cur?.[keys[i]];
-    if (cur === undefined || cur === null) return;
+    // Own properties only: manifest paths must never reach Object.prototype.
+    if (typeof cur !== 'object' || cur === null || !Object.hasOwn(cur, keys[i])) {
+      return;
+    }
+    cur = cur[keys[i]];
   }
   const leaf = keys[keys.length - 1];
-  if (typeof cur[leaf] === 'object' && cur[leaf] !== null) cur[leaf].$value = value;
-  else cur[leaf] = value;
+  if (typeof cur === 'object' && cur !== null && Object.hasOwn(cur, leaf)) {
+    const leafValue = cur[leaf];
+    if (typeof leafValue === 'object' && leafValue !== null) leafValue.$value = value;
+    else cur[leaf] = value;
+  }
 }
 
 function checkGatePair(pair, tokens) {
-  const fg = getToken(tokens, pair.fg);
-  const backgrounds = pairBackgrounds(pair, tokens);
-  let ok = true;
-  let worst = Infinity;
-  let worstBg;
-  for (const bg of backgrounds) {
-    const r = ratio(fg, bg);
-    if (r < worst) {
-      worst = r;
-      worstBg = bg;
-    }
-    if (r < LEVELS[pair.level]) ok = false;
-  }
-  return { ok, worst, worstBg, fg };
+  // The loader treats an unresolved fg or bg as a failure, not a pass: a
+  // typo'd token path in the manifest must fail the gate loudly.
+  return checkPair(pair, tokens);
 }

@@ -44,6 +44,20 @@
       "normalize": true
     },
     {
+      "id": "body-secondary/bg-base",
+      "fg": "content.body.secondary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "body-secondary/bg-surface",
+      "fg": "content.body.secondary",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
       "id": "text-secondary/bg-base",
       "fg": "text.secondary",
       "bg": "background.base",
@@ -224,7 +238,7 @@
     },
     {
       "id": "table-head-ink",
-      "fg": "content.body.primary",
+      "fg": "text.primary",
       "bg": "content.table.theadBg",
       "level": "text",
       "normalize": true,
@@ -265,7 +279,10 @@
     {
       "id": "cta-ink/gradient",
       "fg": "brand.primaryText",
-      "bg": { "gradient": ["brand.primary", "state.info"], "samples": 20 },
+      "bg": {
+        "gradient": ["brand.primary", "state.info"],
+        "samples": 20
+      },
       "level": "text",
       "normalize": true
     }
