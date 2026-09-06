@@ -75,6 +75,3 @@ assets/js/homepage-showcase.js
 
 # Husky internal files (auto-generated)
 .husky/_/**
-
-# Generated changelog (scripts/ci/version-bump.mjs); formatting is the generator concern
-CHANGELOG.md
