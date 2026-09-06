@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.3] - 2026-09-06
+
+### 🔧 Changed
+
+- Update dependency simplecov to 1.2.0 (major) (#980)
+
 ## [0.43.2] - 2026-09-06
 
 ### 🔧 Changed
