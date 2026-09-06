@@ -17,7 +17,8 @@
  * (committed; verify-generated-tokens.sh treats drift as an error).
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,6 +28,19 @@ const OUT = join(
   projectRoot,
   'packages/core/src/native-theme/generated/native-contract.json',
 );
+
+// The generator import graph resolves @lgtm-hq/turbo-themes-core subpaths
+// against packages/core/dist, which does not exist on a fresh checkout.
+// Build it (once) before importing so this step can run inside build:tokens
+// and build:packages then compiles dist with the fresh contract.
+const coreMappingsDist = join(
+  projectRoot,
+  'packages/core/dist/themes/css/mappings.js',
+);
+if (!existsSync(coreMappingsDist)) {
+  console.log('[generate-native-contract] building core first (dist missing)...');
+  execSync('bun run build:core', { stdio: 'inherit', cwd: projectRoot });
+}
 
 // Bun executes TypeScript directly, so the generator can be imported as-is.
 const { flavors } = await import(
