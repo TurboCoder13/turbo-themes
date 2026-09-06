@@ -5,7 +5,7 @@
   "description": "Isolated install environment for typedoc: typedoc 0.28 needs the TypeScript JS compiler API (<= 6.0.x), which typescript 7 no longer ships, so docs generation resolves its own typescript 5.9 here while the repo stays on 7 (see #875).",
   "devDependencies": {
     "typedoc": "0.28.20",
-    "typedoc-plugin-markdown": "4.12.0",
+    "typedoc-plugin-markdown": "4.13.0",
     "typescript": "5.9.3"
   }
 }
