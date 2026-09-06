@@ -114,3 +114,15 @@ skips = ["B101", "B105", "B106"]
 
 [tool.lintro.tool.yamllint]
 exclude = [".github/workflows/**", ".github/actions/**", ".allstar/**"]
+
+[tool.lintro.tool.pylint]
+# Generated token modules (quicktype output) are excluded like the other
+# generated paths: long generated font-family strings and the width of the
+# generated dataclass are inherent to the generated contract, and the files
+# are regenerated rather than hand-edited.
+exclude = ["python/src/turbo_themes/generated/*", "src/turbo_themes/generated/*"]
+
+[tool.pylint.typecheck]
+# assertpy is a pytest-time dev dependency that the pinned lintro lint image
+# does not install; import-error stays enabled for every other module.
+ignored-modules = ["assertpy"]
