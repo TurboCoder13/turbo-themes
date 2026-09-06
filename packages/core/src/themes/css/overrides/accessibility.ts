@@ -31,11 +31,14 @@ export function cssAccessibilityOverrides(): string {
 [data-flavor='catppuccin-latte'] .navbar-item,
 [data-flavor='catppuccin-latte'] .has-text-centered > p,
 [data-flavor='catppuccin-latte'] a.navbar-item,
-[data-flavor='catppuccin-latte'] .title,
+[data-flavor='catppuccin-latte'] .title {
+  color: var(--theme-text, currentColor);
+}
+
 [data-flavor='catppuccin-latte'] .button.is-text,
 [data-flavor='catppuccin-latte'] .button.is-ghost,
 [data-flavor='catppuccin-latte'] .navbar-item.is-active {
-  color: var(--theme-text, currentColor);
+  color: var(--theme-link, currentColor);
 }
 
 [data-flavor='catppuccin-latte'] h1 {
@@ -56,21 +59,27 @@ export function cssAccessibilityOverrides(): string {
 
 [data-flavor='github-dark'] strong,
 [data-flavor='github-dark'] th,
-[data-flavor='github-dark'] .has-text-centered > p,
+[data-flavor='github-dark'] .has-text-centered > p {
+  color: var(--theme-text, currentColor);
+}
+
 [data-flavor='github-dark'] .button.is-text,
 [data-flavor='github-dark'] .button.is-ghost {
-  color: var(--theme-text, currentColor);
+  color: var(--theme-link, currentColor);
 }
 
 /* --- Site scope ([data-theme], --turbo-* namespace) --- */
 [data-theme='catppuccin-latte'] .navbar-item,
 [data-theme='catppuccin-latte'] .has-text-centered > p,
 [data-theme='catppuccin-latte'] a.navbar-item,
-[data-theme='catppuccin-latte'] .title,
+[data-theme='catppuccin-latte'] .title {
+  color: var(--turbo-text-primary, currentColor);
+}
+
 [data-theme='catppuccin-latte'] .button.is-text,
 [data-theme='catppuccin-latte'] .button.is-ghost,
 [data-theme='catppuccin-latte'] .navbar-item.is-active {
-  color: var(--turbo-text-primary, currentColor);
+  color: var(--turbo-link-default, currentColor);
 }
 
 [data-theme='catppuccin-latte'] h1 {
@@ -91,10 +100,13 @@ export function cssAccessibilityOverrides(): string {
 
 [data-theme='github-dark'] strong,
 [data-theme='github-dark'] th,
-[data-theme='github-dark'] .has-text-centered > p,
+[data-theme='github-dark'] .has-text-centered > p {
+  color: var(--turbo-text-primary, currentColor);
+}
+
 [data-theme='github-dark'] .button.is-text,
 [data-theme='github-dark'] .button.is-ghost {
-  color: var(--turbo-text-primary, currentColor);
+  color: var(--turbo-link-default, currentColor);
 }
 
 /* Focus visibility for keyboard-focusable scrollable code regions */
