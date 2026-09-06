@@ -95,36 +95,44 @@ a {
 
 ## State Variables
 
-| Variable                | Description              | Example Value |
-| ----------------------- | ------------------------ | ------------- |
-| `--turbo-state-success` | Success state color      | `#a6e3a1`     |
-| `--turbo-state-warning` | Warning state color      | `#f9e2af`     |
-| `--turbo-state-danger`  | Danger/error state color | `#f38ba8`     |
-| `--turbo-state-info`    | Info state color         | `#89dceb`     |
+| Variable                     | Description                                 | Example Value |
+| ---------------------------- | ------------------------------------------- | ------------- |
+| `--turbo-state-success`      | Success state color                         | `#a6e3a1`     |
+| `--turbo-state-warning`      | Warning state color                         | `#f9e2af`     |
+| `--turbo-state-danger`       | Danger/error state color                    | `#f38ba8`     |
+| `--turbo-state-info`         | Info state color                            | `#89dceb`     |
+| `--turbo-state-success-text` | Ink audited for WCAG AA on the success fill | `#1e1e2e`     |
+| `--turbo-state-warning-text` | Ink audited for WCAG AA on the warning fill | `#1e1e2e`     |
+| `--turbo-state-danger-text`  | Ink audited for WCAG AA on the danger fill  | `#1e1e2e`     |
+| `--turbo-state-info-text`    | Ink audited for WCAG AA on the info fill    | `#1e1e2e`     |
 
 ### Usage
 
 ```css
 .alert-success {
   background-color: var(--turbo-state-success);
-  color: var(--turbo-text-inverse);
+  color: var(--turbo-state-success-text);
 }
 
 .alert-warning {
   background-color: var(--turbo-state-warning);
-  color: var(--turbo-text-inverse);
+  color: var(--turbo-state-warning-text);
 }
 
 .alert-danger {
   background-color: var(--turbo-state-danger);
-  color: var(--turbo-text-inverse);
+  color: var(--turbo-state-danger-text);
 }
 
 .alert-info {
   background-color: var(--turbo-state-info);
-  color: var(--turbo-text-inverse);
+  color: var(--turbo-state-info-text);
 }
 ```
+
+Each `--turbo-state-*-text` ink is computed by the build-time WCAG AA normalizer against
+its state fill, so `color`/`background` pairs stay legible in every theme. Prefer them
+over `--turbo-text-inverse` on state fills.
 
 ## Border Variables
 
