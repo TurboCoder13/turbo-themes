@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.1] - 2026-09-06
+
+### 🔧 Changed
+
+- Update ghcr.io/lgtm-hq/py-lintro docker tag to 0.147.3 (minor) (#969)
+
 ## [0.43.0] - 2026-09-06
 
 ### ✨ Added
