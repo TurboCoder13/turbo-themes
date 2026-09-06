@@ -111,34 +111,60 @@ function formatChangelogDescription(description) {
 
 /**
  * Escape bare emphasis characters so PR titles cannot inject markdown styling.
+ * Inline-code spans are left untouched, and an already-escaped marker (odd
+ * number of preceding backslashes) is not double-escaped.
  */
 function escapeChangelogText(text) {
-  return text.replace(/(?<!\\)[*_]/g, '\\$&');
+  let out = '';
+  let inCode = false;
+  let backslashes = '';
+  for (const ch of text) {
+    if (ch === '`') {
+      inCode = !inCode;
+      out += ch;
+      backslashes = '';
+      continue;
+    }
+    if (ch === '\\') {
+      backslashes += '\\';
+      out += ch;
+      continue;
+    }
+    if ((ch === '*' || ch === '_') && !inCode && backslashes.length % 2 === 0) {
+      out += '\\';
+    }
+    out += ch;
+    backslashes = '';
+  }
+  return out;
 }
 
 /**
- * Greedy word-wrap a "- …" bullet at CHANGELOG_WIDTH with a two-space hanging
- * indent. Must stay byte-identical to the markdown formatter's reflow (same
- * width as defaults.prettier.overrides *.md printWidth in
- * .lintro-config.yaml), otherwise the quality gate and the generator fight
- * over CHANGELOG.md on every release.
+ * Greedy word-wrap a "- …" bullet with a two-space hanging indent, measuring
+ * continuation lines including their indent. Must stay byte-identical to the
+ * markdown formatter's reflow (same width as defaults.prettier.overrides *.md
+ * printWidth in .lintro-config.yaml), otherwise the quality gate and the
+ * generator fight over CHANGELOG.md on every release.
  */
 const CHANGELOG_WIDTH = 88;
+const CHANGELOG_INDENT = '  ';
 function wrapBullet(entry) {
-  const words = entry.split(' ');
   const lines = [];
-  let line = '';
-  for (const word of words) {
-    const candidate = line ? `${line} ${word}` : word;
-    if (candidate.length > CHANGELOG_WIDTH && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = candidate;
-    }
+  let line = entry;
+  let width = CHANGELOG_WIDTH;
+  let indent = 0;
+  while (line.length > width) {
+    const cut = line.lastIndexOf(' ', width);
+    // An unbreakable token longer than the width: keep it overflowing the
+    // same way the formatter does instead of looping forever.
+    if (cut <= indent) break;
+    lines.push(line.slice(0, cut));
+    line = CHANGELOG_INDENT + line.slice(cut + 1);
+    indent = CHANGELOG_INDENT.length;
+    width = CHANGELOG_WIDTH - indent;
   }
-  if (line) lines.push(line);
-  return lines.join('\n  ');
+  lines.push(line);
+  return lines.join('\n');
 }
 
 /**

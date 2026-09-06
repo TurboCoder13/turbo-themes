@@ -382,3 +382,52 @@ describe('determineBumpType – patchTypes still trigger patch bump', () => {
     });
   });
 });
+
+describe('changelog wrapping and emphasis escaping', () => {
+  it('wraps long bullets with a two-space hanging indent at 88 columns', () => {
+    const commits = [
+      fakeCommit(
+        'fix',
+        'Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories (#933)',
+      ),
+    ];
+    const entry = generateChangelogEntry(commits, '0.42.6', 'patch');
+    expect(entry).toContain(
+      '- Bump browserslist and postcss-selector-parser in examples/tailwind for OSV advisories\n  (#933)',
+    );
+    for (const line of entry.split('\n')) {
+      expect(line.length).toBeLessThanOrEqual(88);
+    }
+  });
+
+  it('keeps continuation lines within the width including their indent', () => {
+    const longTitle =
+      'refactor the generated theme pipeline so that every adapter, coverage shim, and catalog entry is produced from one audited source of truth without duplicating steps';
+    const commits = [fakeCommit('fix', longTitle)];
+    const entry = generateChangelogEntry(commits, '1.0.1', 'patch');
+    for (const line of entry.split('\n')) {
+      expect(line.length).toBeLessThanOrEqual(88);
+    }
+    expect(entry.split('\n').filter((l) => l.startsWith('  ')).length).toBeGreaterThan(0);
+  });
+
+  it('escapes bare emphasis markers from titles', () => {
+    const commits = [fakeCommit('fix', 'handle a*b and c_d inputs')];
+    const entry = generateChangelogEntry(commits, '1.0.1', 'patch');
+    expect(entry).toContain('a\\*b');
+    expect(entry).toContain('c\\_d');
+  });
+
+  it('leaves inline code spans untouched', () => {
+    const commits = [fakeCommit('fix', 'support `foo_bar` flag')];
+    const entry = generateChangelogEntry(commits, '1.0.1', 'patch');
+    expect(entry).toContain('`foo_bar`');
+  });
+
+  it('does not double-escape an already-escaped marker', () => {
+    const commits = [fakeCommit('fix', 'literal \\* stays escaped')];
+    const entry = generateChangelogEntry(commits, '1.0.1', 'patch');
+    expect(entry).toContain('\\*');
+    expect(entry).not.toContain('\\\\*');
+  });
+});
