@@ -151,17 +151,17 @@ const CHANGELOG_INDENT = '  ';
 function wrapBullet(entry) {
   const lines = [];
   let line = entry;
-  let width = CHANGELOG_WIDTH;
   let indent = 0;
-  while (line.length > width) {
-    const cut = line.lastIndexOf(' ', width);
+  while (line.length > CHANGELOG_WIDTH) {
+    // The indent counts toward the formatter's column budget, so continuation
+    // lines are cut at the same absolute column 88 as the first line.
+    const cut = line.lastIndexOf(' ', CHANGELOG_WIDTH);
     // An unbreakable token longer than the width: keep it overflowing the
     // same way the formatter does instead of looping forever.
     if (cut <= indent) break;
     lines.push(line.slice(0, cut));
     line = CHANGELOG_INDENT + line.slice(cut + 1);
     indent = CHANGELOG_INDENT.length;
-    width = CHANGELOG_WIDTH - indent;
   }
   lines.push(line);
   return lines.join('\n');
