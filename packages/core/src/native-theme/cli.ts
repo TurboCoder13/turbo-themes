@@ -24,12 +24,13 @@ const USAGE = `turbo-themes <command>
 Commands:
   validate-native <file.css|file.json> [--json]
       Validate a site-native theme file against the token contract.
-  init-native-theme <theme-id> [--out <path>]
+  init-native-theme <theme-id> [--out <path>] [--force]
       Write a scaffold declaring every required token.
 
 Options:
   --json    Machine-readable report (validate-native)
   --out     Output path (init-native-theme; default: <theme-id>.css)
+  --force   Overwrite the output file if it exists (init-native-theme)
   -h, --help
 `;
 
@@ -47,7 +48,14 @@ function readThemeFile(path: string): {
     try {
       const parsed = JSON.parse(content);
       if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        return { tokens: parsed as Record<string, string> };
+        const tokens = parsed as Record<string, unknown>;
+        const nonString = Object.entries(tokens)
+          .filter(([, v]) => typeof v !== 'string')
+          .map(([k]) => k);
+        if (nonString.length > 0) {
+          return { error: `JSON values must be strings for: ${nonString.join(', ')}` };
+        }
+        return { tokens: tokens as Record<string, string> };
       }
       return { error: 'JSON input must be an object of token name → value' };
     } catch (e) {
@@ -83,6 +91,7 @@ function runValidateNative(args: string[]): number {
 function runInitNativeTheme(args: string[]): number {
   const positional = args.filter((a) => !a.startsWith('--'));
   const outIndex = args.indexOf('--out');
+  const force = args.includes('--force');
   const themeId = positional[0];
   if (!themeId || !/^[a-z0-9-]+$/i.test(themeId)) {
     console.error('usage: turbo-themes init-native-theme <theme-id> [--out <path>]');
@@ -91,6 +100,10 @@ function runInitNativeTheme(args: string[]): number {
   const out = outIndex >= 0 ? args[outIndex + 1] : `${themeId}.css`;
   if (!out) {
     console.error('usage: turbo-themes init-native-theme <theme-id> [--out <path>]');
+    return 2;
+  }
+  if (!force && existsSync(out)) {
+    console.error(`error: ${out} already exists - pass --force to overwrite it`);
     return 2;
   }
 

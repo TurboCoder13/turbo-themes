@@ -43,7 +43,7 @@ export function assertNativeTheme(css: string, source = 'native theme'): NativeT
  * Assert a native theme given as a token map (`--turbo-x` → value).
  */
 export function assertNativeThemeTokens(
-  tokens: Record<string, string>,
+  tokens: Record<string, unknown>,
   source = 'native theme',
 ): NativeThemeValidation {
   const result = validateNativeThemeTokens(tokens);

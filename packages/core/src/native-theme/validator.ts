@@ -34,37 +34,58 @@ export interface NativeThemeValidation {
   duplicates: string[];
   /** Declarations whose value is empty. */
   empty: string[];
+  /** Declarations whose value is the scaffold placeholder keyword `initial`. */
+  placeholders: string[];
+  /** Token map values that are not strings (JSON token maps only). */
+  nonStringValues: string[];
 }
 
 /**
  * Validate a token map (`--turbo-x` name → value).
  */
-export function validateNativeThemeTokens(tokens: Record<string, string>): NativeThemeValidation {
+export function validateNativeThemeTokens(tokens: Record<string, unknown>): NativeThemeValidation {
   const required = new Set(REQUIRED_NATIVE_TOKENS);
   const known = new Set([...REQUIRED_NATIVE_TOKENS, ...OPTIONAL_NATIVE_TOKENS]);
 
   const declared = new Set<string>();
   const duplicates = new Set<string>();
   const empty: string[] = [];
+  const placeholders: string[] = [];
+  const nonStringValues: string[] = [];
 
   for (const [name, value] of Object.entries(tokens)) {
     if (declared.has(name)) duplicates.add(name);
     declared.add(name);
-    if (value === undefined || value.trim() === "") empty.push(name);
+    if (typeof value !== "string") {
+      nonStringValues.push(name);
+      continue;
+    }
+    if (value.trim() === "") empty.push(name);
+    // The scaffold keyword is a placeholder, not a usable theme value.
+    else if (value.trim() === "initial") placeholders.push(name);
   }
 
   const missing = [...required].filter((name) => !declared.has(name)).sort();
   const unknown = [...declared].filter((name) => !known.has(name)).sort();
 
+  const valid =
+    missing.length === 0 &&
+    unknown.length === 0 &&
+    duplicates.size === 0 &&
+    empty.length === 0 &&
+    placeholders.length === 0 &&
+    nonStringValues.length === 0;
+
   return {
-    valid:
-      missing.length === 0 && unknown.length === 0 && duplicates.size === 0 && empty.length === 0,
+    valid,
     requiredCount: required.size,
     declaredCount: declared.size,
     missing,
     unknown,
     duplicates: [...duplicates].sort(),
     empty: empty.sort(),
+    placeholders: placeholders.sort(),
+    nonStringValues: nonStringValues.sort(),
   };
 }
 
@@ -106,23 +127,46 @@ export function parseNativeThemeCss(css: string): {
   tokens: Record<string, string>;
   duplicates: string[];
 } {
-  const withoutComments = stripCssComments(css).toLowerCase();
+  const source = stripCssComments(css);
   const tokens: Record<string, string> = {};
   const occurrences = new Map<string, number>();
+
+  // Positions inside single/double-quoted strings are not declarations: a
+  // `content: "--turbo-bg-base: …"` string must not satisfy the contract.
+  const quoted: boolean[] = Array.from({ length: source.length }, () => false);
+  let quote: string | null = null;
+  for (let q = 0; q < source.length; q++) {
+    const ch = source[q];
+    if (quote) {
+      quoted[q] = true;
+      if (ch === quote) quote = null;
+    } else if (ch === '"' || ch === "'") {
+      quote = ch;
+      quoted[q] = true;
+    }
+  }
 
   // Linear scan for "--turbo-<name> : <value>" declarations. A regex with an
   // open-ended name pattern is quadratic on adversarial input (many repeated
   // prefixes with no colon), and this validator runs on consumer-provided
   // theme files - so every step below is an indexOf/char loop.
   let i = 0;
-  const isNameChar = (ch: string): boolean => /[a-z0-9-]/.test(ch);
-  while (i < withoutComments.length) {
-    const at = withoutComments.indexOf("--turbo-", i);
+  // CSS custom property names are case-sensitive and may contain uppercase
+  // and underscores; anything outside the contract surfaces as unknown.
+  const isNameChar = (ch: string): boolean => /[a-zA-Z0-9_-]/.test(ch);
+  while (i < source.length) {
+    const at = source.indexOf("--turbo-", i);
     if (at === -1) break;
+    if (quoted[at]) {
+      i++;
+      continue;
+    }
 
     let j = at + "--turbo-".length;
-    while (j < withoutComments.length && isNameChar(withoutComments[j] ?? "")) j++;
-    const name = withoutComments.slice(at, j);
+    while (j < source.length && isNameChar(source[j] ?? "")) j++;
+    // Names are case-sensitive in CSS: --turbo-BG-base is a different token
+    // and surfaces as unknown rather than aliasing --turbo-bg-base.
+    const name = source.slice(at, j);
 
     if (name === "--turbo-") {
       i = j;
@@ -130,25 +174,26 @@ export function parseNativeThemeCss(css: string): {
     }
 
     let k = j;
-    while (k < withoutComments.length && /\s/.test(withoutComments[k] ?? "")) k++;
-    if (withoutComments[k] !== ":") {
+    while (k < source.length && /\s/.test(source[k] ?? "")) k++;
+    if (source[k] !== ":") {
       i = j;
       continue;
     }
     k++;
-    while (k < withoutComments.length && /\s/.test(withoutComments[k] ?? "")) k++;
+    while (k < source.length && /\s/.test(source[k] ?? "")) k++;
 
     let valueEnd = k;
-    while (
-      valueEnd < withoutComments.length &&
-      withoutComments[valueEnd] !== ";" &&
-      withoutComments[valueEnd] !== "}"
-    ) {
+    while (valueEnd < source.length && source[valueEnd] !== ";" && source[valueEnd] !== "}") {
+      const ch = source[valueEnd] ?? "";
+      if (ch === '"' || ch === "'") {
+        const close = source.indexOf(ch, valueEnd + 1);
+        valueEnd = close === -1 ? source.length : close;
+      }
       valueEnd++;
     }
 
     occurrences.set(name, (occurrences.get(name) ?? 0) + 1);
-    tokens[name] = withoutComments.slice(k, valueEnd).trim();
+    tokens[name] = source.slice(k, valueEnd).trim();
     i = valueEnd;
   }
 
@@ -198,6 +243,12 @@ export function formatNativeThemeValidation(
   if (result.empty.length > 0) {
     problems.push(`empty value(s): ${result.empty.join(", ")}`);
   }
+  if (result.placeholders.length > 0) {
+    problems.push(`placeholder value(s) still "initial": ${result.placeholders.join(", ")}`);
+  }
+  if (result.nonStringValues.length > 0) {
+    problems.push(`non-string value(s): ${result.nonStringValues.join(", ")}`);
+  }
 
   if (problems.length === 0) {
     lines.push(
@@ -206,7 +257,8 @@ export function formatNativeThemeValidation(
   } else {
     lines.push(
       `❌ ${source}: ${result.missing.length} missing, ${result.unknown.length} unknown, ` +
-        `${result.duplicates.length} duplicate, ${result.empty.length} empty ` +
+        `${result.duplicates.length} duplicate, ${result.empty.length} empty, ` +
+        `${result.placeholders.length} placeholder, ${result.nonStringValues.length} non-string ` +
         `(${result.declaredCount} declared of ${result.requiredCount} required).`,
     );
     lines.push(...problems);

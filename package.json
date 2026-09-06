@@ -48,6 +48,7 @@
       "types": "./packages/core/dist/native-theme/index.d.ts",
       "import": "./packages/core/dist/native-theme/index.js"
     },
+    "./contrast-pairs.json": "./schema/contrast-pairs.json",
     "./catalog": {
       "types": "./dist/catalog/index.d.ts",
       "import": "./dist/catalog/index.js"

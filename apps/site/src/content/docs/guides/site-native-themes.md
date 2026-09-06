@@ -88,12 +88,14 @@ const result = validateNativeThemeCss(cssSource);
 
 ## What the contract does and does not guarantee
 
-The validator checks **presence, spelling, and uniqueness** of tokens. It does **not**
-check that your palette is readable — contrast is a property of your color choices.
-Published flavors are build-time normalized to WCAG 2.2 AA (see the
+The validator checks **presence, spelling, uniqueness, and placeholder values** of
+tokens, folding declarations from every selector and `@media` block into one set — keep
+one canonical `[data-theme="…"]` block per theme file. It does **not** check that your
+palette is readable — contrast is a property of your color choices. Published flavors
+are build-time normalized to WCAG 2.2 AA (see the
 [accessibility guide](/guides/accessibility/)); for native themes, run your own contrast
-checks on the same fg/background pairs the toolkit audits (the pair list ships in the
-package as `schema/contrast-pairs.json`).
+checks on the same fg/background pairs the toolkit audits (the pair list is importable
+from the package as `@lgtm-hq/turbo-themes/contrast-pairs.json`).
 
 ## See also
 

@@ -18,10 +18,13 @@ describe('native-theme CLI', () => {
     vi.restoreAllMocks();
   });
 
-  it('prints usage and exits 0 for --help', () => {
+  it('prints usage with both commands and exits 0 for --help', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
     expect(runCli(['--help'])).toBe(0);
-    expect(log).toHaveBeenCalled();
+    const usage = log.mock.calls.map((c) => c[0]).join('');
+    expect(usage).toContain('validate-native');
+    expect(usage).toContain('init-native-theme');
+    expect(usage).toContain('--force');
   });
 
   it('exits 2 for an unknown command', () => {
@@ -99,7 +102,7 @@ describe('native-theme CLI', () => {
     expect(err).toHaveBeenCalledWith(expect.stringContaining('JSON input must be an object'));
   });
 
-  it('init-native-theme writes a scaffold that passes validation, with --out', () => {
+  it('init-native-theme writes a scaffold flagged as placeholder until filled', () => {
     dir = makeTempDir();
     const out = join(dir, 'acme.css');
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
@@ -109,7 +112,39 @@ describe('native-theme CLI', () => {
 
     const scaffold = readFileSync(out, 'utf8');
     expect(scaffold).toContain("[data-theme='acme']");
-    expect(runCli(['validate-native', out])).toBe(0);
+
+    // The untouched scaffold is `initial` everywhere: validation must NOT
+    // pass until a real palette replaces the placeholders.
+    const report = vi.spyOn(console, 'log').mockImplementation(() => {});
+    expect(runCli(['validate-native', out])).toBe(1);
+    expect(report).toHaveBeenCalledWith(expect.stringContaining('placeholder'));
+  });
+
+  it('init-native-theme refuses to overwrite without --force', () => {
+    dir = makeTempDir();
+    const out = join(dir, 'acme.css');
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(runCli(['init-native-theme', 'acme', '--out', out])).toBe(0);
+    expect(runCli(['init-native-theme', 'acme', '--out', out])).toBe(2);
+    expect(err).toHaveBeenCalledWith(expect.stringContaining('already exists'));
+
+    expect(runCli(['init-native-theme', 'acme', '--out', out, '--force'])).toBe(0);
+    expect(log).toHaveBeenCalled();
+  });
+
+  it('exits 2 when JSON token values are not strings', () => {
+    dir = makeTempDir();
+    const file = join(dir, 'mixed.json');
+    const tokens: Record<string, unknown> = { '--turbo-bg-base': null };
+    for (const n of REQUIRED_NATIVE_TOKENS) tokens[n] = '#123456';
+    tokens['--turbo-bg-base'] = null;
+    writeFileSync(file, JSON.stringify(tokens));
+
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect(runCli(['validate-native', file])).toBe(2);
+    expect(err).toHaveBeenCalledWith(expect.stringContaining('JSON values must be strings'));
   });
 
   it('exits 2 for an invalid theme id in init-native-theme', () => {

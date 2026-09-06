@@ -82,6 +82,28 @@ describe('validateNativeThemeCss', () => {
     expect(result.valid).toBe(true);
   });
 
+  it('treats names as case-sensitive (unknown, not aliased)', () => {
+    const css = `${cssFor(REQUIRED_NATIVE_TOKENS)}\n[data-theme='acme'] { --turbo-BG-base: #654321; }`;
+    const result = validateNativeThemeCss(css);
+    expect(result.valid).toBe(false);
+    expect(result.unknown).toContain('--turbo-BG-base');
+  });
+
+  it('does not satisfy the contract from quoted content strings', () => {
+    const injection = REQUIRED_NATIVE_TOKENS.map((n) => `${n}: #123456;`).join(' ');
+    const css = `${cssFor(REQUIRED_NATIVE_TOKENS.slice(0, 5))}\n[data-theme='acme'] .x::after { content: "${injection}"; }`;
+    const result = validateNativeThemeCss(css);
+    expect(result.valid).toBe(false);
+    expect(result.missing.length).toBe(REQUIRED_NATIVE_TOKENS.length - 5);
+  });
+
+  it('flags placeholder `initial` values from the scaffold', () => {
+    const css = `[data-theme='acme'] {\n${REQUIRED_NATIVE_TOKENS.map((n) => `  ${n}: initial;`).join('\n')}\n}`;
+    const result = validateNativeThemeCss(css);
+    expect(result.valid).toBe(false);
+    expect(result.placeholders.length).toBe(REQUIRED_NATIVE_TOKENS.length);
+  });
+
   it('flags duplicate declarations', () => {
     const css = `${cssFor(REQUIRED_NATIVE_TOKENS)}\n[data-theme='acme'] { --turbo-bg-base: #654321; }`;
     const result = validateNativeThemeCss(css);
