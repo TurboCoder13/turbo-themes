@@ -26,14 +26,11 @@ jobs:
       # publish-allowlisted actions (lgtm-ci#518).
       publish-results: true
       egress-policy: block
-      egress-preset: scorecard
-      # Complete list, not append: the reusable feeds allowed-endpoints
-      # directly to the harden-runner pre hook at job start, where a partial
-      # list REPLACES the baked-in baseline (preset merging happens later in
-      # resolve-egress-allowlist and cannot widen the already-armed agent).
-      # Full list = scorecard reusable default + StepSecurity/sigstore/OSSF
-      # hosts used by this job.
-      allowed-endpoints-mode: replace
+      # Since lgtm-ci v0.69.4 (which dropped the egress-preset and
+      # allowed-endpoints-mode compat inputs, lgtm-ci#551) this list is fed
+      # straight to the harden-runner pre hook with no preset resolution.
+      # It covers the reusable's default baseline plus the
+      # StepSecurity/sigstore/OSSF hosts this job needs for publish.
       allowed-endpoints: >
         github.com:443
         api.github.com:443
