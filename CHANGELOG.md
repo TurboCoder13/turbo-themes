@@ -10,6 +10,13 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.6] - 2026-09-06
+
+### 🔧 Changed
+
+- Migrate Renovate config (#987)
+- Update dependency lgtm-hq/lgtm-ci to v0.69.6 (patch) (#985)
+
 ## [0.43.5] - 2026-09-06
 
 ### 🔧 Changed
