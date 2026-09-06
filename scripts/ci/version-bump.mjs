@@ -110,6 +110,65 @@ function formatChangelogDescription(description) {
 }
 
 /**
+ * Escape bare emphasis characters so PR titles cannot inject markdown styling.
+ * Inline-code spans are left untouched, and an already-escaped marker (odd
+ * number of preceding backslashes) is not double-escaped.
+ */
+function escapeChangelogText(text) {
+  let out = '';
+  let inCode = false;
+  let backslashes = '';
+  for (const ch of text) {
+    if (ch === '`') {
+      inCode = !inCode;
+      out += ch;
+      backslashes = '';
+      continue;
+    }
+    if (ch === '\\') {
+      backslashes += '\\';
+      out += ch;
+      continue;
+    }
+    if ((ch === '*' || ch === '_') && !inCode && backslashes.length % 2 === 0) {
+      out += '\\';
+    }
+    out += ch;
+    backslashes = '';
+  }
+  return out;
+}
+
+/**
+ * Greedy word-wrap a "- …" bullet with a two-space hanging indent, measuring
+ * continuation lines including their indent. Must stay byte-identical to the
+ * markdown formatter's reflow (same width as defaults.prettier.overrides *.md
+ * printWidth in .lintro-config.yaml), otherwise the quality gate and the
+ * generator fight over CHANGELOG.md on every release.
+ */
+const CHANGELOG_WIDTH = 88;
+const CHANGELOG_INDENT = '  ';
+function wrapBullet(entry) {
+  const lines = [];
+  let line = entry;
+  let indent = 0;
+  while (line.length > CHANGELOG_WIDTH) {
+    // The indent counts toward the formatter's column budget, so continuation
+    // lines are cut at the same absolute column 88 as the first line.
+    const cut = line.lastIndexOf(' ', CHANGELOG_WIDTH);
+    // An unbreakable token longer than the width: keep it overflowing the
+    // same way the formatter does instead of looping forever or emitting a
+    // dangling bullet marker.
+    if (cut <= indent + 2) break;
+    lines.push(line.slice(0, cut));
+    line = CHANGELOG_INDENT + line.slice(cut + 1);
+    indent = CHANGELOG_INDENT.length;
+  }
+  lines.push(line);
+  return lines.join('\n');
+}
+
+/**
  * Get commits since last tag
  */
 function getCommitsSinceLastTag() {
@@ -244,7 +303,9 @@ function generateChangelogEntry(commits, version, bumpType) {
       continue;
     }
 
-    const entry = `- ${formatChangelogDescription(parsed.description)}`;
+    const entry = wrapBullet(
+      `- ${escapeChangelogText(formatChangelogDescription(parsed.description))}`,
+    );
     const isBreaking = isBreakingCommit(parsed, message);
 
     // Breaking changes always appear under BREAKING CHANGES, even for ci/build scopes,
