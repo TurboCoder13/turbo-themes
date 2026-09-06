@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, afterEach } from 'vitest';
+import { describe, expect, it, afterEach } from 'vitest';
 import { cssForFlavor } from '../../src/themes/css.js';
 import { createMockFlavor, createMockTokens } from '../../../../test/helpers/mocks.js';
 
@@ -23,19 +23,21 @@ describe('cssForFlavor - CSS ID escaping', () => {
 });
 
 describe('cssForFlavor - CSS escaping fallback', () => {
-  let originalCSS: typeof globalThis.CSS;
-
-  beforeEach(() => {
-    originalCSS = globalThis.CSS;
-  });
+  // happy-dom exposes CSS as a getter-only global, so swap it via
+  // defineProperty and restore the original descriptor afterwards.
+  const originalDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'CSS');
 
   afterEach(() => {
-    globalThis.CSS = originalCSS;
+    if (originalDescriptor) {
+      Object.defineProperty(globalThis, 'CSS', originalDescriptor);
+    } else {
+      delete (globalThis as { CSS?: unknown }).CSS;
+    }
   });
 
   it('uses fallback escaping when CSS.escape is unavailable', () => {
     // @ts-expect-error - intentionally removing for test
-    globalThis.CSS = undefined;
+    Object.defineProperty(globalThis, 'CSS', { configurable: true, value: undefined });
 
     const flavor = createMockFlavor({ id: 'test:theme' });
     const css = cssForFlavor(flavor);
@@ -45,7 +47,7 @@ describe('cssForFlavor - CSS escaping fallback', () => {
 
   it('handles null character in ID with fallback', () => {
     // @ts-expect-error - intentionally removing for test
-    globalThis.CSS = undefined;
+    Object.defineProperty(globalThis, 'CSS', { configurable: true, value: undefined });
 
     const flavor = createMockFlavor({ id: 'test\0theme' });
     const css = cssForFlavor(flavor);
