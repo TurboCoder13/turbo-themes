@@ -257,18 +257,17 @@ class ThemeManager:
                 },
                 indent=2,
             )
-        else:
-            # Export all themes
-            themes_data = {}
-            for tid, theme in self._themes.items():
-                themes_data[tid] = {
-                    "id": theme.id,
-                    "label": theme.name,
-                    "vendor": theme.vendor,
-                    "appearance": theme.appearance,
-                    "tokens": self._theme_tokens_to_dict(theme.tokens),
-                }
-            return json.dumps(themes_data, indent=2)
+        # Export all themes
+        themes_data = {}
+        for tid, theme in self._themes.items():
+            themes_data[tid] = {
+                "id": theme.id,
+                "label": theme.name,
+                "vendor": theme.vendor,
+                "appearance": theme.appearance,
+                "tokens": self._theme_tokens_to_dict(theme.tokens),
+            }
+        return json.dumps(themes_data, indent=2)
 
     def save_theme_to_file(self, filepath: str, theme_id: str | None = None) -> None:
         """Save theme(s) to a JSON file.
@@ -282,8 +281,9 @@ class ThemeManager:
             f.write(json_data)
 
 
-# Global instance for convenience
-_default_manager = ThemeManager()
+# Module-level holder so reset can swap the manager without a ``global``
+# statement; index 0 is always the live instance.
+_manager_box: list[ThemeManager] = [ThemeManager()]
 
 
 def get_theme_manager() -> ThemeManager:
@@ -295,7 +295,7 @@ def get_theme_manager() -> ThemeManager:
     Returns:
         The global ThemeManager instance.
     """
-    return _default_manager
+    return _manager_box[0]
 
 
 def reset_theme_manager() -> None:
@@ -303,8 +303,7 @@ def reset_theme_manager() -> None:
 
     This is primarily useful for test cleanup to avoid cross-test pollution.
     """
-    global _default_manager
-    _default_manager = ThemeManager()
+    _manager_box[0] = ThemeManager()
 
 
 def set_theme(theme_id: str) -> None:
@@ -313,7 +312,7 @@ def set_theme(theme_id: str) -> None:
     Args:
         theme_id: The ID of the theme to set globally.
     """
-    _default_manager.set_theme(theme_id)
+    get_theme_manager().set_theme(theme_id)
 
 
 def get_current_theme() -> ThemeInfo:
@@ -322,7 +321,7 @@ def get_current_theme() -> ThemeInfo:
     Returns:
         The current active global theme.
     """
-    return _default_manager.current_theme
+    return get_theme_manager().current_theme
 
 
 def cycle_theme(appearance: str | None = None) -> str:
@@ -334,4 +333,4 @@ def cycle_theme(appearance: str | None = None) -> str:
     Returns:
         The ID of the newly set global theme.
     """
-    return _default_manager.cycle_theme(appearance)
+    return get_theme_manager().cycle_theme(appearance)

@@ -1,0 +1,19 @@
+# Typos configuration: allowlist for intentional tokens and generated files.
+# Every entry documents why the spelling is deliberate; do not add entries
+# to silence findings in hand-written prose or identifiers.
+
+[files]
+# Built sourcemaps: packed, minified build artifacts regenerated from source.
+extend-exclude = ["assets/js/*.map"]
+
+[default.extend-identifiers]
+# Pygments "Name.Decorator" token suffix and the CSS selectors derived from it.
+nd = "nd"
+
+[default.extend-words]
+# Intentional invalid CSS properties asserted in negative-test fixtures.
+backgroud = "backgroud"
+widht = "widht"
+heigth = "heigth"
+# Expected result of stripping accents from "thème".
+thme = "thme"

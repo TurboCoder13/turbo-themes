@@ -8,6 +8,8 @@ Usage:
     format-security-comment.py <osv-results.json>
 """
 
+# pylint: disable=invalid-name  # CLI script; hyphenated filename is the invocation contract
+
 from __future__ import annotations
 
 import json
@@ -30,7 +32,7 @@ def escape_md_cell(text: str | None) -> str:
 
 def parse_lintro_json(path: str) -> dict[str, Any]:
     """Parse the lintro JSON output file."""
-    data: dict[str, Any] = json.loads(Path(path).read_text())
+    data: dict[str, Any] = json.loads(Path(path).read_text(encoding="utf-8"))
     results = data.get("results", [])
     if not isinstance(results, list):
         return {}
@@ -156,13 +158,18 @@ def format_error(raw_path: str) -> str:
 
     raw = Path(raw_path)
     if raw.exists():
-        content = raw.read_text()[:500]
+        content = raw.read_text(encoding="utf-8")[:500]
         lines.extend(["```", content, "```", ""])
 
     return "\n".join(lines)
 
 
 def main() -> None:
+    """Render the security comment body from the scanner results file.
+
+    Raises:
+        SystemExit: On usage errors or missing/invalid results input.
+    """
     if len(sys.argv) < 2:
         print(f"Usage: {sys.argv[0]} <osv-results.json>", file=sys.stderr)
         sys.exit(2)

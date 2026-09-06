@@ -2,6 +2,7 @@
 """Tests for generated token types."""
 
 import dataclasses
+import importlib
 
 import pytest
 from assertpy import assert_that
@@ -13,16 +14,16 @@ from turbo_themes.generated import TurboTokens
 
 def test_can_import_from_generated() -> None:
     """Should be able to import TurboTokens from generated module."""
-    from turbo_themes.generated import TurboTokens as TurboTokensImport
+    module = importlib.import_module("turbo_themes.generated")
 
-    assert_that(TurboTokensImport).is_same_as(TurboTokens)
+    assert_that(module.TurboTokens).is_same_as(TurboTokens)
 
 
 def test_can_import_from_tokens_submodule() -> None:
     """Should be able to import from tokens submodule."""
-    from turbo_themes.generated.tokens import TurboTokens as TurboTokensSub
+    submodule = importlib.import_module("turbo_themes.generated.tokens")
 
-    assert_that(TurboTokensSub).is_same_as(TurboTokens)
+    assert_that(submodule.TurboTokens).is_same_as(TurboTokens)
 
 
 # --- TurboTokens dataclass ---

@@ -5,7 +5,7 @@ requires-python = ">=3.11"
 
 [dependency-groups]
 dev = [
-  "lintro==0.91.49",
+  "lintro==0.147.3",
   "pytest>=9.0,<10.0",
   "assertpy>=1.1",
   # Formatters/linters lintro drives. Pinned at or above lintro 0.91.9's
@@ -114,3 +114,24 @@ skips = ["B101", "B105", "B106"]
 
 [tool.lintro.tool.yamllint]
 exclude = [".github/workflows/**", ".github/actions/**", ".allstar/**"]
+
+[tool.lintro.tool.pylint]
+# Generated token modules (quicktype output) are excluded like the other
+# generated paths: long generated font-family strings and the width of the
+# generated dataclass are inherent to the generated contract, and the files
+# are regenerated rather than hand-edited.
+exclude = [
+  "python/src/turbo_themes/generated/*",
+  "src/turbo_themes/generated/*",
+]
+
+[tool.pylint.typecheck]
+# assertpy is a pytest-time dev dependency that the pinned lintro lint image
+# does not install; import-error stays enabled for every other module.
+ignored-modules = ["assertpy"]
+
+[tool.pylint.design]
+# Tokens (python/src/turbo_themes/models.py) is a published type whose
+# declared fields mirror the theme token-category contract one-to-one;
+# the category count is fixed by the token schema, not by design drift.
+max-attributes = 14

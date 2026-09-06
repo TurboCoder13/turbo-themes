@@ -26,6 +26,7 @@ coverage/**
 python/src/turbo_themes/themes.py
 python/src/turbo_themes/tokens.py
 python/src/turbo_themes/generated_types.py
+python/src/turbo_themes/generated/**
 
 # Files where black is authoritative formatter (ruff format conflicts)
 # These need multiple patterns for different CWD contexts
