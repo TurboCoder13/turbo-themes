@@ -217,19 +217,26 @@ if [ -f "package.json" ] && grep -q '"theme:sync"' package.json >/dev/null 2>&1;
   fi
 fi
 
-# Step 4: TypeScript build
-print_status "$BLUE" "⚡ Step 4: TypeScript build..."
-if [ -f "package.json" ] && grep -q '"build"' package.json >/dev/null 2>&1; then
-  print_status "$YELLOW" "  Building TypeScript..."
-  $PKG_RUN build
-fi
-
-# Step 4.5: Generate CSS tokens (required for tests)
-print_status "$BLUE" "🎨 Step 4.5: Generate CSS tokens..."
+# Step 4: Generate CSS tokens (required for tests)
+#
+# This must run BEFORE `bun run build`: both style-dictionary and
+# `copy-adapters` (the last step of `bun run build`) write
+# assets/css/turbo-core.css, and the copy-adapters version is the
+# authoritative one — it additionally carries the design-system tokens
+# (--space-*, --radius-*, --shadow-*, --transition-*, --gradient-*). Running
+# the token build last would silently strip them again (#823).
+print_status "$BLUE" "🎨 Step 4: Generate CSS tokens..."
 if [ -f "package.json" ] && grep -q '"build:tokens:css"' package.json >/dev/null 2>&1; then
   print_status "$YELLOW" "  Generating turbo CSS variables..."
   $PKG_RUN build:tokens:css
   print_status "$GREEN" "  ✅ CSS tokens generated successfully"
+fi
+
+# Step 4.5: TypeScript build
+print_status "$BLUE" "⚡ Step 4.5: TypeScript build..."
+if [ -f "package.json" ] && grep -q '"build"' package.json >/dev/null 2>&1; then
+  print_status "$YELLOW" "  Building TypeScript..."
+  $PKG_RUN build
 fi
 
 # Step 5: Unit tests with coverage
