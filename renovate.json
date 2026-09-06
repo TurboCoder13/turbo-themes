@@ -26,6 +26,12 @@
       "description": "Group Ruby test dependencies together",
       "matchPackageNames": ["rspec", "rspec-*", "simplecov", "simplecov-*"],
       "groupName": "ruby-test"
+    },
+    {
+      "description": "Keep tools/docs typescript pinned to 5.9 for typedoc's compiler API (see #875)",
+      "matchPaths": ["tools/docs/**"],
+      "matchPackageNames": ["typescript"],
+      "enabled": false
     }
   ],
   "customManagers": [
