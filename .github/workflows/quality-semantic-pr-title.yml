@@ -19,7 +19,7 @@ jobs:
   # validated on the pull_request event) so the required check still reports.
   semantic-title:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-semantic-pr-title.yml@66cad82ead0e5d119928c895c7d7da9c837989e5 # v0.52.3
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-semantic-pr-title.yml@f57b4d014f82d7f5996c7b339f1b2ca681780921 # v0.69.4
     with:
       job-name: '📝 Validate PR Title'
       types: |
@@ -34,7 +34,7 @@ jobs:
         style
         test
       require-scope: false
-      tooling-ref: '66cad82ead0e5d119928c895c7d7da9c837989e5' # v0.52.3
+      tooling-ref: 'f57b4d014f82d7f5996c7b339f1b2ca681780921' # v0.69.4
       egress-policy: block
       egress-preset: github-tooling
     permissions:

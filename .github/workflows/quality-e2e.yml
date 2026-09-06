@@ -38,7 +38,7 @@ jobs:
   # Org ruleset context: e2e / 🎭 E2E Tests
   e2e:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@ee8484ca71db3a2c2c33da6128bbf2330fcd7c88 # v0.59.2
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@f57b4d014f82d7f5996c7b339f1b2ca681780921 # v0.69.4
     with:
       job-name: '🎭 E2E Tests'
       test-command: ./scripts/ci/bootstrap-e2e-full.sh
@@ -47,7 +47,7 @@ jobs:
       package-manager: bun
       comment-marker: playwright-e2e-comment
       timeout-minutes: 30
-      tooling-ref: 'ee8484ca71db3a2c2c33da6128bbf2330fcd7c88'  # v0.59.2
+      tooling-ref: 'f57b4d014f82d7f5996c7b339f1b2ca681780921' # v0.69.4
       egress-policy: block
       allowed-endpoints: >-
         github.com:443
@@ -83,7 +83,7 @@ jobs:
   # Org ruleset context: smoke / 🔥 E2E Smoke Tests
   smoke:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@ee8484ca71db3a2c2c33da6128bbf2330fcd7c88 # v0.59.2
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@f57b4d014f82d7f5996c7b339f1b2ca681780921 # v0.69.4
     with:
       job-name: '🔥 E2E Smoke Tests'
       test-command: >-
@@ -95,7 +95,7 @@ jobs:
       package-manager: bun
       comment-marker: playwright-e2e-smoke-comment
       timeout-minutes: 15
-      tooling-ref: 'ee8484ca71db3a2c2c33da6128bbf2330fcd7c88'  # v0.59.2
+      tooling-ref: 'f57b4d014f82d7f5996c7b339f1b2ca681780921' # v0.69.4
       egress-policy: block
       allowed-endpoints: >-
         github.com:443
@@ -125,7 +125,7 @@ jobs:
   # Org ruleset context: a11y / ♿ E2E Accessibility Tests
   a11y:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@ee8484ca71db3a2c2c33da6128bbf2330fcd7c88 # v0.59.2
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-test-e2e-playwright.yml@f57b4d014f82d7f5996c7b339f1b2ca681780921 # v0.69.4
     with:
       job-name: '♿ E2E Accessibility Tests'
       test-command: >-
@@ -137,7 +137,7 @@ jobs:
       package-manager: bun
       comment-marker: playwright-e2e-a11y-comment
       timeout-minutes: 15
-      tooling-ref: 'ee8484ca71db3a2c2c33da6128bbf2330fcd7c88'  # v0.59.2
+      tooling-ref: 'f57b4d014f82d7f5996c7b339f1b2ca681780921' # v0.69.4
       egress-policy: block
       allowed-endpoints: >-
         github.com:443
