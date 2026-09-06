@@ -247,7 +247,7 @@
     "uuid": "14.0.2",
     "follow-redirects": "1.16.0",
     "astro": "7.2.10",
-    "smol-toml": "1.6.1",
+    "smol-toml": "1.8.0",
     "path-to-regexp": "8.4.2",
     "@isaacs/brace-expansion": "5.0.1",
     "minimatch": "10.2.6",
