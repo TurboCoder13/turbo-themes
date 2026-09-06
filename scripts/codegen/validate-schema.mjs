@@ -14,12 +14,15 @@ const __dirname = dirname(__filename);
 const projectRoot = join(__dirname, '../..');
 
 const schemaPath = join(projectRoot, 'schema', 'turbo-themes.schema.json');
+const contrastPairsSchemaPath = join(projectRoot, 'schema', 'contrast-pairs.schema.json');
+const contrastPairsPath = join(projectRoot, 'schema', 'contrast-pairs.json');
 const themesDir = join(projectRoot, 'schema', 'tokens', 'themes');
 const sharedTokensPath = join(projectRoot, 'schema', 'tokens', '_shared.tokens.json');
 const vendorsPath = join(projectRoot, 'schema', 'tokens', '_vendors.json');
 
 // Load schema
 const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
+const contrastPairsSchema = JSON.parse(readFileSync(contrastPairsSchemaPath, 'utf-8'));
 
 // Create AJV instance with JSON Schema 2020-12 support
 const ajv = new Ajv2020({ allErrors: true, strict: false });
@@ -43,6 +46,7 @@ const vendorsSchema = {
 const validateThemeFile = ajv.compile(themeFileSchema);
 const validateSharedTokensFile = ajv.compile(sharedTokensSchema);
 const validateVendorsFile = ajv.compile(vendorsSchema);
+const validateContrastPairs = ajv.compile(contrastPairsSchema);
 
 let hasErrors = false;
 
@@ -97,11 +101,18 @@ for (const file of themeFiles) {
   }
 }
 
+// Validate the contrast-pairs manifest (#922)
+console.log('\nContrast pairs manifest:');
+if (!validateFile(contrastPairsPath, validateContrastPairs, 'ContrastPairsManifest')) {
+  hasErrors = true;
+}
+
 console.log();
 
+const manifestCount = 1;
 if (hasErrors) {
   console.log('❌ Validation failed with errors');
   process.exit(1);
 } else {
-  console.log(`✅ All ${themeFiles.length + 2} files validated successfully`);
+  console.log(`✅ All ${themeFiles.length + 2 + manifestCount} files validated successfully`);
 }

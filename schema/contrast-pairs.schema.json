@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lgtm-hq.github.io/turbo-themes/schema/contrast-pairs.schema.json",
+  "title": "Turbo Themes Contrast Pairs Manifest",
+  "description": "Single declared list of foreground/background token pairs with a WCAG target per pair. The WCAG AA normalizer and every contrast test consume this manifest (#922).",
+  "type": "object",
+  "required": ["$version", "levels", "pairs"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "$version": { "type": "integer", "minimum": 1 },
+    "$description": { "type": "string" },
+    "levels": {
+      "type": "object",
+      "description": "Named WCAG contrast floors (minimum ratios) that pairs reference by `level`.",
+      "additionalProperties": false,
+      "required": ["text", "largeText", "nonText"],
+      "properties": {
+        "text": { "type": "number", "const": 4.5 },
+        "largeText": { "type": "number", "const": 3.0 },
+        "nonText": { "type": "number", "const": 3.0 }
+      }
+    },
+    "pairs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Pair" }
+    },
+    "exempt": {
+      "type": "array",
+      "description": "Token pairs deliberately outside the gate. Every entry must carry a reason so omissions are reviewable.",
+      "items": { "$ref": "#/$defs/Exemption" }
+    }
+  },
+  "$defs": {
+    "TokenPath": {
+      "type": "string",
+      "description": "Dot path to a color token's $value, e.g. text.primary or content.codeInline.bg",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z0-9]+)+$"
+    },
+    "GradientBackground": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gradient", "samples"],
+      "properties": {
+        "gradient": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TokenPath" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "samples": { "type": "integer", "minimum": 2, "maximum": 100 }
+      }
+    },
+    "Pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "fg", "bg", "level", "normalize"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+(/[a-z0-9-]+)?$",
+          "description": "Stable identifier, e.g. text-primary/bg-base or cta-ink/gradient"
+        },
+        "fg": { "$ref": "#/$defs/TokenPath" },
+        "bg": {
+          "oneOf": [
+            { "$ref": "#/$defs/TokenPath" },
+            { "$ref": "#/$defs/GradientBackground" }
+          ]
+        },
+        "level": {
+          "enum": ["text", "largeText", "nonText"]
+        },
+        "normalize": {
+          "type": "boolean",
+          "description": "true: the WCAG AA normalizer may rewrite tokens to satisfy the pair. false: gate-only — the build fails when a token sync breaks the pair."
+        },
+        "nudge": {
+          "enum": ["fg", "bg", "either"],
+          "description": "For paired fg/bg tokens (e.g. content.selection.fg/bg): which side the normalizer adjusts. Required knowledge for fg-bg pairs; ignored for ink-vs-background pairs."
+        }
+      }
+    },
+    "Exemption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fg", "bg", "reason"],
+      "properties": {
+        "fg": { "$ref": "#/$defs/TokenPath" },
+        "bg": { "$ref": "#/$defs/TokenPath" },
+        "reason": { "type": "string", "minLength": 20 }
+      }
+    }
+  }
+}

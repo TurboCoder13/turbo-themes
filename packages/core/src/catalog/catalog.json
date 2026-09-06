@@ -164,7 +164,7 @@
       "bg": "#FFFBEF",
       "surface": "#F8F5E4",
       "accent": "#697a01",
-      "text": "#5C6A72"
+      "text": "#5a6870"
     }
   },
   {
@@ -176,7 +176,7 @@
       "bg": "#F3EAD3",
       "surface": "#EAE4CA",
       "accent": "#697a01",
-      "text": "#56646c"
+      "text": "#4f5c63"
     }
   },
   {
@@ -188,7 +188,7 @@
       "bg": "#FDF6E3",
       "surface": "#F4F0D9",
       "accent": "#697a01",
-      "text": "#5C6A72"
+      "text": "#56636a"
     }
   },
   {
@@ -344,7 +344,7 @@
       "bg": "#282c34",
       "surface": "#2c313a",
       "accent": "#61afef",
-      "text": "#abb2bf"
+      "text": "#afb6c2"
     }
   },
   {
@@ -452,7 +452,7 @@
       "bg": "#002b36",
       "surface": "#073642",
       "accent": "#268bd2",
-      "text": "#90a0a1"
+      "text": "#eff2f2"
     }
   },
   {
@@ -464,7 +464,7 @@
       "bg": "#fdf6e3",
       "surface": "#eee8d5",
       "accent": "#268bd2",
-      "text": "#52686e"
+      "text": "#293437"
     }
   },
   {
@@ -512,7 +512,7 @@
       "bg": "#24283b",
       "surface": "#28344a",
       "accent": "#7aa2f7",
-      "text": "#c0caf5"
+      "text": "#dbe1f9"
     }
   }
 ]

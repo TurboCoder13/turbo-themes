@@ -27,7 +27,7 @@
         "$type": "color"
       },
       "secondary": {
-        "$value": "#aeb8b0",
+        "$value": "#bdc5be",
         "$type": "color"
       },
       "inverse": {
@@ -87,7 +87,7 @@
     },
     "accent": {
       "link": {
-        "$value": "#88c396",
+        "$value": "#9dcea9",
         "$type": "color"
       }
     },
@@ -146,7 +146,7 @@
       },
       "link": {
         "default": {
-          "$value": "#88c396",
+          "$value": "#9dcea9",
           "$type": "color"
         }
       },

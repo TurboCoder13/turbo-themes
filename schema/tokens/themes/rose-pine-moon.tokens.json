@@ -27,7 +27,7 @@
         "$type": "color"
       },
       "secondary": {
-        "$value": "#9591ae",
+        "$value": "#a6a3bb",
         "$type": "color"
       },
       "inverse": {

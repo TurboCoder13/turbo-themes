@@ -3,24 +3,86 @@
  * Normalize theme token JSON to strict WCAG 2.x AA contrast.
  *
  * Runs after theme:sync so vendor sync scripts cannot regress AA gates.
- * - Normal text pairs: 4.5:1
- * - Heading (large text) pairs: 3:1
- * Ensures brand.primaryText and state.*Text exist with AA contrast on fills.
+ * The audited pair list lives in schema/contrast-pairs.json (#922); this
+ * script consumes it through scripts/lib/contrast-pairs.mjs instead of
+ * hardcoding its own pair list:
+ * - `normalize: true` pairs are rewritten here (text pairs keep the 4.75
+ *   headroom above the manifest floors; largeText pairs use their floor).
+ * - `normalize: false` pairs are gate-only: after normalization every theme
+ *   is checked and the build fails if a pair no longer clears its floor.
  *
  * Ink picking prefers near-theme colors that already clear AA — it does not
  * maximize into #000/#fff when a themed pair (e.g. text.inverse on brand)
- * already meets the floor. Brand CTA ink is gated against both
- * `--gradient-primary` stops (brand.primary + state.info).
+ * already meets the floor. Paired fg/bg tokens (code blocks, selection,
+ * table headers) nudge the side declared in the manifest (`nudge`).
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const AA_N = 4.75; // headroom above axe/WCAG 4.5 floor (sampling + AA edge cases)
-const AA_L = 3.0;
+import {
+  checkPair,
+  classifyPair,
+  contrastRatio as ratio,
+  LEVELS,
+  loadContrastPairs,
+  resolveTokenValue,
+} from './lib/contrast-pairs.mjs';
+
+const AA_N = 4.75; // headroom above the 4.5 text floor (sampling + AA edge cases)
+const AA_L = LEVELS.largeText;
 // Interior samples taken along `--gradient-primary` when auditing CTA ink.
 const GRADIENT_SAMPLES = 20;
 const DIR = 'schema/tokens/themes';
 const EXTREMES = ['#000000', '#ffffff'];
+
+// ---------------------------------------------------------------------------
+// Manifest-driven pair routing
+// ---------------------------------------------------------------------------
+
+const manifest = loadContrastPairs();
+
+/** Rewrite target for a normalize:true pair: text gets headroom, others their floor. */
+function rewriteTarget(pair) {
+  return pair.level === 'text' ? AA_N : LEVELS[pair.level];
+}
+
+/** fg -> { bgs: string[], level } for ink-vs-backgrounds pairs. */
+const inkGroups = new Map();
+/** code block / selection / table header style pairs. */
+const fgBgPairs = [];
+/** state.*Text vs state.* fill pairs. */
+const statePairs = [];
+/** CTA ink vs sampled gradient ramp. */
+let gradientPair = null;
+/** gate-only pairs, verified after all rewriting. */
+const gateOnlyPairs = [];
+
+for (const pair of manifest.pairs) {
+  const kind = classifyPair(pair);
+  if (!pair.normalize) {
+    gateOnlyPairs.push(pair);
+  } else if (kind === 'gradient-ink') {
+    if (gradientPair) throw new Error(`[normalize-wcag-aa] multiple gradient pairs in manifest`);
+    gradientPair = pair;
+  } else if (kind === 'fg-bg') {
+    if (pair.fg.startsWith('state.')) statePairs.push(pair);
+    else fgBgPairs.push(pair);
+  } else {
+    const group = inkGroups.get(pair.fg) ?? { bgs: [], level: pair.level };
+    group.bgs.push(pair.bg);
+    inkGroups.set(pair.fg, group);
+  }
+}
+
+if (statePairs.length > 0 && !gradientPair) {
+  // The state loop nudges state.info, the CTA gradient's end stop; the brand
+  // block re-audits state.infoText afterwards. Keep the pairing honest.
+  console.warn('[normalize-wcag-aa] state pairs present without a gradient pair');
+}
+
+// ---------------------------------------------------------------------------
+// Color maths
+// ---------------------------------------------------------------------------
 
 function hexToRgb(hex) {
   const c = String(hex).replace('#', '');
@@ -42,20 +104,6 @@ function rgbToHex([r, g, b]) {
   );
 }
 
-function luminance(hex) {
-  const rgb = hexToRgb(hex).map((v) => {
-    const s = v / 255;
-    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
-}
-
-function ratio(a, b) {
-  const L1 = luminance(a);
-  const L2 = luminance(b);
-  const [hi, lo] = L1 > L2 ? [L1, L2] : [L2, L1];
-  return (hi + 0.05) / (lo + 0.05);
-}
 
 function mixToward(hex, target, t) {
   const a = hexToRgb(hex);
@@ -171,6 +219,10 @@ function setColor(obj, key, value) {
   else obj[key].$value = value;
 }
 
+function getToken(t, path) {
+  return resolveTokenValue(t, path);
+}
+
 let filesChanged = 0;
 let fixCount = 0;
 
@@ -183,181 +235,114 @@ for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
     console.warn(`[normalize-wcag-aa] skipping ${file}: missing tokens.background.base`);
     continue;
   }
-  const base = t.background.base.$value;
+
+  // Overlay can be a mid-tone accent surface; the manifest decides which inks
+  // must also clear it (the overlay pairs), so no hardcoding here.
   let changed = false;
 
   const bump = (label, oldVal, neu) => {
-    if (oldVal.toLowerCase() !== neu.toLowerCase()) {
+    if (String(oldVal).toLowerCase() !== String(neu).toLowerCase()) {
       console.log(`[normalize-wcag-aa] ${file}: ${label} ${oldVal} -> ${neu}`);
       changed = true;
       fixCount++;
     }
   };
 
-  // Overlay can be a mid-tone accent surface that cannot host the same ink as
-  // base/surface; gate text/link/heading AA against base + surface only.
-  const bgs = [base, t.background?.surface?.$value].filter(Boolean);
+  // --- Ink tokens vs background surfaces (manifest groups) -----------------
+  for (const [fgPath, group] of inkGroups) {
+    const old = getToken(t, fgPath);
+    if (old === undefined) continue;
+    const bgs = group.bgs.map((p) => getToken(t, p)).filter(Boolean);
+    if (bgs.length === 0) continue;
+    const min = group.level === 'text' ? AA_N : AA_L;
+    const neu = ensureOnAllBgs(bgs, old, min);
+    bump(fgPath, old, neu);
+    setToken(t, fgPath, neu);
+  }
 
-  const ensureOnAllBgs = (fg, min) => {
-    const ok = (cand) => bgs.every((bg) => ratio(cand, bg) >= min);
-    if (ok(fg)) return fg;
-    // Search mixes toward black and white; keep the first candidate that
-    // clears every background (avoids sequential tug-of-war across layers).
-    let best = fg;
-    let bestScore = Math.min(...bgs.map((bg) => ratio(fg, bg)));
-    for (const target of EXTREMES) {
-      for (let i = 1; i <= 100; i++) {
-        const cand = mixToward(fg, target, i / 100);
-        const score = Math.min(...bgs.map((bg) => ratio(cand, bg)));
-        if (score > bestScore) {
-          bestScore = score;
-          best = cand;
-        }
-        if (ok(cand)) return cand;
+  // --- Paired fg/bg tokens --------------------------------------------------
+  for (const pair of fgBgPairs) {
+    const fg = getToken(t, pair.fg);
+    const bg = getToken(t, pair.bg);
+    if (fg === undefined || bg === undefined) continue;
+    const min = rewriteTarget(pair);
+    if (pair.nudge === 'bg') {
+      const neu = ensureContrastBg(fg, bg, min);
+      bump(pair.bg, bg, neu);
+      setToken(t, pair.bg, neu);
+    } else {
+      const neu = ensureContrast(fg, bg, min);
+      bump(pair.fg, fg, neu);
+      setToken(t, pair.fg, neu);
+    }
+  }
+
+  // --- State fills and their audited inks -----------------------------------
+  for (const pair of statePairs) {
+    // pair shape: state.<key>Text vs state.<key>
+    const key = pair.bg.split('.')[1];
+    if (!t.state?.[key]?.$value) continue;
+    let bg = t.state[key].$value;
+    const textKey = `${key}Text`;
+    const existing = t.state[textKey]?.$value;
+    const preferred = [
+      existing && !isExtreme(existing) ? existing : null,
+      t.text?.inverse?.$value,
+      t.text?.primary?.$value,
+      t.background?.base?.$value,
+    ];
+    let fg = pickInkOn([bg], preferred, AA_N) ?? bestEffortInk([bg], preferred);
+    if (ratio(fg, bg) < AA_N) {
+      // Fill itself cannot host readable ink — nudge the fill until AA clears.
+      const next = ensureContrastBg(fg, bg, AA_N);
+      if (next.toLowerCase() !== bg.toLowerCase()) {
+        bg = next;
+        t.state[key].$value = bg;
+        changed = true;
+        fixCount++;
       }
-    }
-    return best;
-  };
-
-  if (t.text?.primary?.$value) {
-    const old = t.text.primary.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('text.primary', old, neu);
-    t.text.primary.$value = neu;
-  }
-  if (t.content?.body?.primary?.$value) {
-    const old = t.content.body.primary.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('body.primary', old, neu);
-    t.content.body.primary.$value = neu;
-  }
-  if (t.text?.secondary?.$value) {
-    const old = t.text.secondary.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('text.secondary', old, neu);
-    t.text.secondary.$value = neu;
-  }
-  if (t.text?.muted?.$value) {
-    const old = t.text.muted.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('text.muted', old, neu);
-    t.text.muted.$value = neu;
-  }
-  if (t.content?.body?.secondary?.$value) {
-    const old = t.content.body.secondary.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('body.secondary', old, neu);
-    t.content.body.secondary.$value = neu;
-  }
-  if (t.accent?.link?.$value) {
-    const old = t.accent.link.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('accent.link', old, neu);
-    t.accent.link.$value = neu;
-  }
-  if (t.content?.link?.default?.$value) {
-    const old = t.content.link.default.$value;
-    const neu = ensureOnAllBgs(old, AA_N);
-    bump('content.link', old, neu);
-    t.content.link.default.$value = neu;
-  }
-  // Headings can sit on surface panels in demos too
-  if (t.content?.heading) {
-    for (const h of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
-      if (!t.content.heading[h]?.$value) continue;
-      const old = t.content.heading[h].$value;
-      const neu = ensureOnAllBgs(old, AA_L);
-      bump(`heading.${h}`, old, neu);
-      t.content.heading[h].$value = neu;
-    }
-  }
-  if (t.content?.codeInline?.fg?.$value && t.content?.codeInline?.bg?.$value) {
-    const fg = t.content.codeInline.fg.$value;
-    const bg = t.content.codeInline.bg.$value;
-    const neu = ensureContrast(fg, bg, AA_N);
-    bump('codeInline', fg, neu);
-    t.content.codeInline.fg.$value = neu;
-  }
-  if (t.content?.codeBlock?.fg?.$value && t.content?.codeBlock?.bg?.$value) {
-    const fg = t.content.codeBlock.fg.$value;
-    const bg = t.content.codeBlock.bg.$value;
-    const neu = ensureContrast(fg, bg, AA_N);
-    bump('codeBlock', fg, neu);
-    t.content.codeBlock.fg.$value = neu;
-  }
-  if (t.content?.selection?.fg?.$value && t.content?.selection?.bg?.$value) {
-    const fg = t.content.selection.fg.$value;
-    const bg = t.content.selection.bg.$value;
-    const neuBg = ensureContrastBg(fg, bg, AA_N);
-    bump('selection.bg', bg, neuBg);
-    t.content.selection.bg.$value = neuBg;
-  }
-  if (t.content?.blockquote?.fg?.$value && t.content?.blockquote?.bg?.$value) {
-    const fg = t.content.blockquote.fg.$value;
-    const bg = t.content.blockquote.bg.$value;
-    const neu = ensureContrast(fg, bg, AA_N);
-    bump('blockquote', fg, neu);
-    t.content.blockquote.fg.$value = neu;
-  }
-
-  if (t.state) {
-    for (const key of ['info', 'success', 'warning', 'danger']) {
-      if (!t.state[key]?.$value) continue;
-      let bg = t.state[key].$value;
-      const textKey = `${key}Text`;
-      const existing = t.state[textKey]?.$value;
-      const preferred = [
-        existing && !isExtreme(existing) ? existing : null,
-        t.text?.inverse?.$value,
-        t.text?.primary?.$value,
-        t.background?.base?.$value,
-      ];
-      let fg = pickInkOn([bg], preferred, AA_N) ?? bestEffortInk([bg], preferred);
       if (ratio(fg, bg) < AA_N) {
-        // Fill itself cannot host readable ink — nudge the fill until AA clears.
-        const next = ensureContrastBg(fg, bg, AA_N);
-        if (next.toLowerCase() !== bg.toLowerCase()) {
-          bg = next;
+        fg = bestEffortInk([bg], EXTREMES);
+        const nudged = ensureContrastBg(fg, bg, AA_N);
+        if (nudged.toLowerCase() !== bg.toLowerCase()) {
+          bg = nudged;
           t.state[key].$value = bg;
           changed = true;
           fixCount++;
         }
-        if (ratio(fg, bg) < AA_N) {
-          fg = bestEffortInk([bg], EXTREMES);
-          const nudged = ensureContrastBg(fg, bg, AA_N);
-          if (nudged.toLowerCase() !== bg.toLowerCase()) {
-            bg = nudged;
-            t.state[key].$value = bg;
-            changed = true;
-            fixCount++;
-          }
-        }
       }
-      // Same rule as the brand ramp below: never write ink the fill cannot
-      // host. Both nudge attempts can leave `ratio(fg, bg) < AA_N` (e.g.
-      // `ensureContrastBg` returns `bg` unchanged because the fill is already
-      // at an extreme), which would ship a token that merely looks audited.
-      if (ratio(fg, bg) < AA_N) {
-        throw new Error(
-          `[normalize-wcag-aa] ${file}: state.${textKey} ${fg} only reaches ` +
-            `${ratio(fg, bg).toFixed(2)}:1 on state.${key} ${bg} (needs ${AA_N}:1)`
-        );
-      }
+    }
+    // Same rule as the brand ramp below: never write ink the fill cannot
+    // host. Both nudge attempts can leave `ratio(fg, bg) < AA_N` (e.g.
+    // `ensureContrastBg` returns `bg` unchanged because the fill is already
+    // at an extreme), which would ship a token that merely looks audited.
+    if (ratio(fg, bg) < AA_N) {
+      throw new Error(
+        `[normalize-wcag-aa] ${file}: state.${textKey} ${fg} only reaches ` +
+          `${ratio(fg, bg).toFixed(2)}:1 on state.${key} ${bg} (needs ${AA_N}:1)`
+      );
+    }
 
-      const old = existing ?? '';
-      setColor(t.state, textKey, fg);
-      if (old.toLowerCase() !== fg.toLowerCase()) {
-        changed = true;
-        fixCount++;
-      }
+    const old = existing ?? '';
+    setColor(t.state, textKey, fg);
+    if (old.toLowerCase() !== fg.toLowerCase()) {
+      changed = true;
+      fixCount++;
     }
   }
 
-  // Runs AFTER the state loop on purpose: that loop may nudge `state.info`,
-  // which is the CTA gradient's end stop. Picking the brand ink first would
-  // audit it against a fill that is then moved out from under it.
-  if (t.brand?.primary?.$value) {
-    // CTA gradient stops: brand.primary → state.info (see packages/css generator)
+  // --- CTA ink vs the brand gradient ramp -----------------------------------
+  // Runs AFTER the state loop on purpose: that loop may nudge state.info,
+  // the gradient's end stop. Picking the brand ink first would audit it
+  // against a fill that is then moved out from under it.
+  if (gradientPair && t.brand?.primary?.$value) {
+    // Gradient stops come from the manifest (brand.primary → state.info).
+    const [fromPath, toPath] = gradientPair.bg.gradient;
+    const rampFor = () => {
+      const from = getToken(t, fromPath);
+      const to = getToken(t, toPath);
+      return gradientRamp(from, to, gradientPair.bg.samples ?? GRADIENT_SAMPLES);
+    };
     let brand = t.brand.primary.$value;
     let info = t.state?.info?.$value;
     const existing = t.brand.primaryText?.$value;
@@ -367,7 +352,7 @@ for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
       t.background?.base?.$value,
     ];
     // Audit the whole ramp, not just its ends — see gradientRamp().
-    let fg = pickInkOn(gradientRamp(brand, info), preferred, AA_N);
+    let fg = pickInkOn(rampFor(), preferred, AA_N);
 
     if (!fg) {
       // No single ink clears the ramp — keep themed ink on brand, then nudge
@@ -418,7 +403,7 @@ for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
 
     // Never write ink the ramp cannot host. Failing loudly here beats shipping
     // a token that every downstream artifact would then present as audited.
-    const worstOnRamp = Math.min(...gradientRamp(brand, info).map((bg) => ratio(fg, bg)));
+    const worstOnRamp = Math.min(...rampFor().map((bg) => ratio(fg, bg)));
     if (worstOnRamp < AA_N) {
       throw new Error(
         `[normalize-wcag-aa] ${file}: brand.primaryText ${fg} only reaches ` +
@@ -433,8 +418,8 @@ for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
       fixCount++;
     }
 
-    // The ramp work above can move `state.info`, but `state.infoText` was
-    // picked against the pre-nudge fill. Re-audit it so info/infoText cannot
+    // The ramp work above can move state.info, but state.infoText was picked
+    // against the pre-nudge fill. Re-audit it so info/infoText cannot
     // silently drop below AA while the brand assertion still passes.
     const finalInfo = t.state?.info?.$value;
     const infoInk = t.state?.infoText?.$value;
@@ -461,4 +446,81 @@ for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
   }
 }
 
+// --- Gate-only pairs (normalize: false) -------------------------------------
+// Verified after all rewriting so a vendor sync that breaks one of these
+// pairs fails the build with the offending theme, pair, and ratio named.
+const gateFailures = [];
+if (gateOnlyPairs.length > 0) {
+  for (const file of readdirSync(DIR).filter((f) => f.endsWith('.tokens.json'))) {
+    const json = JSON.parse(readFileSync(join(DIR, file), 'utf8'));
+    const t = json.tokens;
+    if (!t?.background?.base?.$value) continue;
+    for (const pair of gateOnlyPairs) {
+      const result = checkGatePair(pair, t);
+      if (!result.ok) {
+        gateFailures.push(
+          `${file}: ${pair.id} ${result.fg} on ${result.worstBg} = ${result.worst.toFixed(2)}:1 ` +
+            `(needs ${LEVELS[pair.level]}:1)`,
+        );
+      }
+    }
+  }
+}
+if (gateFailures.length > 0) {
+  console.error(
+    `[normalize-wcag-aa] gate-only contrast pairs failed:\n  ` +
+      gateFailures.join('\n  '),
+  );
+  process.exitCode = 1;
+}
+
 console.log(`[normalize-wcag-aa] updated ${filesChanged} theme files (${fixCount} value fixes)`);
+
+// ---------------------------------------------------------------------------
+// Helpers working on the raw token tree
+// ---------------------------------------------------------------------------
+
+function ensureOnAllBgs(bgs, fg, min) {
+  const ok = (cand) => bgs.every((bg) => ratio(cand, bg) >= min);
+  if (ok(fg)) return fg;
+  // Search mixes toward black and white; keep the first candidate that
+  // clears every background (avoids sequential tug-of-war across layers).
+  let best = fg;
+  let bestScore = Math.min(...bgs.map((bg) => ratio(fg, bg)));
+  for (const target of EXTREMES) {
+    for (let i = 1; i <= 100; i++) {
+      const cand = mixToward(fg, target, i / 100);
+      const score = Math.min(...bgs.map((bg) => ratio(cand, bg)));
+      if (score > bestScore) {
+        bestScore = score;
+        best = cand;
+      }
+      if (ok(cand)) return cand;
+    }
+  }
+  return best;
+}
+
+function setToken(tree, path, value) {
+  const keys = path.split('.');
+  let cur = tree;
+  for (let i = 0; i < keys.length - 1; i++) {
+    // Own properties only: manifest paths must never reach Object.prototype.
+    if (typeof cur !== 'object' || cur === null || !Object.hasOwn(cur, keys[i])) {
+      return;
+    }
+    cur = cur[keys[i]];
+  }
+  const leaf = keys[keys.length - 1];
+  if (typeof cur === 'object' && cur !== null && Object.hasOwn(cur, leaf)) {
+    const leafValue = cur[leaf];
+    if (typeof leafValue === 'object' && leafValue !== null) leafValue.$value = value;
+    else cur[leaf] = value;
+  }
+}
+
+function checkGatePair(pair, tokens) {
+  // The loader treats an unresolved fg or bg as a failure, not a pass: a
+  // typo'd token path in the manifest must fail the gate loudly.
+  return checkPair(pair, tokens);
+}

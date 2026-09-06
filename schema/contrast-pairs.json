@@ -1,0 +1,317 @@
+{
+  "$schema": "./contrast-pairs.schema.json",
+  "$version": 1,
+  "$description": "Single declared list of fg/background token pairs with a WCAG target per pair (#922). The WCAG AA normalizer and every contrast test consume this manifest instead of hardcoding their own pair lists. `normalize: true` pairs may be rewritten by the normalizer; `normalize: false` pairs are gate-only; omissions belong in `exempt` with a reason.",
+  "levels": {
+    "text": 4.5,
+    "largeText": 3.0,
+    "nonText": 3.0
+  },
+  "pairs": [
+    {
+      "id": "text-primary/bg-base",
+      "fg": "text.primary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "text-primary/bg-surface",
+      "fg": "text.primary",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "text-primary/bg-overlay",
+      "fg": "text.primary",
+      "bg": "background.overlay",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "body-primary/bg-base",
+      "fg": "content.body.primary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "body-primary/bg-surface",
+      "fg": "content.body.primary",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "body-secondary/bg-base",
+      "fg": "content.body.secondary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "body-secondary/bg-surface",
+      "fg": "content.body.secondary",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "text-secondary/bg-base",
+      "fg": "text.secondary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "text-secondary/bg-surface",
+      "fg": "text.secondary",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "text-secondary/bg-overlay",
+      "fg": "text.secondary",
+      "bg": "background.overlay",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "accent-link/bg-base",
+      "fg": "accent.link",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "accent-link/bg-surface",
+      "fg": "accent.link",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "accent-link/bg-overlay",
+      "fg": "accent.link",
+      "bg": "background.overlay",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "content-link/bg-base",
+      "fg": "content.link.default",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "content-link/bg-surface",
+      "fg": "content.link.default",
+      "bg": "background.surface",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "content-link/bg-overlay",
+      "fg": "content.link.default",
+      "bg": "background.overlay",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "heading-h1/bg-base",
+      "fg": "content.heading.h1",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h1/bg-surface",
+      "fg": "content.heading.h1",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h2/bg-base",
+      "fg": "content.heading.h2",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h2/bg-surface",
+      "fg": "content.heading.h2",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h3/bg-base",
+      "fg": "content.heading.h3",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h3/bg-surface",
+      "fg": "content.heading.h3",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h4/bg-base",
+      "fg": "content.heading.h4",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h4/bg-surface",
+      "fg": "content.heading.h4",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h5/bg-base",
+      "fg": "content.heading.h5",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h5/bg-surface",
+      "fg": "content.heading.h5",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h6/bg-base",
+      "fg": "content.heading.h6",
+      "bg": "background.base",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "heading-h6/bg-surface",
+      "fg": "content.heading.h6",
+      "bg": "background.surface",
+      "level": "largeText",
+      "normalize": true
+    },
+    {
+      "id": "code-inline",
+      "fg": "content.codeInline.fg",
+      "bg": "content.codeInline.bg",
+      "level": "text",
+      "normalize": true,
+      "nudge": "fg"
+    },
+    {
+      "id": "code-block",
+      "fg": "content.codeBlock.fg",
+      "bg": "content.codeBlock.bg",
+      "level": "text",
+      "normalize": true,
+      "nudge": "fg"
+    },
+    {
+      "id": "selection",
+      "fg": "content.selection.fg",
+      "bg": "content.selection.bg",
+      "level": "text",
+      "normalize": true,
+      "nudge": "bg"
+    },
+    {
+      "id": "blockquote",
+      "fg": "content.blockquote.fg",
+      "bg": "content.blockquote.bg",
+      "level": "text",
+      "normalize": true,
+      "nudge": "fg"
+    },
+    {
+      "id": "table-head-ink",
+      "fg": "text.primary",
+      "bg": "content.table.theadBg",
+      "level": "text",
+      "normalize": true,
+      "nudge": "bg"
+    },
+    {
+      "id": "state-info",
+      "fg": "state.infoText",
+      "bg": "state.info",
+      "level": "text",
+      "normalize": true,
+      "nudge": "either"
+    },
+    {
+      "id": "state-success",
+      "fg": "state.successText",
+      "bg": "state.success",
+      "level": "text",
+      "normalize": true,
+      "nudge": "either"
+    },
+    {
+      "id": "state-warning",
+      "fg": "state.warningText",
+      "bg": "state.warning",
+      "level": "text",
+      "normalize": true,
+      "nudge": "either"
+    },
+    {
+      "id": "state-danger",
+      "fg": "state.dangerText",
+      "bg": "state.danger",
+      "level": "text",
+      "normalize": true,
+      "nudge": "either"
+    },
+    {
+      "id": "cta-ink/gradient",
+      "fg": "brand.primaryText",
+      "bg": {
+        "gradient": ["brand.primary", "state.info"],
+        "samples": 20
+      },
+      "level": "text",
+      "normalize": true
+    }
+  ],
+  "exempt": [
+    {
+      "fg": "border.default",
+      "bg": "background.base",
+      "reason": "Decorative container border on cards/panels/inputs; WCAG 1.4.11 non-text contrast applies to boundaries that identify interactive controls, and forcing 3:1 on every background would erase the themes' border hierarchy. Revisit per-component rather than as a global token gate."
+    },
+    {
+      "fg": "border.default",
+      "bg": "background.surface",
+      "reason": "Decorative container border (see border.default/background.base); the site styles interactive control boundaries per component instead of via this token."
+    },
+    {
+      "fg": "border.default",
+      "bg": "background.overlay",
+      "reason": "Decorative container border (see border.default/background.base); modal and dropdown boundaries are component-level styling."
+    },
+    {
+      "fg": "content.table.stripe",
+      "bg": "background.base",
+      "reason": "Decorative zebra stripe, not a text or UI boundary."
+    },
+    {
+      "fg": "content.table.border",
+      "bg": "background.base",
+      "reason": "Decorative data-table grid line; the stripe and border carry no interactive or identifying meaning."
+    }
+  ]
+}
