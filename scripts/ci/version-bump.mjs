@@ -157,8 +157,9 @@ function wrapBullet(entry) {
     // lines are cut at the same absolute column 88 as the first line.
     const cut = line.lastIndexOf(' ', CHANGELOG_WIDTH);
     // An unbreakable token longer than the width: keep it overflowing the
-    // same way the formatter does instead of looping forever.
-    if (cut <= indent) break;
+    // same way the formatter does instead of looping forever or emitting a
+    // dangling bullet marker.
+    if (cut <= indent + 2) break;
     lines.push(line.slice(0, cut));
     line = CHANGELOG_INDENT + line.slice(cut + 1);
     indent = CHANGELOG_INDENT.length;
