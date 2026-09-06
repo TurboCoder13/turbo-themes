@@ -30,7 +30,7 @@ jobs:
       github.event.workflow_run.head_branch == 'main' &&
       github.event.workflow_run.head_repository.full_name == github.repository) ||
       github.event_name == 'workflow_dispatch'
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-deploy-site-with-reports.yml@8a6b1f553f1a0400a70db8910094073ce803cc4d # v0.69.5
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-deploy-site-with-reports.yml@f8f58587e4c324f6f0c9b3b4f59cfc93aa7d5d0f # v0.69.6
     with:
       tooling-ref: f57b4d014f82d7f5996c7b339f1b2ca681780921  # v0.69.4
       site-root: apps/site/dist
