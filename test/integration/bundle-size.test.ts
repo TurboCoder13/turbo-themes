@@ -26,7 +26,10 @@ const SIZE_BUDGETS: Record<string, number> = {
 
 // CSS output size budgets
 const CSS_SIZE_BUDGETS: Record<string, number> = {
-  'packages/css/dist/turbo-themes-all.css': 143_360, // 140KB (all theme [data-theme] selectors; ~130.6KB actual at 40 themes as of Kanagawa)
+  // All theme [data-theme] selectors; ~130.6KB actual at 40 themes as of
+  // Kanagawa. The four audited --turbo-state-*-text inks (#820) add ~8KB
+  // across 43 themes (~148.3KB measured), so the budget moves to 152KB.
+  'packages/css/dist/turbo-themes-all.css': 155_648,
 };
 
 describe('Bundle size budgets', () => {

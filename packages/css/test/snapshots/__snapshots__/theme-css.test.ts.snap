@@ -406,6 +406,22 @@ exports[`CSS Output Snapshots > Token Path Mapping > core mappings structure mat
     "tokenPath": "state.danger",
   },
   {
+    "cssVar": "state-info-text",
+    "tokenPath": "state.infoText",
+  },
+  {
+    "cssVar": "state-success-text",
+    "tokenPath": "state.successText",
+  },
+  {
+    "cssVar": "state-warning-text",
+    "tokenPath": "state.warningText",
+  },
+  {
+    "cssVar": "state-danger-text",
+    "tokenPath": "state.dangerText",
+  },
+  {
     "cssVar": "border-default",
     "tokenPath": "border.default",
   },
