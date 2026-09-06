@@ -67,7 +67,6 @@ for (const [name, count] of [...counts.entries()].sort(([a], [b]) => a.localeCom
 }
 
 const contract = {
-  $schema: './native-contract.schema.json',
   $version: 1,
   $description:
     'Site-native theme token contract (#944). Generated from the CSS ' +

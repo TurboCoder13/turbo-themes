@@ -1,5 +1,4 @@
 {
-  "$schema": "./native-contract.schema.json",
   "$version": 1,
   "$description": "Site-native theme token contract (#944). Generated from the CSS generator across all flavors by scripts/codegen/generate-native-contract.mjs — do not edit. required: emitted for every flavor; optional: emitted for some flavors. Audited pairs are declared separately in schema/contrast-pairs.json.",
   "flavorCount": 43,
