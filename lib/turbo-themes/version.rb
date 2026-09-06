@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TurboThemes
-  VERSION = "0.43.6"
+  VERSION = "0.44.0"
 end
 
 

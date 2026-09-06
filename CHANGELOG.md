@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.0] - 2026-09-06
+
+### ✨ Added
+
+- Validate site-native theme token files against the generated token contract (#979)
+
 ## [0.43.6] - 2026-09-06
 
 ### 🔧 Changed
