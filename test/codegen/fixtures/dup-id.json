@@ -1,0 +1,24 @@
+{
+  "$version": 1,
+  "levels": {
+    "text": 4.5,
+    "largeText": 3.0,
+    "nonText": 3.0
+  },
+  "pairs": [
+    {
+      "id": "x",
+      "fg": "text.primary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    },
+    {
+      "id": "x",
+      "fg": "text.secondary",
+      "bg": "background.base",
+      "level": "text",
+      "normalize": true
+    }
+  ]
+}

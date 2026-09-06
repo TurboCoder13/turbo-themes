@@ -57,18 +57,24 @@ describe('generate-metadata.mjs', () => {
     }
   });
 
-  it('verify-generated-tokens.sh fails when metadata differs from HEAD', () => {
-    // New/untracked or dirty generated metadata must fail the CI freshness check.
-    const result = spawnSync('bash', [VERIFY], {
-      cwd: REPO_ROOT,
-      encoding: 'utf-8',
-    });
+  it(
+    'verify-generated-tokens.sh fails when metadata differs from HEAD',
+    () => {
+      // New/untracked or dirty generated metadata must fail the CI freshness check.
+      // The script walks git status over the whole tree, which is slow right
+      // after a full build; give both the script and the test room beyond
+      // the 5s defaults.
+      const result = spawnSync('bash', [VERIFY], {
+        cwd: REPO_ROOT,
+        encoding: 'utf-8',
+        timeout: 30_000,
+      });
 
-    const porcelain = spawnSync('git', ['status', '--porcelain', '--', CORE_META, SELECTOR_MAPS], {
-      cwd: REPO_ROOT,
-      encoding: 'utf-8',
-    });
-    const isDirty = (porcelain.stdout || '').trim().length > 0;
+      const porcelain = spawnSync('git', ['status', '--porcelain', '--', CORE_META, SELECTOR_MAPS], {
+        cwd: REPO_ROOT,
+        encoding: 'utf-8',
+      });
+      const isDirty = (porcelain.stdout || '').trim().length > 0;
 
     if (isDirty) {
       expect(result.status).not.toBe(0);
@@ -87,5 +93,5 @@ describe('generate-metadata.mjs', () => {
         writeFileSync(CORE_META, original);
       }
     }
-  });
+  }, 30_000);
 });
