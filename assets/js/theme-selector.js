@@ -580,9 +580,10 @@ var TurboThemeSelector = (function(exports) {
 	};
 	function logThemeError(themeError) {
 		const prefixedMessage = `${LOG_PREFIX} ${themeError.message}`;
-		if (themeError.level === ErrorLevel.ERROR) if (themeError.context) console.error(prefixedMessage, themeError.context);
-		else console.error(prefixedMessage);
-		else if (themeError.context) console.warn(prefixedMessage, themeError.context);
+		if (themeError.level === ErrorLevel.ERROR) {
+			if (themeError.context) console.error(prefixedMessage, themeError.context);
+			else console.error(prefixedMessage);
+		} else if (themeError.context) console.warn(prefixedMessage, themeError.context);
 		else console.warn(prefixedMessage);
 	}
 	function safeGetItem(windowObj, key) {
@@ -973,7 +974,6 @@ var TurboThemeSelector = (function(exports) {
 					updateAriaExpanded(true);
 					focusMenuItem(totalItems - 1);
 				} else focusMenuItem(getPrevIndex(state.currentIndex < 0 ? totalItems - 1 : state.currentIndex, totalItems));
-				break;
 		}
 	}
 	function handleMenuItemKeydown(e, index, item, state, stateManager) {
@@ -1004,7 +1004,6 @@ var TurboThemeSelector = (function(exports) {
 			case "End":
 				e.preventDefault();
 				focusMenuItem(totalItems - 1);
-				break;
 		}
 	}
 	function wireDropdownEventHandlers(documentObj, elements, state, stateManager, abortController) {
@@ -1151,7 +1150,8 @@ var TurboThemeSelector = (function(exports) {
 		});
 		selectEl.disabled = false;
 		selectEl.addEventListener("change", (event) => {
-			onThemeSelect(event.target?.value || defaultTheme);
+			const selectedThemeId = event.target?.value || defaultTheme;
+			onThemeSelect(selectedThemeId);
 		});
 	}
 	function getDropdownElements(documentObj) {
@@ -1180,7 +1180,8 @@ var TurboThemeSelector = (function(exports) {
 			const link = item;
 			if (!link.href) return;
 			try {
-				if (normalizedCurrentPath === normalizePath(new URL(link.href).pathname)) matchingItem = item;
+				const normalizedLinkPath = normalizePath(new URL(link.href).pathname);
+				if (normalizedCurrentPath === normalizedLinkPath) matchingItem = item;
 				else itemsToDeactivate.push(item);
 			} catch {}
 		});
@@ -1193,16 +1194,18 @@ var TurboThemeSelector = (function(exports) {
 			matchingItem.setAttribute("aria-current", "page");
 		}
 		const reportsLink = documentObj.querySelector(DOM_SELECTORS.NAV_REPORTS);
-		if (reportsLink) if ([
-			"/coverage",
-			"/coverage-python",
-			"/coverage-swift",
-			"/coverage-ruby",
-			"/playwright",
-			"/playwright-examples",
-			"/lighthouse"
-		].some((path) => normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + "/"))) reportsLink.classList.add("is-active");
-		else reportsLink.classList.remove("is-active");
+		if (reportsLink) {
+			if ([
+				"/coverage",
+				"/coverage-python",
+				"/coverage-swift",
+				"/coverage-ruby",
+				"/playwright",
+				"/playwright-examples",
+				"/lighthouse"
+			].some((path) => normalizedCurrentPath === path || normalizedCurrentPath.startsWith(path + "/"))) reportsLink.classList.add("is-active");
+			else reportsLink.classList.remove("is-active");
+		}
 	}
 	if (typeof window !== "undefined") window.initNavbar = initNavbar;
 	function enhanceAccessibility(documentObj) {

@@ -75,3 +75,7 @@ assets/js/homepage-showcase.js
 
 # Husky internal files (auto-generated)
 .husky/_/**
+
+# Generated type shims (new vite 8.2.x output paths)
+python/src/turbo_themes/generated/types.py
+swift/Sources/TurboThemes/Generated/Types.swift

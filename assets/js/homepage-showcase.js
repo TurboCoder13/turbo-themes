@@ -725,9 +725,10 @@ var TurboHomepageShowcase = (function(exports) {
 	*/
 	function logThemeError(themeError) {
 		const prefixedMessage = `${LOG_PREFIX} ${themeError.message}`;
-		if (themeError.level === ErrorLevel.ERROR) if (themeError.context) console.error(prefixedMessage, themeError.context);
-		else console.error(prefixedMessage);
-		else if (themeError.context) console.warn(prefixedMessage, themeError.context);
+		if (themeError.level === ErrorLevel.ERROR) {
+			if (themeError.context) console.error(prefixedMessage, themeError.context);
+			else console.error(prefixedMessage);
+		} else if (themeError.context) console.warn(prefixedMessage, themeError.context);
 		else console.warn(prefixedMessage);
 	}
 	//#endregion
