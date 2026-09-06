@@ -84,6 +84,7 @@ describe('CSS Output - turbo-core.css', () => {
     // design-system tokens. If a build pipeline lets style-dictionary win,
     // these silently disappear — assert them so that cannot regress.
     const css = readFile(turboCoreFile);
+    const variables = parseCssVariables(css);
     const designSystemTokens = [
       '--space-md',
       '--radius-md',
@@ -95,7 +96,7 @@ describe('CSS Output - turbo-core.css', () => {
     ];
 
     designSystemTokens.forEach((token) => {
-      expect(css).toContain(token);
+      expect(variables.has(token), `Missing design-system token: ${token}`).toBe(true);
     });
   });
 });
