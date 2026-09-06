@@ -67,9 +67,13 @@
     "Brand": {
       "type": "object",
       "properties": {
-        "primary": { "type": "string" }
+        "primary": { "type": "string" },
+        "primaryText": {
+          "type": "string",
+          "description": "Text/icon color for fills using brand.primary (WCAG AA)"
+        }
       },
-      "required": ["primary"]
+      "required": ["primary", "primaryText"]
     },
     "State": {
       "type": "object",
