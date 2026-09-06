@@ -308,7 +308,7 @@ exports[`CSS Output Snapshots > Theme CSS Variables > matches catppuccin-latte t
 --turbo-bg-surface: #e6e9ef;
 --turbo-bg-overlay: #dce0e8;
 --turbo-text-primary: #4c4f69;
---turbo-text-secondary: #616477;
+--turbo-text-secondary: #5c5f71;
 --turbo-text-inverse: #eff1f5;
 --turbo-brand-primary: #1e66f5;
 --turbo-brand-primary-text: #fbfbfc;

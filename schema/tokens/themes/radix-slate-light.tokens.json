@@ -87,7 +87,7 @@
     },
     "accent": {
       "link": {
-        "$value": "#0c6fc6",
+        "$value": "#0c6bbe",
         "$type": "color"
       }
     },
@@ -146,7 +146,7 @@
       },
       "link": {
         "default": {
-          "$value": "#0c6fc6",
+          "$value": "#0c6bbe",
           "$type": "color"
         }
       },

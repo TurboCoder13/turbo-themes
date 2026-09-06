@@ -23,11 +23,11 @@
     },
     "text": {
       "primary": {
-        "$value": "#abb2bf",
+        "$value": "#afb6c2",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#979da9",
+        "$value": "#b1b6bf",
         "$type": "color"
       },
       "inverse": {
@@ -87,7 +87,7 @@
     },
     "accent": {
       "link": {
-        "$value": "#61afef",
+        "$value": "#7abcf2",
         "$type": "color"
       }
     },
@@ -146,7 +146,7 @@
       },
       "link": {
         "default": {
-          "$value": "#61afef",
+          "$value": "#7abcf2",
           "$type": "color"
         }
       },
@@ -204,7 +204,7 @@
           "$type": "color"
         },
         "theadBg": {
-          "$value": "#3e4451",
+          "$value": "#3c414e",
           "$type": "color"
         }
       }

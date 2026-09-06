@@ -23,11 +23,11 @@
     },
     "text": {
       "primary": {
-        "$value": "#5C6A72",
+        "$value": "#56636a",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#5e6b72",
+        "$value": "#566269",
         "$type": "color"
       },
       "inverse": {
