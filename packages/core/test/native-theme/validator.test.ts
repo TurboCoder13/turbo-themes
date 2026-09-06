@@ -70,10 +70,10 @@ describe('validateNativeThemeCss', () => {
   });
 
   it('flags unknown tokens as likely typos', () => {
-    const css = `${cssFor(REQUIRED_NATIVE_TOKENS)}\n[data-theme='acme'] { --turbo-state-succes: #ff0000; }`;
+    const css = `${cssFor(REQUIRED_NATIVE_TOKENS)}\n[data-theme='acme'] { --turbo-state-dangerx: #ff0000; }`;
     const result = validateNativeThemeCss(css);
     expect(result.valid).toBe(false);
-    expect(result.unknown).toEqual(['--turbo-state-succes']);
+    expect(result.unknown).toEqual(['--turbo-state-dangerx']);
   });
 
   it('accepts optional tokens without penalty', () => {

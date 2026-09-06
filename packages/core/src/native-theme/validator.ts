@@ -106,17 +106,50 @@ export function parseNativeThemeCss(css: string): {
   tokens: Record<string, string>;
   duplicates: string[];
 } {
-  const withoutComments = stripCssComments(css);
+  const withoutComments = stripCssComments(css).toLowerCase();
   const tokens: Record<string, string> = {};
   const occurrences = new Map<string, number>();
 
-  const declaration = /(--turbo-[a-z0-9-]+)\s*:\s*([^;{}]*)(?=;|\}|$)/gi;
-  let match: RegExpExecArray | null;
-  while ((match = declaration.exec(withoutComments)) !== null) {
-    const name = match[1]?.toLowerCase();
-    if (!name) continue;
+  // Linear scan for "--turbo-<name> : <value>" declarations. A regex with an
+  // open-ended name pattern is quadratic on adversarial input (many repeated
+  // prefixes with no colon), and this validator runs on consumer-provided
+  // theme files - so every step below is an indexOf/char loop.
+  let i = 0;
+  const isNameChar = (ch: string): boolean => /[a-z0-9-]/.test(ch);
+  while (i < withoutComments.length) {
+    const at = withoutComments.indexOf("--turbo-", i);
+    if (at === -1) break;
+
+    let j = at + "--turbo-".length;
+    while (j < withoutComments.length && isNameChar(withoutComments[j] ?? "")) j++;
+    const name = withoutComments.slice(at, j);
+
+    if (name === "--turbo-") {
+      i = j;
+      continue;
+    }
+
+    let k = j;
+    while (k < withoutComments.length && /\s/.test(withoutComments[k] ?? "")) k++;
+    if (withoutComments[k] !== ":") {
+      i = j;
+      continue;
+    }
+    k++;
+    while (k < withoutComments.length && /\s/.test(withoutComments[k] ?? "")) k++;
+
+    let valueEnd = k;
+    while (
+      valueEnd < withoutComments.length &&
+      withoutComments[valueEnd] !== ";" &&
+      withoutComments[valueEnd] !== "}"
+    ) {
+      valueEnd++;
+    }
+
     occurrences.set(name, (occurrences.get(name) ?? 0) + 1);
-    tokens[name] = match[2]?.trim() ?? "";
+    tokens[name] = withoutComments.slice(k, valueEnd).trim();
+    i = valueEnd;
   }
 
   const duplicates = [...occurrences.entries()]
