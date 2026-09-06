@@ -116,12 +116,12 @@ describe('generateCssVarsFromTokens - core tokens', () => {
     ['text', '--turbo-text-primary: #cdd6f4', '--turbo-text-secondary: #a6adc8', '--turbo-text-inverse: #1e1e2e'],
     ['brand', '--turbo-brand-primary: #89b4fa'],
     ['state', '--turbo-state-info: #89dceb', '--turbo-state-success: #a6e3a1'],
-  ])('should include %s tokens', (_, ...expectedVars) => {
+  ])('should include %s tokens', (category, ...expectedVars) => {
     const lines = generateCssVarsFromTokens(mockTokens);
     const joined = lines.join('\n');
 
     for (const expected of expectedVars) {
-      expect(joined).toContain(expected);
+      expect(joined, category).toContain(expected);
     }
   });
 
