@@ -110,6 +110,38 @@ function formatChangelogDescription(description) {
 }
 
 /**
+ * Escape bare emphasis characters so PR titles cannot inject markdown styling.
+ */
+function escapeChangelogText(text) {
+  return text.replace(/(?<!\\)[*_]/g, '\\$&');
+}
+
+/**
+ * Greedy word-wrap a "- …" bullet at CHANGELOG_WIDTH with a two-space hanging
+ * indent. Must stay byte-identical to the markdown formatter's reflow (same
+ * width as defaults.prettier.overrides *.md printWidth in
+ * .lintro-config.yaml), otherwise the quality gate and the generator fight
+ * over CHANGELOG.md on every release.
+ */
+const CHANGELOG_WIDTH = 88;
+function wrapBullet(entry) {
+  const words = entry.split(' ');
+  const lines = [];
+  let line = '';
+  for (const word of words) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (candidate.length > CHANGELOG_WIDTH && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.join('\n  ');
+}
+
+/**
  * Get commits since last tag
  */
 function getCommitsSinceLastTag() {
@@ -244,7 +276,9 @@ function generateChangelogEntry(commits, version, bumpType) {
       continue;
     }
 
-    const entry = `- ${formatChangelogDescription(parsed.description)}`;
+    const entry = wrapBullet(
+      `- ${escapeChangelogText(formatChangelogDescription(parsed.description))}`,
+    );
     const isBreaking = isBreakingCommit(parsed, message);
 
     // Breaking changes always appear under BREAKING CHANGES, even for ci/build scopes,
