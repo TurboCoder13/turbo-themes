@@ -27,6 +27,7 @@ export function createMockTokens(overrides: Partial<ThemeTokens> = {}): ThemeTok
     },
     brand: {
       primary: '#3273dc',
+      primaryText: '#ffffff',
     },
     state: {
       info: '#3e8ed0',
@@ -210,6 +211,7 @@ export const CSS_GENERATOR_MOCK_TOKENS: ThemeTokens = {
   },
   brand: {
     primary: '#89b4fa',
+    primaryText: '#1e1e2e',
   },
   state: {
     info: '#89dceb',

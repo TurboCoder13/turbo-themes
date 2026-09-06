@@ -14,6 +14,14 @@ export interface ThemeTokens {
   };
   brand: {
     primary: string;
+    /**
+     * Audited AA ink for brand fills. Required in every built token file —
+     * the WCAG AA normalizer computes it and validate-schema enforces it in
+     * schema/turbo-themes.schema.json — but optional in this interface,
+     * which also types the pre-normalization sync packs under themes/packs/
+     * (generated before the normalizer runs). The consumer-facing contract
+     * is generated-types.ts `Brand`, where it is required.
+     */
     primaryText?: string;
   };
   state: {

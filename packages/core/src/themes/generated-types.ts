@@ -35,6 +35,7 @@ export interface Text {
 
 export interface Brand {
   primary: string;
+  primaryText: string;
 }
 
 export interface State {
