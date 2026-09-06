@@ -23,6 +23,6 @@ end
 # Testing
 group :development, :test do
   gem "rspec", "~> 3.13"
-  gem "simplecov", "~> 0.22"
+  gem "simplecov", "~> 1.0"
   gem "simplecov-html", "~> 0.13"
 end
