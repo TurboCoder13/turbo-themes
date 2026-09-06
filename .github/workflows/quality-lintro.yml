@@ -24,7 +24,7 @@ jobs:
       job-name: '🛠️ Lintro Code Quality'
       # py-lintro 0.91.49 pinned to immutable digest for reproducibility
       # yamllint disable-line rule:line-length
-      lintro-image: ghcr.io/lgtm-hq/py-lintro:0.91.49@sha256:268e9a5c3c09998c4e42f59309fe47de74bb1dc8e0a7f6d4e88cf07a7cb1d738
+      lintro-image: ghcr.io/lgtm-hq/py-lintro:0.147.3@sha256:3d21fd16b955d476a6908136dac412a112466cda908422df40c790b1124d550a
       runner-image: ubuntu-24.04
       tooling-ref: '8a6b1f553f1a0400a70db8910094073ce803cc4d' # v0.69.5
       egress-policy: block
