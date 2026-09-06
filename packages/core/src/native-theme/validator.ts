@@ -14,7 +14,7 @@
  * those inks for published flavors.
  */
 
-import contract from './generated/native-contract.json' with { type: 'json' };
+import contract from "./generated/native-contract.json" with { type: "json" };
 
 /** CSS variable names a native theme must declare (emitted for every flavor). */
 export const REQUIRED_NATIVE_TOKENS: readonly string[] = contract.required;
@@ -50,14 +50,15 @@ export function validateNativeThemeTokens(tokens: Record<string, string>): Nativ
   for (const [name, value] of Object.entries(tokens)) {
     if (declared.has(name)) duplicates.add(name);
     declared.add(name);
-    if (value === undefined || value.trim() === '') empty.push(name);
+    if (value === undefined || value.trim() === "") empty.push(name);
   }
 
   const missing = [...required].filter((name) => !declared.has(name)).sort();
   const unknown = [...declared].filter((name) => !known.has(name)).sort();
 
   return {
-    valid: missing.length === 0 && unknown.length === 0 && duplicates.size === 0 && empty.length === 0,
+    valid:
+      missing.length === 0 && unknown.length === 0 && duplicates.size === 0 && empty.length === 0,
     requiredCount: required.size,
     declaredCount: declared.size,
     missing,
@@ -76,11 +77,36 @@ export function validateNativeThemeTokens(tokens: Record<string, string>): Nativ
  *
  * @returns The token map and any names declared more than once.
  */
+
+/**
+ * Strip CSS block comments with a linear scan. The regex equivalent - a
+ * lazy match between the two comment delimiters - backtracks quadratically
+ * on inputs that repeat a comment opening with no closing delimiter, and
+ * this validator runs on consumer-provided theme files.
+ */
+function stripCssComments(css: string): string {
+  let out = "";
+  let from = 0;
+  while (from < css.length) {
+    const open = css.indexOf("/*", from);
+    if (open === -1) break;
+    out += css.slice(from, open);
+    const close = css.indexOf("*/", open + 2);
+    if (close === -1) {
+      from = css.length;
+      break;
+    }
+    from = close + 2;
+  }
+  out += css.slice(from);
+  return out;
+}
+
 export function parseNativeThemeCss(css: string): {
   tokens: Record<string, string>;
   duplicates: string[];
 } {
-  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const withoutComments = stripCssComments(css);
   const tokens: Record<string, string> = {};
   const occurrences = new Map<string, number>();
 
@@ -90,7 +116,7 @@ export function parseNativeThemeCss(css: string): {
     const name = match[1]?.toLowerCase();
     if (!name) continue;
     occurrences.set(name, (occurrences.get(name) ?? 0) + 1);
-    tokens[name] = match[2]?.trim() ?? '';
+    tokens[name] = match[2]?.trim() ?? "";
   }
 
   const duplicates = [...occurrences.entries()]
@@ -108,8 +134,7 @@ export function validateNativeThemeCss(css: string): NativeThemeValidation {
   const { tokens, duplicates } = parseNativeThemeCss(css);
   const result = validateNativeThemeTokens(tokens);
   result.duplicates = duplicates;
-  result.valid =
-    result.valid && duplicates.length === 0;
+  result.valid = result.valid && duplicates.length === 0;
   return result;
 }
 
@@ -119,35 +144,39 @@ export function validateNativeThemeCss(css: string): NativeThemeValidation {
  */
 export function formatNativeThemeValidation(
   result: NativeThemeValidation,
-  source = 'native theme',
+  source = "native theme",
 ): string {
   const lines: string[] = [];
   const problems: string[] = [];
   if (result.missing.length > 0) {
     problems.push(
-      `missing ${result.missing.length} required token(s):\n  ${result.missing.join('\n  ')}`,
+      `missing ${result.missing.length} required token(s):\n  ${result.missing.join("\n  ")}`,
     );
   }
   if (result.unknown.length > 0) {
     problems.push(
       `unknown --turbo-* token(s) (${result.unknown.length}; typo or version mismatch?):\n  ` +
-        `${result.unknown.join('\n  ')}`,
+        `${result.unknown.join("\n  ")}`,
     );
   }
   if (result.duplicates.length > 0) {
-    problems.push(`duplicate declaration(s): ${result.duplicates.join(', ')}`);
+    problems.push(`duplicate declaration(s): ${result.duplicates.join(", ")}`);
   }
   if (result.empty.length > 0) {
-    problems.push(`empty value(s): ${result.empty.join(', ')}`);
+    problems.push(`empty value(s): ${result.empty.join(", ")}`);
   }
 
   if (problems.length === 0) {
-    lines.push(`✅ ${source}: ${result.declaredCount}/${result.requiredCount} contract tokens declared, all good.`);
+    lines.push(
+      `✅ ${source}: ${result.declaredCount}/${result.requiredCount} contract tokens declared, all good.`,
+    );
   } else {
-    lines.push(`❌ ${source}: ${result.missing.length} missing, ${result.unknown.length} unknown, ` +
-      `${result.duplicates.length} duplicate, ${result.empty.length} empty ` +
-      `(${result.declaredCount} declared of ${result.requiredCount} required).`);
+    lines.push(
+      `❌ ${source}: ${result.missing.length} missing, ${result.unknown.length} unknown, ` +
+        `${result.duplicates.length} duplicate, ${result.empty.length} empty ` +
+        `(${result.declaredCount} declared of ${result.requiredCount} required).`,
+    );
     lines.push(...problems);
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
