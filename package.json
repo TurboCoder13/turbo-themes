@@ -223,7 +223,7 @@
     "js-yaml": "4.3.2",
     "lightningcss": "1.33.0",
     "lint-staged": "17.3.0",
-    "oxfmt": "0.60.0",
+    "oxfmt": "0.66.0",
     "oxlint": "1.75.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
