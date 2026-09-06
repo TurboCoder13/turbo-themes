@@ -83,7 +83,9 @@ describe('CSS Output - turbo-core.css', () => {
     // overwrites it with the generateCoreCss() version that also carries the
     // design-system tokens. If a build pipeline lets style-dictionary win,
     // these silently disappear — assert them so that cannot regress.
-    const css = readFile(turboCoreFile);
+    // Comments are stripped first so a commented-out declaration cannot
+    // satisfy the assertion.
+    const css = readFile(turboCoreFile).replace(/\/\*[\s\S]*?\*\//g, '');
     const variables = parseCssVariables(css);
     const designSystemTokens = [
       '--space-md',
