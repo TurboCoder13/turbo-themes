@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.2] - 2026-09-06
+
+### 🔧 Changed
+
+- Update dependency vite-plugin-dts to 5.1.0 (minor) (#968)
+
 ## [0.43.1] - 2026-09-06
 
 ### 🔧 Changed
