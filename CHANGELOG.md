@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.43.5] - 2026-09-06
+
+### 🔧 Changed
+
+- Update npm-vitest to 5.0.0 (major) (#981)
+
 ## [0.43.4] - 2026-09-06
 
 ### 🔧 Changed
