@@ -136,7 +136,7 @@
           "description": "Text/icon color for fills using brand.primary (WCAG AA)"
         }
       },
-      "required": ["primary"]
+      "required": ["primary", "primaryText"]
     },
     "StateTokens": {
       "type": "object",
