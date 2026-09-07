@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.5] - 2026-09-07
+
+### 🔧 Changed
+
+- Update dependency stylelint to 17.15.0 (minor) (#1000)
+
 ## [0.44.4] - 2026-09-07
 
 ### 🔧 Changed
