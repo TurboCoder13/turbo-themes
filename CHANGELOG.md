@@ -10,6 +10,13 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.3] - 2026-09-07
+
+### 🔧 Changed
+
+- Update dependency sass to 1.104.0 (minor) (#993)
+- Update dependency happy-dom to 20.14.0 (minor) (#991)
+
 ## [0.44.2] - 2026-09-07
 
 ### 🔧 Changed
