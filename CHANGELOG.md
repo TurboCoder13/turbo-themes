@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.6] - 2026-09-07
+
+### 🔧 Changed
+
+- Renovate bump (#999)
+
 ## [0.44.5] - 2026-09-07
 
 ### 🔧 Changed
