@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.7] - 2026-09-07
+
+### 🔧 Changed
+
+- Lgtm-ci 0.69.8 pin (#1004)
+
 ## [0.44.6] - 2026-09-07
 
 ### 🔧 Changed
