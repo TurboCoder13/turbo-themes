@@ -19,14 +19,14 @@ jobs:
   # Org ruleset (checks-turbo-themes): quality / 🛠️ Lintro Code Quality
   quality:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-quality-lint.yml@f2b35cdad10df33b60c2996570b3848b70f55ed1 # v0.69.7
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-quality-lint.yml@f0e999fd9934a43c8d1d6a1c68ee2d1a8a978f36 # v0.69.8
     with:
       job-name: '🛠️ Lintro Code Quality'
       # py-lintro 0.147.3 pinned to immutable digest for reproducibility
       # yamllint disable-line rule:line-length
       lintro-image: ghcr.io/lgtm-hq/py-lintro:0.147.3@sha256:3d21fd16b955d476a6908136dac412a112466cda908422df40c790b1124d550a
       runner-image: ubuntu-24.04
-      tooling-ref: 'f2b35cdad10df33b60c2996570b3848b70f55ed1' # v0.69.7
+      tooling-ref: 'f0e999fd9934a43c8d1d6a1c68ee2d1a8a978f36' # v0.69.8
       egress-policy: block
       egress-preset: quality
     permissions:
@@ -41,11 +41,11 @@ jobs:
       && github.event_name == 'pull_request'
       && github.event.pull_request.head.repo.fork == false
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-quality-summary.yml@f2b35cdad10df33b60c2996570b3848b70f55ed1 # v0.69.7
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-publish-quality-summary.yml@f0e999fd9934a43c8d1d6a1c68ee2d1a8a978f36 # v0.69.8
     with:
       exit-code: ${{ needs.quality.outputs.exit-code }}
       runner-image: ubuntu-24.04
-      tooling-ref: 'f2b35cdad10df33b60c2996570b3848b70f55ed1' # v0.69.7
+      tooling-ref: 'f0e999fd9934a43c8d1d6a1c68ee2d1a8a978f36' # v0.69.8
       egress-policy: block
       egress-preset: github-minimal
     permissions:
