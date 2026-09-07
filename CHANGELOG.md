@@ -10,6 +10,12 @@ The format is based on Keep a Changelog and this project adheres to SemVer.
 
 - TBD
 
+## [0.44.2] - 2026-09-07
+
+### 🔧 Changed
+
+- Update dependency bun to 1.4.1 (patch) (#996)
+
 ## [0.44.1] - 2026-09-07
 
 ### 🔧 Changed
