@@ -207,7 +207,7 @@
     "@catppuccin/palette": "1.8.0",
     "@fullhuman/postcss-purgecss": "8.0.0",
     "@lhci/cli": "0.15.1",
-    "@playwright/test": "1.62.1",
+    "@playwright/test": "1.63.0",
     "@primer/primitives": "11.10.0",
     "@radix-ui/colors": "3.0.0",
     "@rose-pine/palette": "4.0.1",
