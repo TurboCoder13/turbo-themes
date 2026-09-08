@@ -1,6 +1,6 @@
 {
   "name": "@lgtm-hq/turbo-themes",
-  "version": "0.44.8",
+  "version": "0.44.9",
   "description": "Universal theme packs and an accessible theme selector.",
   "license": "MIT",
   "type": "module",
