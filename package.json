@@ -236,7 +236,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sass": "1.104.0",
-    "style-dictionary": "5.5.2",
+    "style-dictionary": "5.5.3",
     "stylelint": "17.15.0",
     "stylelint-config-standard": "40.0.0",
     "typescript": "7.0.2",
