@@ -230,7 +230,7 @@
     "husky": "9.1.7",
     "js-yaml": "5.4.1",
     "lightningcss": "1.33.0",
-    "lint-staged": "17.4.1",
+    "lint-staged": "17.5.0",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
     "react": "19.2.8",
