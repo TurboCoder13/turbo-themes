@@ -38,7 +38,7 @@
         "react": "19.2.8",
         "react-dom": "19.2.8",
         "sass": "1.104.0",
-        "style-dictionary": "5.5.2",
+        "style-dictionary": "5.5.3",
         "stylelint": "17.15.0",
         "stylelint-config-standard": "40.0.0",
         "typescript": "7.0.2",
@@ -1877,7 +1877,7 @@
 
     "strip-ansi": ["strip-ansi@5.2.0", "", { "dependencies": { "ansi-regex": "^4.1.0" } }, "sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA=="],
 
-    "style-dictionary": ["style-dictionary@5.5.2", "", { "dependencies": { "@bundled-es-modules/deepmerge": "^4.3.2", "@bundled-es-modules/glob": "^13.0.6", "@bundled-es-modules/memfs": "^4.17.0", "@zip.js/zip.js": "^2.7.44", "chalk": "^5.3.0", "change-case": "^5.3.0", "colorjs.io": "^0.5.2", "commander": "^12.1.0", "is-plain-obj": "^4.1.0", "json5": "^2.2.2", "path-unified": "^0.2.0", "prettier": "^3.3.3", "tinycolor2": "^1.6.0" }, "bin": { "style-dictionary": "bin/style-dictionary.js" } }, "sha512-OPXsfLzy+8YZrUmlgOGDmTlykL8xWLvhb70bHUvBKkPCY75eQabQsl+Jd4JO8nC/uuz/6UdikCHxagiBdUugtw=="],
+    "style-dictionary": ["style-dictionary@5.5.3", "", { "dependencies": { "@bundled-es-modules/deepmerge": "^4.3.2", "@bundled-es-modules/glob": "^13.0.6", "@bundled-es-modules/memfs": "^4.17.0", "@zip.js/zip.js": "^2.7.44", "chalk": "^5.3.0", "change-case": "^5.3.0", "colorjs.io": "^0.5.2", "commander": "^12.1.0", "is-plain-obj": "^4.1.0", "json5": "^2.2.2", "path-unified": "^0.2.0", "prettier": "^3.3.3", "tinycolor2": "^1.6.0" }, "bin": { "style-dictionary": "bin/style-dictionary.js" } }, "sha512-vt4wLw+3H47XLW5Awvq//FqV2BUMElGdhmuUapi2oXNERY4tjFJ6Cd+G3HYjV+9JWYHNFPbmDWwLN8wHzpaEkQ=="],
 
     "stylehacks": ["stylehacks@9.0.3", "", { "dependencies": { "browserslist": "^4.28.9", "postcss-selector-parser": "^7.1.6" }, "peerDependencies": { "postcss": "^8.5.28" } }, "sha512-ffR7soMPCLSZoye/H4gEcOt7fpRmm+1/Mq7j4L9Hex2284Ci0oUkPSiRSpDW0X3tptLtZqGUsOxZ64fy6izthA=="],
 
