@@ -223,7 +223,7 @@
     "ayu": "9.0.0",
     "bulma": "1.0.4",
     "concurrently": "10.0.5",
-    "cssnano": "9.0.2",
+    "cssnano": "9.0.3",
     "happy-dom": "20.14.0",
     "html-validate": "11.14.0",
     "http-server": "14.1.1",
